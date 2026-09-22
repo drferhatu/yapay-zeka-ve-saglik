@@ -1,0 +1,13 @@
+---
+import type { Module } from '@/lib/site';
+import { moduleColorVar } from '@/lib/site';
+interface Props { module: Module; size?: 'sm' | 'md'; }
+const { module, size = 'sm' } = Astro.props;
+---
+<span
+  class:list={['inline-flex items-center gap-1.5 rounded-full font-semibold', size === 'sm' ? 'px-2.5 py-0.5 text-[11px]' : 'px-3 py-1 text-xs']}
+  style={`color:${moduleColorVar(module)}; background: color-mix(in srgb, ${moduleColorVar(module)} 12%, white);`}
+>
+  <span class="size-1.5 rounded-full bg-current" aria-hidden="true"></span>
+  {module.short}
+</span>

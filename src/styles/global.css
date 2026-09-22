@@ -1,0 +1,139 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   Tasarım sistemi — Tıp Eğitimi × Yapay Zekâ
+   Sıcak kırık beyaz zemin, derin deniz mavisi mürekkep, mercan vurgu.
+------------------------------------------------------------------- */
+@theme {
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-paper: #faf8f4;
+  --color-paper-2: #f2eee6;
+  --color-ink: #10262e;
+  --color-ink-2: #34515b;
+  --color-ink-3: #6a838b;
+  --color-line: #e3ddd2;
+  --color-line-2: #cfc6b8;
+
+  --color-brand: #0f4c5c;
+  --color-brand-2: #1b6f83;
+  --color-brand-soft: #dcecef;
+  --color-accent: #e4572e;
+  --color-accent-soft: #fbe6de;
+
+  --shadow-soft: 0 1px 2px rgb(16 38 46 / 0.04), 0 8px 24px -12px rgb(16 38 46 / 0.18);
+  --shadow-lift: 0 2px 4px rgb(16 38 46 / 0.06), 0 18px 40px -16px rgb(16 38 46 / 0.28);
+}
+
+:root {
+  /* modül renkleri (modules.json → color) */
+  --mod-teal: #0f766e;
+  --mod-blue: #1d5fa8;
+  --mod-violet: #6d4bb5;
+  --mod-amber: #b7791f;
+  --mod-rose: #be3a5a;
+  --mod-indigo: #3b4cc0;
+  --mod-cyan: #0b7a8f;
+  --mod-emerald: #1f7a4d;
+  color-scheme: light;
+}
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+body {
+  @apply bg-paper text-ink font-sans antialiased;
+  font-feature-settings: "ss01", "cv11";
+  text-rendering: optimizeLegibility;
+}
+
+::selection { background: color-mix(in srgb, var(--color-accent) 25%, transparent); }
+
+:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; border-radius: 4px; }
+
+.skip-link {
+  @apply sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:bg-ink focus:text-paper focus:px-4 focus:py-2 focus:rounded-md;
+}
+
+/* Yazı stilleri */
+.display { @apply font-display font-medium tracking-[-0.02em]; font-variation-settings: "opsz" 144, "SOFT" 30; }
+.eyebrow { @apply text-xs font-semibold uppercase tracking-[0.14em] text-ink-3; }
+.lede { @apply text-lg md:text-xl leading-relaxed text-ink-2; }
+
+/* Kenar boşluklu konteyner */
+.wrap { @apply mx-auto w-full max-w-6xl px-5 sm:px-8; }
+.wrap-narrow { @apply mx-auto w-full max-w-3xl px-5 sm:px-8; }
+
+/* Düğmeler */
+.btn { @apply inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-colors; }
+.btn-primary { @apply inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-colors bg-ink text-paper hover:bg-brand; }
+.btn-ghost { @apply inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-colors border border-line-2 text-ink hover:border-ink hover:bg-paper-2; }
+.btn-accent { @apply inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-colors bg-accent text-white hover:bg-[#c94a25]; }
+
+/* İnce kağıt dokusu (hero) */
+.grid-paper {
+  background-image:
+    linear-gradient(to right, rgb(16 38 46 / 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(16 38 46 / 0.045) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(ellipse at 60% 40%, black 30%, transparent 75%);
+}
+
+/* Bağlantı alt çizgisi */
+.link { @apply underline decoration-line-2 underline-offset-[3px] hover:decoration-accent hover:text-brand transition-colors; }
+
+/* ------------------------------------------------------------------
+   Ders içeriği tipografisi (Markdown çıktısı)
+------------------------------------------------------------------- */
+.prose-lesson { @apply text-[1.0625rem] leading-[1.75] text-ink; }
+.prose-lesson > * + * { margin-top: 1.1em; }
+.prose-lesson h2 {
+  @apply font-display font-medium tracking-[-0.02em] text-2xl md:text-[1.75rem] text-ink mt-14 mb-4 pt-6 border-t border-line scroll-mt-28;
+}
+.prose-lesson h2:first-child { @apply mt-0 pt-0 border-0; }
+.prose-lesson h3 { @apply font-sans font-bold text-lg mt-10 mb-2 scroll-mt-28; }
+.prose-lesson h4 { @apply font-sans font-semibold text-base mt-6 mb-1; }
+.prose-lesson p { @apply text-ink-2; }
+.prose-lesson strong { @apply text-ink font-semibold; }
+.prose-lesson a { @apply text-brand underline decoration-line-2 underline-offset-[3px] hover:decoration-accent transition-colors; }
+.prose-lesson ul { @apply list-disc pl-6 space-y-2 text-ink-2 marker:text-line-2; }
+.prose-lesson ol { @apply list-decimal pl-6 space-y-2 text-ink-2 marker:text-ink-3 marker:font-semibold; }
+.prose-lesson li > p { margin: 0; }
+.prose-lesson blockquote:not(.callout) { @apply border-l-2 border-accent pl-5 italic text-ink-2; }
+.prose-lesson code { @apply font-mono text-[0.9em] bg-paper-2 border border-line rounded px-1.5 py-0.5 text-ink; }
+.prose-lesson pre { @apply rounded-xl border border-line bg-white p-4 overflow-x-auto text-sm leading-relaxed shadow-soft; }
+.prose-lesson pre code { @apply bg-transparent border-0 p-0 text-[0.9em]; }
+.prose-lesson hr { @apply border-line my-12; }
+.prose-lesson table { @apply w-full text-sm border-collapse; }
+.prose-lesson th { @apply text-left font-semibold border-b-2 border-line-2 py-2 pr-4; }
+.prose-lesson td { @apply border-b border-line py-2 pr-4 text-ink-2 align-top; }
+.prose-lesson img { @apply rounded-xl border border-line; }
+.prose-lesson details { @apply rounded-xl border border-line bg-white px-5 py-3; }
+.prose-lesson summary { @apply cursor-pointer font-semibold text-ink; }
+.prose-lesson details[open] summary { @apply mb-3 pb-3 border-b border-line; }
+
+/* Uyarı kutuları (remark-callouts) */
+.callout { @apply rounded-xl px-5 py-4 border-l-4 bg-white shadow-soft not-italic; }
+.callout > * + * { margin-top: 0.5em; }
+.callout p { @apply text-ink-2; }
+.callout-title { @apply !mt-0 text-xs font-bold uppercase tracking-[0.12em] flex items-center gap-2 before:content-[''] before:size-2 before:rounded-full before:bg-current; }
+.callout-note { border-color: var(--color-brand-2); } .callout-note .callout-title { color: var(--color-brand-2); }
+.callout-warn { border-color: var(--color-accent); background: #fffaf7; } .callout-warn .callout-title { color: var(--color-accent); }
+.callout-example { border-color: var(--mod-rose); } .callout-example .callout-title { color: var(--mod-rose); }
+.callout-why { border-color: var(--mod-amber); background: #fffcf5; } .callout-why .callout-title { color: var(--mod-amber); }
+.callout-where { border-color: var(--mod-emerald); } .callout-where .callout-title { color: var(--mod-emerald); }
+.callout-def { border-color: var(--mod-violet); } .callout-def .callout-title { color: var(--mod-violet); }
+
+/* Okuma ilerlemesi */
+#reading-progress { transform-origin: left; transform: scaleX(0); }
+
+/* Pagefind arama arayüzü teması */
+.pagefind-ui { --pagefind-ui-scale: 0.9; --pagefind-ui-primary: var(--color-brand); --pagefind-ui-text: var(--color-ink);
+  --pagefind-ui-background: #fff; --pagefind-ui-border: var(--color-line-2); --pagefind-ui-tag: var(--color-paper-2);
+  --pagefind-ui-border-width: 1px; --pagefind-ui-border-radius: 12px; --pagefind-ui-font: var(--font-sans); }
+.pagefind-ui mark { @apply bg-accent-soft text-ink rounded px-0.5; }

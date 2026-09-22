@@ -1,0 +1,20 @@
+{
+  "name": "yapay-zeka-ve-saglik",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Fırat Üniversitesi Tıp Fakültesi – Yapay Zeka ve Sağlık dersi web sitesi",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && pagefind --site dist",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.4.1",
+    "@tailwindcss/vite": "^4.1.11",
+    "astro": "^5.12.0",
+    "pagefind": "^1.3.0",
+    "tailwindcss": "^4.1.11"
+  }
+}

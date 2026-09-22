@@ -1,0 +1,24 @@
+---
+import type { Week } from '@/lib/site';
+import { weekHref, href } from '@/lib/site';
+interface Props { prev?: Week; next?: Week; }
+const { prev, next } = Astro.props;
+---
+<nav aria-label="Hafta gezinme" class="mt-16 grid gap-3 border-t border-line pt-8 sm:grid-cols-2">
+  {prev ? (
+    <a href={weekHref(prev.data.week)} class="group rounded-2xl border border-line bg-white p-5 transition-colors hover:border-line-2 hover:bg-paper-2/50">
+      <span class="text-xs font-semibold uppercase tracking-[0.12em] text-ink-3">← Önceki hafta</span>
+      <span class="mt-1.5 block font-semibold text-ink group-hover:text-brand">Hafta {prev.data.week}: {prev.data.title}</span>
+    </a>
+  ) : (
+    <a href={href('/haftalar')} class="group rounded-2xl border border-dashed border-line p-5 text-ink-3 hover:border-line-2 hover:text-ink">← Tüm haftalar</a>
+  )}
+  {next ? (
+    <a href={weekHref(next.data.week)} class="group rounded-2xl border border-line bg-white p-5 text-right transition-colors hover:border-line-2 hover:bg-paper-2/50">
+      <span class="text-xs font-semibold uppercase tracking-[0.12em] text-ink-3">Sonraki hafta →</span>
+      <span class="mt-1.5 block font-semibold text-ink group-hover:text-brand">Hafta {next.data.week}: {next.data.title}</span>
+    </a>
+  ) : (
+    <a href={href('/ders-akisi')} class="group rounded-2xl border border-dashed border-line p-5 text-right text-ink-3 hover:border-line-2 hover:text-ink">Ders akışına dön →</a>
+  )}
+</nav>

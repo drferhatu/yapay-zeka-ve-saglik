@@ -1,0 +1,103 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Toc from '@/components/Toc.astro';
+import WeekPager from '@/components/WeekPager.astro';
+import ModuleChip from '@/components/ModuleChip.astro';
+import { render } from 'astro:content';
+import { getWeeksSorted, moduleOf, moduleColorVar, scheduleOf, formatDate, STATUS_LABEL, href, weekSlug } from '@/lib/site';
+
+export async function getStaticPaths() {
+  const weeks = await getWeeksSorted();
+  return weeks.map((w, i) => ({
+    params: { slug: weekSlug(w.data.week) },
+    props: { week: w, prev: weeks[i - 1], next: weeks[i + 1] },
+  }));
+}
+const { week, prev, next } = Astro.props;
+const { Content, headings } = await render(week);
+const m = moduleOf(week.data.module);
+const s = scheduleOf(week.data.week);
+const dateLong = formatDate(s?.date, true);
+const statusLabel = s && s.status !== 'normal' ? STATUS_LABEL[s.status] : '';
+const tocExtra = [{ slug: 'ogrenme-hedefleri', text: 'Öğrenme hedefleri' }];
+const pageTitle = `Hafta ${week.data.week} — ${week.data.title}`;
+---
+<BaseLayout title={pageTitle} description={week.data.description} ogType="article">
+  <!-- Hafta başlığı -->
+  <header class="border-b border-line" style={`--mod:${moduleColorVar(m)}`}>
+    <div class="wrap py-12 md:py-16">
+      <nav aria-label="Konum" class="flex flex-wrap items-center gap-2 text-sm text-ink-3">
+        <a href={href('/haftalar')} class="hover:text-ink">Haftalar</a><span aria-hidden="true">/</span>
+        <a href={href(`/ders-akisi#${m.slug}`)} class="hover:text-ink">{m.title}</a>
+      </nav>
+      <div class="mt-6 flex flex-wrap items-center gap-3">
+        <span class="grid h-12 min-w-12 place-items-center rounded-xl px-3 font-display text-2xl font-semibold text-white bg-[var(--mod)]">{week.data.week}</span>
+        <ModuleChip module={m} size="md" />
+        <span class="text-sm text-ink-3">{week.data.semester === 1 ? 'Güz' : 'Bahar'} yarıyılı</span>
+        {dateLong && <span class="text-sm font-medium text-ink-2">· {dateLong}</span>}
+        {week.data.exam && <span class="rounded-full bg-accent-soft px-2.5 py-1 text-xs font-semibold text-accent">Ara değerlendirme</span>}
+        {statusLabel && <span class="rounded-full bg-paper-2 px-2.5 py-1 text-xs font-semibold text-ink-2">{statusLabel}</span>}
+      </div>
+      <h1 class="display mt-5 max-w-4xl text-3xl leading-[1.1] text-ink sm:text-4xl md:text-5xl">{week.data.title}</h1>
+      <p class="mt-4 max-w-2xl text-lg text-ink-2">{week.data.description}</p>
+      <p class="mt-5 text-sm text-ink-3"><span class="font-semibold text-ink-2">Ders planındaki başlık:</span> {week.data.topic}</p>
+    </div>
+  </header>
+
+  <div class="wrap grid gap-12 py-12 lg:grid-cols-[1fr_240px]">
+    <article class="prose-lesson min-w-0 max-w-3xl" data-reading-progress>
+      {(week.data.changeNote || (s?.note && s.status !== 'normal')) && (
+        <aside class="callout callout-warn"><p class="callout-title">Program değişikliği</p><p>{week.data.changeNote || s?.note}</p></aside>
+      )}
+      {week.data.status === 'taslak' && (
+        <aside class="callout callout-note"><p class="callout-title">Hazırlık aşamasında</p><p>Bu haftanın ayrıntılı ders notları henüz yayımlanmadı. Hedefler, temel kavramlar ve etkinlikler ders planına göre hazırdır; notlar ders yaklaştıkça eklenecektir.</p></aside>
+      )}
+
+      <section aria-labelledby="ogrenme-hedefleri">
+        <h2 id="ogrenme-hedefleri" class="!mt-10 !border-0 !pt-0">Öğrenme hedefleri</h2>
+        <p>Bu haftanın sonunda:</p>
+        <ul class="!list-none !pl-0 !space-y-3">
+          {week.data.objectives.map((o, i) => (
+            <li class="flex gap-3 rounded-xl border border-line bg-white p-4">
+              <span class="grid size-7 shrink-0 place-items-center rounded-full text-xs font-bold text-white bg-[var(--mod)]" style={`--mod:${moduleColorVar(m)}`}>{i + 1}</span>
+              <span class="text-ink">{o}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <Content />
+
+      {week.data.tools.length > 0 && (
+        <section>
+          <h2 id="yapay-zeka-araclari">Bu haftanın araçları</h2>
+          <ul class="!list-none !pl-0 flex flex-wrap gap-2">
+            {week.data.tools.map((t) => <li class="rounded-lg border border-line bg-white px-3 py-1.5 text-sm font-medium text-ink">{t}</li>)}
+          </ul>
+        </section>
+      )}
+      {week.data.resources.length > 0 && (
+        <section>
+          <h2 id="ek-kaynaklar">Ek kaynaklar</h2>
+          <ul>{week.data.resources.map((r) => <li><a href={r.url} rel="noopener" target="_blank">{r.title}</a>{r.note && <span class="text-ink-3"> — {r.note}</span>}</li>)}</ul>
+        </section>
+      )}
+      {week.data.tags.length > 0 && (
+        <p class="mt-10 flex flex-wrap gap-1.5 text-xs"><span class="text-ink-3 mr-1">Etiketler:</span>{week.data.tags.map((t) => <span class="rounded-md bg-paper-2 px-2 py-0.5 text-ink-2">{t}</span>)}</p>
+      )}
+      <WeekPager prev={prev} next={next} />
+    </article>
+
+    <aside class="hidden lg:block">
+      <div class="sticky top-24 space-y-8">
+        <Toc headings={headings} extra={tocExtra} />
+        <div class="rounded-xl border border-line bg-white p-4 text-sm">
+          <p class="eyebrow mb-2">Modül</p>
+          <p class="font-semibold text-ink">{m.title}</p>
+          <p class="mt-1 text-xs text-ink-3">Hafta {m.weeks[0]}–{m.weeks.at(-1)}</p>
+          <a href={href(`/ders-akisi#${m.slug}`)} class="mt-3 inline-block text-xs font-semibold text-brand hover:underline">Modüldeki tüm haftalar →</a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</BaseLayout>

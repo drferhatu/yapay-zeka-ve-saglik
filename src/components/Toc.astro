@@ -1,0 +1,35 @@
+---
+import type { MarkdownHeading } from 'astro';
+interface Props { headings: MarkdownHeading[]; extra?: { slug: string; text: string }[]; }
+const { headings, extra = [] } = Astro.props;
+const items = [...extra, ...headings.filter((h) => h.depth === 2).map((h) => ({ slug: h.slug, text: h.text }))];
+---
+{items.length > 0 && (
+  <nav aria-label="Bu sayfada" class="text-sm">
+    <p class="eyebrow mb-3">Bu sayfada</p>
+    <ol class="space-y-1.5 border-l border-line">
+      {items.map((h) => (
+        <li>
+          <a href={`#${h.slug}`} class="toc-link -ml-px block border-l-2 border-transparent pl-3 py-0.5 leading-snug text-ink-3 transition-colors hover:text-ink data-[active]:border-accent data-[active]:text-ink data-[active]:font-medium">{h.text}</a>
+        </li>
+      ))}
+    </ol>
+  </nav>
+)}
+<script>
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('.toc-link'));
+  if (links.length && 'IntersectionObserver' in window) {
+    const map = new Map<string, HTMLAnchorElement>();
+    links.forEach((l) => map.set(decodeURIComponent(l.hash.slice(1)), l));
+    const targets = Array.from(map.keys()).map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          links.forEach((l) => l.removeAttribute('data-active'));
+          map.get(e.target.id)?.setAttribute('data-active', '');
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+    targets.forEach((t) => obs.observe(t));
+  }
+</script>

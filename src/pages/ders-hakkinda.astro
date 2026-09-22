@@ -1,0 +1,94 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import Toc from '@/components/Toc.astro';
+import { course, href, weekHref } from '@/lib/site';
+
+const facts = [
+  ['Üniversite', course.university],
+  ['Fakülte', course.faculty],
+  ['Program', course.program],
+  ['Hedef kitle', course.audience],
+  ['Düzey', course.level],
+  ['Dönem', course.semesters.join(' ve ')],
+  ['Öğretim dili', course.language],
+  ['Saatler (T/U/L)', `${course.credits.theory} / ${course.credits.practice} / ${course.credits.lab}`],
+  ['Yerel kredi', String(course.credits.local)],
+  ['AKTS', String(course.credits.ects)],
+  ['Ön koşul', course.prerequisites],
+];
+const toc = [
+  { slug: 'amac', text: 'Dersin amacı' },
+  { slug: 'kimler-icin', text: 'Kimler için?' },
+  { slug: 'ogrenim-ciktilari', text: 'Öğrenim çıktıları' },
+  { slug: 'yontem', text: 'Öğretim yöntemi' },
+  { slug: 'degerlendirme', text: 'Değerlendirme' },
+  { slug: 'is-yuku', text: 'İş yükü ve AKTS' },
+  { slug: 'kunye', text: 'Ders künyesi' },
+  { slug: 'ogretim-uyesi', text: 'Öğretim üyesi' },
+];
+---
+<BaseLayout title="Ders Hakkında" description="Yapay Zeka ve Sağlık dersinin amacı, öğrenim çıktıları, değerlendirme yöntemi ve künyesi.">
+  <div class="wrap py-14 md:py-20">
+    <SectionHeading eyebrow="Ders Hakkında" title="Kod yazabilen, veriyle düşünebilen hekim" lede={course.justification} />
+  </div>
+
+  <div class="wrap grid gap-12 pb-24 lg:grid-cols-[220px_1fr]">
+    <aside class="hidden lg:block"><div class="sticky top-24"><Toc headings={[]} extra={toc} /></div></aside>
+
+    <article class="prose-lesson max-w-3xl">
+      <h2 id="amac">Dersin amacı</h2>
+      <p>{course.purpose}</p>
+
+      <h2 id="kimler-icin">Kimler için?</h2>
+      <p>Bu ders, programlama deneyimi olmayan tıp öğrencileri için tasarlanmıştır. Sohbet botlarını kullanmış olmanız yeterli; gerisini birlikte öğreneceğiz.</p>
+      <aside class="callout callout-why"><p class="callout-title">Neden önemli?</p><p>Yapay zekâ araçları kliniğe girerken, çıktısını sorgulayabilen ve sınırlarını bilen hekimler hasta güvenliğinin son halkasıdır. Bu ders o halkayı güçlendirir.</p></aside>
+
+      <h2 id="ogrenim-ciktilari">Öğrenim çıktıları</h2>
+      <p>Dersi başarıyla tamamlayan öğrenci:</p>
+      <ol class="!space-y-4">
+        {course.outcomes.map((o) => (
+          <li>
+            <span class="text-ink">{o.text}</span>
+            <span class="mt-1 flex flex-wrap gap-1.5 text-xs">
+              {o.weeks.map((w) => <a href={weekHref(w)} class="!no-underline rounded-md bg-paper-2 px-1.5 py-0.5 font-medium text-ink-2 hover:bg-brand-soft hover:text-brand">H{w}</a>)}
+            </span>
+          </li>
+        ))}
+      </ol>
+
+      <h2 id="yontem">Öğretim yöntemi</h2>
+      <ul>{course.methods.map((m) => <li>{m}</li>)}</ul>
+      <p>Tüm uygulamalar ücretsiz ve açık kaynak araçlarla, tarayıcı üzerinden (Google Colab) yürütülür; kişisel bilgisayara kurulum gerekmez.</p>
+
+      <h2 id="degerlendirme">Değerlendirme</h2>
+      <table>
+        <thead><tr><th>Bileşen</th><th>Ağırlık</th><th>Not</th></tr></thead>
+        <tbody>
+          {course.assessment.components.map((c) => <tr><td class="font-medium text-ink">{c.name}</td><td>%{c.weight}</td><td>{c.note}</td></tr>)}
+        </tbody>
+      </table>
+      <aside class="callout callout-note"><p class="callout-title">Yarıyıl içi etkinlikler</p><p>Ders planında ödevler, kısa sınavlar, bir mini proje ve bir sunum yer alır. Bunlar öğrenmeyi destekleyen etkinliklerdir; nota nasıl yansıyacağı dönem başında duyurulur.</p></aside>
+
+      <h2 id="is-yuku">İş yükü ve AKTS</h2>
+      <table>
+        <thead><tr><th>Etkinlik</th><th>Sayı</th><th>Süre (saat)</th><th>Toplam</th></tr></thead>
+        <tbody>
+          {course.assessment.activities.map((a) => <tr><td>{a.name}</td><td>{a.count}</td><td>{a.hours}</td><td>{a.total}</td></tr>)}
+          <tr><td class="font-semibold text-ink" colspan="3">Toplam iş yükü</td><td class="font-semibold text-ink">{course.assessment.totalWorkload} saat</td></tr>
+        </tbody>
+      </table>
+      <p class="text-sm text-ink-3">{course.assessment.ectsRule} {course.assessment.totalWorkload} / 30 = {course.credits.ects} AKTS.</p>
+
+      <h2 id="kunye">Ders künyesi</h2>
+      <dl class="grid gap-x-8 gap-y-3 sm:grid-cols-2 text-[15px]">
+        {facts.map(([k, v]) => <div class="border-b border-line pb-2"><dt class="text-xs font-semibold uppercase tracking-wider text-ink-3">{k}</dt><dd class="mt-0.5 text-ink">{v}</dd></div>)}
+      </dl>
+
+      <h2 id="ogretim-uyesi">Öğretim üyesi</h2>
+      <p><strong>{course.instructor.name}</strong><br /><a href={`mailto:${course.instructor.email}`}>{course.instructor.email}</a></p>
+      <p class="text-sm text-ink-3">{course.instructor.note}</p>
+      <p><a href={href('/ders-akisi')} class="btn-primary !no-underline !text-paper">Ders akışına geç →</a></p>
+    </article>
+  </div>
+</BaseLayout>

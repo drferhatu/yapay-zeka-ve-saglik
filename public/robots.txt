@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://drferhatu.github.io/yapay-zeka-ve-saglik/sitemap-index.xml

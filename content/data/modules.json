@@ -1,0 +1,18 @@
+[
+  { "id": "m1", "slug": "python-temelleri", "semester": 1, "title": "Başlangıç ve Python Temelleri", "short": "Python Temelleri", "weeks": [1,2,3,4], "color": "teal",
+    "summary": "Sıfırdan başlayarak Python'un temel yapı taşlarını klinik hesaplamalar üzerinden öğrenir; ilk kodunuzu ilk haftada yazarsınız." },
+  { "id": "m2", "slug": "saglik-verisiyle-calisma", "semester": 1, "title": "Sağlık Verisiyle Çalışma", "short": "NumPy ve Pandas", "weeks": [5,6,7], "color": "blue",
+    "summary": "Vital ve laboratuvar verilerini NumPy ile işler; gerçek bir sağlık veri setini Pandas ile yükler, temizler ve özetlersiniz." },
+  { "id": "m3", "slug": "gorsellestirme-ve-istatistik", "semester": 1, "title": "Görselleştirme ve İstatistik", "short": "Görselleştirme & İstatistik", "weeks": [8,9,10,11], "color": "violet",
+    "summary": "Epidemiyolojik grafikler çizer, dağılımları ve korelasyonları okur; p-değeri ve güven aralığını doğru yorumlamayı öğrenirsiniz." },
+  { "id": "m4", "slug": "makine-ogrenmesine-giris", "semester": 1, "title": "Makine Öğrenmesine Giriş", "short": "Makine Öğrenmesi", "weeks": [12,13,14], "color": "amber",
+    "summary": "İlk sınıflandırma modelinizi kurar, duyarlılık/özgüllük ve ROC ile değerlendirir; yarıyılı uçtan uca bir mini projeyle kapatırsınız." },
+  { "id": "m5", "slug": "derin-ogrenme-ve-karar-destek", "semester": 2, "title": "Tıpta Derin Öğrenme ve Karar Destek", "short": "Derin Öğrenme", "weeks": [15,16], "color": "rose",
+    "summary": "Röntgen ve patoloji görüntülerinde derin öğrenmenin sezgisini kavrar; model çıktısını klinik karara çevirmenin risklerini tartışırsınız." },
+  { "id": "m6", "slug": "buyuk-dil-modelleri", "semester": 2, "title": "Büyük Dil Modelleri ve Üretken Yapay Zekâ", "short": "LLM ve Üretken YZ", "weeks": [17,18,19,20,21], "color": "indigo",
+    "summary": "LLM'lerin nasıl çalıştığını, halüsinasyonu ve sınırlarını öğrenir; akademik ve klinik görevler için sistematik istem teknikleri geliştirirsiniz." },
+  { "id": "m7", "slug": "agentic-yz-ve-araclar", "semester": 2, "title": "Agentic Yapay Zekâ ve Araç Ekosistemi", "short": "Agentic YZ", "weeks": [22,23,24], "color": "cyan",
+    "summary": "Ajan tabanlı araçlarla kod ve veri analizi yaptırır, çıktıyı doğrular; hekimlik için faydalı araç ekosistemini tanırsınız." },
+  { "id": "m8", "slug": "etik-mahremiyet-gelecek", "semester": 2, "title": "Etik, Mahremiyet ve Gelecek", "short": "Etik & Gelecek", "weeks": [25,26,27,28], "color": "emerald",
+    "summary": "KVKK, hasta verisi güvenliği, sorumluluk ve regülasyonu ele alır; proje sunumlarıyla yılı tamamlarsınız." }
+]

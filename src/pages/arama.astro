@@ -1,0 +1,34 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import { href } from '@/lib/site';
+const pf = href('/pagefind/');
+---
+<BaseLayout title="Ara" description="Ders içeriğinde arama: kavramlar, haftalar, araçlar.">
+  <Fragment slot="head"><link rel="stylesheet" href={pf + 'pagefind-ui.css'} /></Fragment>
+  <div class="wrap-narrow py-14 md:py-20" data-pagefind-ignore>
+    <SectionHeading eyebrow="Arama" title="Ders içeriğinde ara" lede="Örneğin: CNN, halüsinasyon, etik, LLM, ROC, KVKK, Pandas." />
+    <div id="search" class="mt-8"></div>
+    <p class="mt-6 text-sm text-ink-3">Arama dizini derleme sırasında oluşturulur; yerel geliştirme sunucusunda çalışmaz.</p>
+  </div>
+  <script is:inline define:vars={{ pf }}>
+    (async () => {
+      const s = document.createElement('script');
+      s.src = pf + 'pagefind-ui.js';
+      s.onload = () => {
+        new PagefindUI({
+          element: '#search', showSubResults: true, showImages: false, autofocus: true,
+          translations: {
+            placeholder: 'Ders içeriğinde ara…', clear_search: 'Temizle', load_more: 'Daha fazla sonuç',
+            search_label: 'Ders içeriğinde ara', filters_label: 'Filtreler', zero_results: '“[SEARCH_TERM]” için sonuç bulunamadı',
+            many_results: '“[SEARCH_TERM]” için [COUNT] sonuç', one_result: '“[SEARCH_TERM]” için [COUNT] sonuç',
+            alt_search: '“[SEARCH_TERM]” için sonuç yok. Bunun yerine “[DIFFERENT_TERM]” gösteriliyor',
+            search_suggestion: 'Sonuç yok. Şunları deneyin:', searching: 'Aranıyor…',
+          },
+        });
+      };
+      s.onerror = () => { document.getElementById('search').innerHTML = '<p class="text-ink-2">Arama dizini bulunamadı. Üretim derlemesinde (npm run build) oluşturulur.</p>'; };
+      document.head.appendChild(s);
+    })();
+  </script>
+</BaseLayout>

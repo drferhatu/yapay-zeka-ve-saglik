@@ -1,0 +1,33 @@
+{
+  "_aciklama": "Her haftanın ders tarihi. 'date' alanı boş bırakılırsa sitede yalnızca hafta numarası görünür. 'status' değerleri: normal | tatil | ertelendi | sinav. 'note' alanı haftanın yanında kısa bir uyarı olarak gösterilir. Tarih formatı: YYYY-AA-GG.",
+  "weeks": [
+    { "week": 1,  "date": "", "status": "normal", "note": "" },
+    { "week": 2,  "date": "", "status": "normal", "note": "" },
+    { "week": 3,  "date": "", "status": "normal", "note": "" },
+    { "week": 4,  "date": "", "status": "normal", "note": "" },
+    { "week": 5,  "date": "", "status": "normal", "note": "" },
+    { "week": 6,  "date": "", "status": "normal", "note": "" },
+    { "week": 7,  "date": "", "status": "normal", "note": "" },
+    { "week": 8,  "date": "", "status": "sinav",  "note": "Ara değerlendirme" },
+    { "week": 9,  "date": "", "status": "normal", "note": "" },
+    { "week": 10, "date": "", "status": "normal", "note": "" },
+    { "week": 11, "date": "", "status": "normal", "note": "" },
+    { "week": 12, "date": "", "status": "normal", "note": "" },
+    { "week": 13, "date": "", "status": "normal", "note": "" },
+    { "week": 14, "date": "", "status": "normal", "note": "Güz yarıyılı son ders" },
+    { "week": 15, "date": "", "status": "normal", "note": "Bahar yarıyılı başlangıcı" },
+    { "week": 16, "date": "", "status": "normal", "note": "" },
+    { "week": 17, "date": "", "status": "normal", "note": "" },
+    { "week": 18, "date": "", "status": "normal", "note": "" },
+    { "week": 19, "date": "", "status": "normal", "note": "" },
+    { "week": 20, "date": "", "status": "normal", "note": "" },
+    { "week": 21, "date": "", "status": "normal", "note": "" },
+    { "week": 22, "date": "", "status": "sinav",  "note": "Ara değerlendirme" },
+    { "week": 23, "date": "", "status": "normal", "note": "" },
+    { "week": 24, "date": "", "status": "normal", "note": "" },
+    { "week": 25, "date": "", "status": "normal", "note": "" },
+    { "week": 26, "date": "", "status": "normal", "note": "" },
+    { "week": 27, "date": "", "status": "normal", "note": "" },
+    { "week": 28, "date": "", "status": "normal", "note": "Proje sunumları" }
+  ]
+}

@@ -1,0 +1,12 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { href } from '@/lib/site';
+---
+<BaseLayout title="Sayfa bulunamadı">
+  <div class="wrap-narrow py-32 text-center">
+    <p class="eyebrow">404</p>
+    <h1 class="display mt-3 text-4xl">Bu sayfa bulunamadı</h1>
+    <p class="mt-4 text-ink-2">Aradığınız içerik taşınmış veya adresi değişmiş olabilir.</p>
+    <div class="mt-8 flex justify-center gap-3"><a href={href('/')} class="btn-primary">Ana sayfa</a><a href={href('/haftalar')} class="btn-ghost">Haftalar</a></div>
+  </div>
+</BaseLayout>

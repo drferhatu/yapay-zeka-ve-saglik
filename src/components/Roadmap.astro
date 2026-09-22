@@ -1,0 +1,65 @@
+---
+/**
+ * Yıl boyu ders haritası: iki yarıyıl, 8 modül, 28 hafta.
+ * Modül şeridi + haftalık düğümler; her düğüm hafta sayfasına gider.
+ */
+import { modules, moduleColorVar, weekHref, scheduleOf, formatDate, type Week } from '@/lib/site';
+interface Props { weeks: Week[]; }
+const { weeks } = Astro.props;
+const byNum = new Map(weeks.map((w) => [w.data.week, w]));
+const semesters = [
+  { n: 1, label: 'Güz Yarıyılı', sub: 'Hafta 1–14 · Python, veri ve makine öğrenmesi temelleri' },
+  { n: 2, label: 'Bahar Yarıyılı', sub: 'Hafta 15–28 · Derin öğrenme, LLM, ajanlar, etik' },
+];
+---
+<div class="space-y-16">
+  {semesters.map((sem) => (
+    <section aria-labelledby={`sem-${sem.n}`}>
+      <div class="mb-8 flex flex-wrap items-baseline justify-between gap-2">
+        <div>
+          <p class="eyebrow">{sem.n}. Yarıyıl</p>
+          <h3 id={`sem-${sem.n}`} class="display mt-1 text-2xl md:text-3xl">{sem.label}</h3>
+        </div>
+        <p class="text-sm text-ink-3">{sem.sub}</p>
+      </div>
+
+      <ol class="relative space-y-10 border-l border-line pl-6 sm:pl-10">
+        {modules.filter((m) => m.semester === sem.n).map((m, i) => (
+          <li class="relative" style={`--mod:${moduleColorVar(m)}`}>
+            <span class="absolute -left-[calc(1.5rem+7px)] top-2 size-3.5 rounded-full border-2 border-paper bg-[var(--mod)] ring-4 ring-[color-mix(in_srgb,var(--mod)_18%,transparent)] sm:-left-[calc(2.5rem+7px)]" aria-hidden="true"></span>
+            <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <span class="text-xs font-bold uppercase tracking-[0.12em] text-[var(--mod)]">Modül {modules.indexOf(m) + 1}</span>
+              <span class="text-xs text-ink-3">Hafta {m.weeks[0]}–{m.weeks[m.weeks.length - 1]}</span>
+            </div>
+            <h4 class="mt-1 font-display text-xl font-semibold text-ink md:text-2xl">{m.title}</h4>
+            <p class="mt-1.5 max-w-2xl text-[15px] leading-relaxed text-ink-2">{m.summary}</p>
+
+            <ul class="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+              {m.weeks.map((n) => {
+                const w = byNum.get(n);
+                const s = scheduleOf(n);
+                const d = formatDate(s?.date);
+                const off = s && (s.status === 'tatil' || s.status === 'ertelendi');
+                return (
+                  <li>
+                    <a href={weekHref(n)} class="group flex h-full items-start gap-3 rounded-xl border border-line bg-white p-3 transition-colors hover:border-[var(--mod)] focus-visible:outline-accent">
+                      <span class="grid size-8 shrink-0 place-items-center rounded-lg text-sm font-bold text-white bg-[var(--mod)]">{n}</span>
+                      <span class="min-w-0">
+                        <span class="block text-[13px] font-semibold leading-snug text-ink group-hover:text-brand">{w?.data.title ?? `Hafta ${n}`}</span>
+                        <span class="mt-1 flex flex-wrap gap-x-2 text-[11px] text-ink-3">
+                          {d && <span>{d}</span>}
+                          {w?.data.exam && <span class="text-accent font-semibold">Ara değerlendirme</span>}
+                          {off && <span class="font-semibold">{s!.status === 'tatil' ? 'Tatil' : 'Ertelendi'}</span>}
+                        </span>
+                      </span>
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </li>
+        ))}
+      </ol>
+    </section>
+  ))}
+</div>

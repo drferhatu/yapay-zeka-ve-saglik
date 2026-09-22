@@ -1,0 +1,89 @@
+{
+  "title": "Yapay Zeka ve Sağlık",
+  "titleEn": "Artificial Intelligence and Health",
+  "shortTitle": "YZ ve Sağlık",
+  "university": "Fırat Üniversitesi",
+  "faculty": "Tıp Fakültesi",
+  "program": "Seçmeli Ders Havuzu (Bölüm İçi Seçmeli)",
+  "audience": "Tıp Fakültesi Dönem 1–2",
+  "level": "Lisans",
+  "semesters": ["Güz", "Bahar"],
+  "academicYear": "2026–2027",
+  "language": "Türkçe",
+  "credits": { "theory": 2, "practice": 0, "lab": 0, "local": 2, "ects": 6 },
+  "prerequisites": "Yok",
+  "instructor": {
+    "name": "Doç. Dr. Ferhat Uçar",
+    "email": "fucar@firat.edu.tr",
+    "note": "Öğretim elemanı adı bilgi ve iletişim amaçlıdır; ders görevlendirmesi dönem başında yönetim kurulu kararıyla yapılır."
+  },
+  "methods": [
+    "Yüz yüze ders",
+    "Canlı kodlama (hands-on)",
+    "Bilgisayar laboratuvarı çalışması",
+    "Proje temelli öğrenme",
+    "Örnek olay (vaka) temelli öğrenme"
+  ],
+  "purpose": "Bu dersin amacı, hekim adaylarına programlamayı ve veri biliminin temellerini uygulamalı bir yaklaşımla kazandırmaktır. Öğrenciler ilk haftadan itibaren gerçek sağlık verileri üzerinde Python ile çalışarak veri okuryazarlığı, veri analizi, görselleştirme, temel istatistik ve makine öğrenmesi kavramlarını öğrenir; böylece “kod yazabilen, veriyle düşünebilen hekim” yetkinliğinin temelini edinir.",
+  "justification": "Tıp eğitimi giderek dijitalleşmekte; veri bilimi ve yapay zekâ okuryazarlığı çağdaş hekimlik yetkinliklerinin bir parçası hâline gelmiştir. Bu ders, öğrencilere erken dönemde uygulamalı programlama, veri analizi ve yapay zekâ araçlarının etik ve etkin kullanımı becerisini kazandırarak kanıta dayalı tıp, klinik karar destek ve araştırma yetkinliklerine doğrudan katkı sağlar.",
+  "outcomes": [
+    { "id": "ÖÇ1", "text": "Python ile temel programlama yapar (değişken, döngü, fonksiyon).", "weeks": [1, 2, 3, 4] },
+    { "id": "ÖÇ2", "text": "NumPy ve Pandas ile sağlık verisini yükler, temizler ve analiz eder.", "weeks": [5, 6, 7] },
+    { "id": "ÖÇ3", "text": "Verileri uygun grafiklerle görselleştirir ve yorumlar.", "weeks": [8, 9] },
+    { "id": "ÖÇ4", "text": "Temel betimsel ve çıkarımsal istatistik kavramlarını doğru kullanır, yaygın yanlış yorumlardan kaçınır.", "weeks": [10, 11] },
+    { "id": "ÖÇ5", "text": "Basit bir makine öğrenmesi modeli kurar ve tıbbi açıdan uygun ölçütlerle (duyarlılık/özgüllük, ROC) değerlendirir.", "weeks": [12, 13, 14] },
+    { "id": "ÖÇ6", "text": "Sağlıkta yapay zekâ uygulamalarının (görüntü, karar destek) çalışma mantığını ve sınırlarını açıklar.", "weeks": [15, 16] },
+    { "id": "ÖÇ7", "text": "Büyük dil modellerini ve üretken yapay zekâ araçlarını etkin ve eleştirel biçimde kullanır.", "weeks": [17, 18, 21, 24] },
+    { "id": "ÖÇ8", "text": "Prompt mühendisliği tekniklerini akademik ve klinik görevlere uygular.", "weeks": [19, 20] },
+    { "id": "ÖÇ9", "text": "Ajan tabanlı (agentic) araçlarla bir görevi uçtan uca yürütür ve çıktıyı doğrular.", "weeks": [22, 23] },
+    { "id": "ÖÇ10", "text": "Mahremiyet/KVKK ve tıpta yapay zekâ etiğini gözeterek araçları sorumlu biçimde kullanır.", "weeks": [25, 26, 27, 28] }
+  ],
+  "assessment": {
+    "components": [
+      { "name": "Ara sınav", "weight": 60, "note": "Her yarıyılda ara değerlendirme haftası (8. ve 22. hafta) planlanmıştır." },
+      { "name": "Yarıyıl sonu (final) sınavı", "weight": 40, "note": "Dönem sonu değerlendirmesi." }
+    ],
+    "activities": [
+      { "name": "Ders saati", "count": 28, "hours": 2, "total": 56 },
+      { "name": "Sınıf dışı çalışma", "count": 28, "hours": 2, "total": 56 },
+      { "name": "Ödev", "count": 6, "hours": 3, "total": 18 },
+      { "name": "Proje", "count": 1, "hours": 9, "total": 9 },
+      { "name": "Sunum / seminer hazırlama", "count": 1, "hours": 10, "total": 10 },
+      { "name": "Kısa sınav", "count": 2, "hours": 3, "total": 6 },
+      { "name": "Ara sınav", "count": 1, "hours": 10, "total": 10 },
+      { "name": "Final sınavı", "count": 1, "hours": 15, "total": 15 }
+    ],
+    "totalWorkload": 180,
+    "ectsRule": "30 saatlik çalışma 1 AKTS kredisi sayılır."
+  },
+  "textbooks": [
+    { "author": "Wes McKinney", "title": "Python for Data Analysis", "edition": "3. baskı", "publisher": "O'Reilly", "year": 2022, "url": "https://wesmckinney.com/book/", "note": "Açık erişimli çevrimiçi sürümü mevcuttur." },
+    { "author": "Eric Topol", "title": "Deep Medicine: How Artificial Intelligence Can Make Healthcare Human Again", "publisher": "Basic Books", "year": 2019 }
+  ],
+  "software": [
+    { "name": "Python", "url": "https://www.python.org/", "desc": "Dersin programlama dili." },
+    { "name": "Google Colab", "url": "https://colab.research.google.com/", "desc": "Kurulum gerektirmeyen, tarayıcıda çalışan Jupyter ortamı." },
+    { "name": "Jupyter", "url": "https://jupyter.org/", "desc": "Not defteri tabanlı etkileşimli kodlama ortamı." },
+    { "name": "NumPy", "url": "https://numpy.org/doc/", "desc": "Sayısal hesaplama kütüphanesi." },
+    { "name": "Pandas", "url": "https://pandas.pydata.org/docs/", "desc": "Tablo verisiyle çalışma kütüphanesi." },
+    { "name": "Matplotlib", "url": "https://matplotlib.org/stable/", "desc": "Grafik ve görselleştirme." },
+    { "name": "Seaborn", "url": "https://seaborn.pydata.org/", "desc": "İstatistiksel görselleştirme." },
+    { "name": "scikit-learn", "url": "https://scikit-learn.org/stable/", "desc": "Makine öğrenmesi kütüphanesi." }
+  ],
+  "resources": [
+    { "group": "Açık veri setleri", "items": [
+      { "name": "Kaggle – sağlık veri setleri", "url": "https://www.kaggle.com/datasets?tags=4202-Healthcare", "desc": "Derste kullanılacak açık sağlık veri setleri." },
+      { "name": "UCI Machine Learning Repository", "url": "https://archive.ics.uci.edu/", "desc": "Klasik tıbbi veri setleri (diyabet, kalp hastalığı vb.)." }
+    ]},
+    { "group": "Üretken yapay zekâ dokümantasyonları", "items": [
+      { "name": "OpenAI dokümantasyonu", "url": "https://platform.openai.com/docs", "desc": "Model kullanımı ve istem rehberleri." },
+      { "name": "Anthropic dokümantasyonu", "url": "https://docs.anthropic.com/", "desc": "Claude modelleri ve istem mühendisliği rehberi." },
+      { "name": "Google AI dokümantasyonu", "url": "https://ai.google.dev/docs", "desc": "Gemini modelleri ve araçları." }
+    ]},
+    { "group": "Etik ve regülasyon rehberleri", "items": [
+      { "name": "WHO – Ethics and governance of AI for health", "url": "https://www.who.int/publications/i/item/9789240029200", "desc": "Dünya Sağlık Örgütü sağlıkta YZ etik rehberi (2021)." },
+      { "name": "WHO – LMM'ler için rehber", "url": "https://www.who.int/publications/i/item/9789240084759", "desc": "Büyük çok modlu modellerin sağlıkta kullanımına ilişkin WHO rehberi (2024)." },
+      { "name": "KVKK – Kişisel Verileri Koruma Kurumu", "url": "https://www.kvkk.gov.tr/", "desc": "Türkiye'de kişisel veri mevzuatı ve rehberler." }
+    ]}
+  ]
+}

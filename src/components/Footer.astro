@@ -1,0 +1,38 @@
+---
+import { course, href } from '@/lib/site';
+const year = new Date().getFullYear();
+---
+<footer class="mt-24 border-t border-line bg-paper-2/60">
+  <div class="wrap grid gap-10 py-14 md:grid-cols-[1.4fr_1fr_1fr]">
+    <div>
+      <p class="font-display text-xl font-semibold text-ink">{course.title}</p>
+      <p class="mt-2 max-w-md text-sm leading-relaxed text-ink-2">
+        {course.university} {course.faculty} seçmeli dersi. Kod yazabilen, veriyle düşünebilen hekimler için
+        uygulamalı bir yapay zekâ okuryazarlığı yolculuğu.
+      </p>
+      <p class="mt-4 text-xs text-ink-3">{course.academicYear} · {course.credits.local} yerel kredi · {course.credits.ects} AKTS</p>
+    </div>
+    <nav aria-label="Alt menü" class="text-sm">
+      <p class="eyebrow mb-3">Site</p>
+      <ul class="space-y-2">
+        <li><a class="link" href={href('/ders-hakkinda')}>Ders Hakkında</a></li>
+        <li><a class="link" href={href('/ders-akisi')}>Ders Akışı</a></li>
+        <li><a class="link" href={href('/haftalar')}>Tüm Haftalar</a></li>
+        <li><a class="link" href={href('/kaynaklar')}>Kaynaklar</a></li>
+        <li><a class="link" href={href('/duyurular')}>Duyurular</a></li>
+      </ul>
+    </nav>
+    <div class="text-sm">
+      <p class="eyebrow mb-3">İletişim</p>
+      <p class="font-medium text-ink">{course.instructor.name}</p>
+      <p><a class="link" href={`mailto:${course.instructor.email}`}>{course.instructor.email}</a></p>
+      <p class="mt-3 text-xs leading-relaxed text-ink-3">{course.instructor.note}</p>
+    </div>
+  </div>
+  <div class="border-t border-line">
+    <div class="wrap flex flex-col gap-2 py-5 text-xs text-ink-3 sm:flex-row sm:items-center sm:justify-between">
+      <p>© {year} {course.instructor.name}. Ders materyalleri eğitim amaçlıdır.</p>
+      <p>Bu site statik olarak üretilmiştir; kişisel veri toplamaz.</p>
+    </div>
+  </div>
+</footer>

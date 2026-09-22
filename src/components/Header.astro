@@ -1,0 +1,86 @@
+---
+import { course, href } from '@/lib/site';
+
+const nav = [
+  { label: 'Ders Hakkında', path: '/ders-hakkinda' },
+  { label: 'Ders Akışı', path: '/ders-akisi' },
+  { label: 'Haftalar', path: '/haftalar' },
+  { label: 'Kaynaklar', path: '/kaynaklar' },
+  { label: 'Duyurular', path: '/duyurular' },
+];
+const current = Astro.url.pathname.replace(/\/$/, '');
+const isActive = (p: string) => current === href(p).replace(/\/$/, '') || current.startsWith(href(p) + '/');
+---
+<header class="sticky top-0 z-50 border-b border-line/80 bg-paper/85 backdrop-blur supports-[backdrop-filter]:bg-paper/70">
+  <div id="reading-progress" class="absolute inset-x-0 top-0 h-[2px] bg-accent" aria-hidden="true"></div>
+  <div class="wrap flex h-16 items-center justify-between gap-6">
+    <a href={href('/')} class="group flex items-center gap-3 font-display text-lg font-semibold tracking-tight text-ink">
+      <span class="grid size-9 place-items-center rounded-lg bg-ink text-paper transition-colors group-hover:bg-brand" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 12h3l2-5 3 10 2-6 2 3h4" />
+          <circle cx="19" cy="6" r="1.6" fill="currentColor" stroke="none" />
+        </svg>
+      </span>
+      <span class="hidden sm:inline">{course.title}</span>
+      <span class="sm:hidden">{course.shortTitle}</span>
+    </a>
+
+    <nav aria-label="Ana menü" class="hidden md:flex items-center gap-1">
+      {nav.map((n) => (
+        <a
+          href={href(n.path)}
+          aria-current={isActive(n.path) ? 'page' : undefined}
+          class:list={[
+            'rounded-full px-3.5 py-2 text-sm font-medium transition-colors',
+            isActive(n.path) ? 'bg-ink text-paper' : 'text-ink-2 hover:bg-paper-2 hover:text-ink',
+          ]}
+        >{n.label}</a>
+      ))}
+      <a href={href('/arama')} class="ml-2 grid size-9 place-items-center rounded-full border border-line-2 text-ink-2 hover:border-ink hover:text-ink" aria-label="Ara">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </a>
+    </nav>
+
+    <button id="nav-toggle" class="md:hidden grid size-10 place-items-center rounded-full border border-line-2 text-ink" aria-expanded="false" aria-controls="mobile-nav" aria-label="Menüyü aç">
+      <svg class="icon-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <svg class="icon-close hidden" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+  </div>
+
+  <nav id="mobile-nav" aria-label="Mobil menü" class="hidden md:hidden border-t border-line bg-paper">
+    <div class="wrap flex flex-col py-3">
+      {nav.map((n) => (
+        <a href={href(n.path)} aria-current={isActive(n.path) ? 'page' : undefined}
+           class:list={['rounded-lg px-3 py-3 text-base font-medium', isActive(n.path) ? 'bg-ink text-paper' : 'text-ink hover:bg-paper-2']}>{n.label}</a>
+      ))}
+      <a href={href('/arama')} class="rounded-lg px-3 py-3 text-base font-medium text-ink hover:bg-paper-2">Ara</a>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const btn = document.getElementById('nav-toggle');
+  const menu = document.getElementById('mobile-nav');
+  btn?.addEventListener('click', () => {
+    const open = menu!.classList.toggle('hidden') === false;
+    btn.setAttribute('aria-expanded', String(open));
+    btn.setAttribute('aria-label', open ? 'Menüyü kapat' : 'Menüyü aç');
+    btn.querySelector('.icon-open')?.classList.toggle('hidden', open);
+    btn.querySelector('.icon-close')?.classList.toggle('hidden', !open);
+  });
+
+  // Okuma ilerlemesi: yalnızca data-reading-progress olan sayfalarda
+  const bar = document.getElementById('reading-progress');
+  const article = document.querySelector<HTMLElement>('[data-reading-progress]');
+  if (bar && article) {
+    const update = () => {
+      const rect = article.getBoundingClientRect();
+      const total = rect.height - window.innerHeight;
+      const p = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 1;
+      bar.style.transform = `scaleX(${p})`;
+    };
+    update();
+    addEventListener('scroll', update, { passive: true });
+    addEventListener('resize', update);
+  }
+</script>
