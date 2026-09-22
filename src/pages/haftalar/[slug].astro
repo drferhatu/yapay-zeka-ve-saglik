@@ -67,9 +67,9 @@ const pageTitle = `Hafta ${week.data.week} — ${week.data.title}`;
         </ul>
       </section>
 
-      {week.data.notebook && <NotebookEmbed {...week.data.notebook} />}
+      <Content components={{ NotebookEmbed }} />
 
-      <Content />
+      {week.data.notebook && week.data.notebook.placement === 'auto' && <NotebookEmbed {...week.data.notebook} />}
 
       {week.data.tools.length > 0 && (
         <section>

@@ -1,7 +1,7 @@
 ---
 week: 23
-title: "Agentic Yapay Zekâ II: YZ'ye Kod ve Veri Analizi Yaptırma"
-topic: "Agentic yapay zekâ II: yapay zekâya kod ve veri analizi yaptırma; çıktının doğrulanması ve sorumluluk"
+title: "Agentic Yapay Zeka II: YZ'ye Kod ve Veri Analizi Yaptırma"
+topic: "Agentic yapay zeka II: yapay zekaya kod ve veri analizi yaptırma; çıktının doğrulanması ve sorumluluk"
 description: "YZ ile kod yazdırma ve veri analizi, üretilen kodun okunması ve doğrulanması, sorumluluk."
 module: m7
 semester: 2
@@ -26,7 +26,7 @@ tools:
 
 ## Ders Notları
 
-> [!not] Bu bölüm ders notlarının genişletileceği alandır. Haftanın özgün konu başlığı: **Agentic yapay zekâ II: yapay zekâya kod ve veri analizi yaptırma; çıktının doğrulanması ve sorumluluk**
+> [!not] Bu bölüm ders notlarının genişletileceği alandır. Haftanın özgün konu başlığı: **Agentic yapay zeka II: yapay zekaya kod ve veri analizi yaptırma; çıktının doğrulanması ve sorumluluk**
 
 Ders notları ilerleyen haftalarda buraya eklenecektir.
 

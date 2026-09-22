@@ -1,13 +1,28 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
-import { course } from '@/lib/site';
+import { course, href } from '@/lib/site';
+import { getCollection } from 'astro:content';
+const guides = (await getCollection('guides')).sort((a, b) => a.data.order - b.data.order);
 ---
 <BaseLayout title="Kaynaklar" description="Ders kitapları, yazılım araçları, açık veri setleri ve etik rehberleri.">
   <div class="wrap py-14 md:py-20">
     <SectionHeading eyebrow="Kaynaklar" title="Kitaplar, araçlar, veri ve rehberler" lede="Derste kullanılan tüm araçlar ücretsizdir. Kitapların açık erişimli sürümleri varsa bağlantısı verilmiştir." />
   </div>
   <div class="wrap space-y-20 pb-24">
+    <section aria-labelledby="rehberler">
+      <h2 id="rehberler" class="display text-2xl md:text-3xl mb-2">Kurulum rehberleri</h2>
+      <p class="mb-6 text-ink-2">Colab için kurulum gerekmez. Kendi bilgisayarınızda Python ve yapay zeka araçlarıyla çalışmak isteyenler için adım adım rehberler.</p>
+      <ul class="grid gap-4 md:grid-cols-2">
+        {guides.map((g) => (
+          <li><a href={href(`/rehber/${g.id}`)} class="group block h-full rounded-2xl border border-line bg-white p-6 shadow-soft transition-all hover:-translate-y-0.5 hover:shadow-lift">
+            <p class="font-display text-xl font-semibold text-ink group-hover:text-brand">{g.data.title}</p>
+            <p class="mt-2 text-sm leading-relaxed text-ink-2">{g.data.description}</p>
+            <span class="mt-4 inline-block text-sm font-semibold text-brand">Rehberi aç →</span></a></li>
+        ))}
+      </ul>
+    </section>
+
     <section aria-labelledby="kitaplar">
       <h2 id="kitaplar" class="display text-2xl md:text-3xl mb-6">Ders kitapları</h2>
       <ul class="grid gap-4 md:grid-cols-2">

@@ -32,8 +32,8 @@
     "Proje temelli öğrenme",
     "Örnek olay (vaka) temelli öğrenme"
   ],
-  "purpose": "Bu dersin amacı, hekim adaylarına programlamayı ve veri biliminin temellerini uygulamalı bir yaklaşımla kazandırmaktır. Öğrenciler ilk haftadan itibaren gerçek sağlık verileri üzerinde Python ile çalışarak veri okuryazarlığı, veri analizi, görselleştirme, temel istatistik ve makine öğrenmesi kavramlarını öğrenir; böylece “kod yazabilen, veriyle düşünebilen hekim” yetkinliğinin temelini edinir.",
-  "justification": "Tıp eğitimi giderek dijitalleşmekte; veri bilimi ve yapay zekâ okuryazarlığı çağdaş hekimlik yetkinliklerinin bir parçası hâline gelmiştir. Bu ders, öğrencilere erken dönemde uygulamalı programlama, veri analizi ve yapay zekâ araçlarının etik ve etkin kullanımı becerisini kazandırarak kanıta dayalı tıp, klinik karar destek ve araştırma yetkinliklerine doğrudan katkı sağlar.",
+  "purpose": "Bu dersin amacı, hekim adaylarına programlamayı ve veri biliminin temellerini uygulamalı bir yaklaşımla kazandırmaktır. Öğrenciler ilk haftadan itibaren gerçek sağlık verileri üzerinde Python ile çalışarak veri okuryazarlığı, veri analizi, görselleştirme, temel istatistik ve makine öğrenmesi kavramlarını öğrenir; böylece “kodlayan, veriyle düşünebilen hekim” yetkinliğinin temelini edinir.",
+  "justification": "Tıp eğitimi giderek dijitalleşmekte; veri bilimi ve yapay zeka okuryazarlığı çağdaş hekimlik yetkinliklerinin bir parçası hâline gelmiştir. Bu ders, öğrencilere erken dönemde uygulamalı programlama, veri analizi ve yapay zeka araçlarının etik ve etkin kullanımı becerisini kazandırarak kanıta dayalı tıp, klinik karar destek ve araştırma yetkinliklerine doğrudan katkı sağlar.",
   "outcomes": [
     {
       "id": "ÖÇ1",
@@ -81,7 +81,7 @@
     },
     {
       "id": "ÖÇ6",
-      "text": "Sağlıkta yapay zekâ uygulamalarının (görüntü, karar destek) çalışma mantığını ve sınırlarını açıklar.",
+      "text": "Sağlıkta yapay zeka uygulamalarının (görüntü, karar destek) çalışma mantığını ve sınırlarını açıklar.",
       "weeks": [
         15,
         16
@@ -89,7 +89,7 @@
     },
     {
       "id": "ÖÇ7",
-      "text": "Büyük dil modellerini ve üretken yapay zekâ araçlarını etkin ve eleştirel biçimde kullanır.",
+      "text": "Büyük dil modellerini ve üretken yapay zeka araçlarını etkin ve eleştirel biçimde kullanır.",
       "weeks": [
         17,
         18,
@@ -115,7 +115,7 @@
     },
     {
       "id": "ÖÇ10",
-      "text": "Mahremiyet/KVKK ve tıpta yapay zekâ etiğini gözeterek araçları sorumlu biçimde kullanır.",
+      "text": "Mahremiyet/KVKK ve tıpta yapay zeka etiğini gözeterek araçları sorumlu biçimde kullanır.",
       "weeks": [
         25,
         26,
@@ -266,7 +266,7 @@
       ]
     },
     {
-      "group": "Üretken yapay zekâ dokümantasyonları",
+      "group": "Üretken yapay zeka dokümantasyonları",
       "items": [
         {
           "name": "OpenAI dokümantasyonu",
@@ -306,5 +306,37 @@
       ]
     }
   ],
-  "classTime": "Çarşamba 10.15 – 12.00"
+  "classTime": "Çarşamba 10.15 – 12.00",
+  "tagline": "Kodlayan, veriyle düşünen hekimler için 28 haftalık uygulamalı bir yolculuk.",
+  "codingPhilosophy": "Bu derste kodu çoğu zaman yapay zeka yazacak. Hekimin işi kodu doğru okumak, doğru istemek ve çıktıyı doğrulamak: bir hata mesajını anlamak, bir fonksiyon tanımını tanımak, eksik bir kütüphaneyi fark etmek. “Kodlayan hekim” tam olarak bu.",
+  "channels": [
+    {
+      "id": "whatsapp",
+      "name": "WhatsApp duyuru kanalı",
+      "desc": "Hızlı duyurular ve hatırlatmalar. Herkesin katılması beklenir.",
+      "url": "https://whatsapp.com/channel/0029Va7485X6WaKnrgJdep2i",
+      "cta": "Kanala katıl"
+    },
+    {
+      "id": "instagram",
+      "name": "Instagram · dr.ferhatucar",
+      "desc": "Yapay zeka ve tıp üzerine kısa, faydalı paylaşımlar.",
+      "url": "https://www.instagram.com/dr.ferhatucar",
+      "cta": "Takip et"
+    },
+    {
+      "id": "calendar",
+      "name": "Herkese açık iş takvimi",
+      "desc": "Haftalık programım; ders, toplantı ve müsait saatlerim.",
+      "url": "https://calendar.google.com/calendar/u/0?cid=ZDVmMWU1ZWFiNWM0ZTE2ZGVjMjU2NGI2M2ViYjNmYjI1YjkwOGI4ZjJlNmIyNTRhNzhmZWMwNjNmM2U4NWRjNUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t",
+      "cta": "Takvimi aç"
+    },
+    {
+      "id": "office",
+      "name": "Ofis saati randevusu",
+      "desc": "Soru, proje veya danışma için uygun bir saat seçin.",
+      "url": "https://calendar.app.google/3woNnqLwS7RhtEBR7",
+      "cta": "Randevu al"
+    }
+  ]
 }

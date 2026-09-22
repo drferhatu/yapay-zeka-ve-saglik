@@ -1,7 +1,7 @@
 ---
 week: 27
-title: "Öğrenme Sürecinde Yapay Zekâ: Etik ve Etkin Kullanım, Akademik Dürüstlük"
-topic: "Öğrenme sürecinde yapay zekânın etik ve etkin kullanımı; akademik dürüstlük"
+title: "Öğrenme Sürecinde Yapay Zeka: Etik ve Etkin Kullanım, Akademik Dürüstlük"
+topic: "Öğrenme sürecinde yapay zekanın etik ve etkin kullanımı; akademik dürüstlük"
 description: "YZ ile ders çalışmanın etkili yolları, öğrenmeyi engelleyen kullanım biçimleri ve akademik dürüstlük kuralları."
 module: m8
 semester: 2
@@ -25,7 +25,7 @@ tools:
 
 ## Ders Notları
 
-> [!not] Bu bölüm ders notlarının genişletileceği alandır. Haftanın özgün konu başlığı: **Öğrenme sürecinde yapay zekânın etik ve etkin kullanımı; akademik dürüstlük**
+> [!not] Bu bölüm ders notlarının genişletileceği alandır. Haftanın özgün konu başlığı: **Öğrenme sürecinde yapay zekanın etik ve etkin kullanımı; akademik dürüstlük**
 
 Ders notları ilerleyen haftalarda buraya eklenecektir.
 

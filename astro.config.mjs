@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import mdx from '@astrojs/mdx';
 import tailwindcss from '@tailwindcss/vite';
 import remarkCallouts from './src/lib/remark-callouts.mjs';
 import rehypeBaseLinks from './src/lib/rehype-base-links.mjs';
@@ -14,7 +15,7 @@ export default defineConfig({
   site,
   base,
   trailingSlash: 'ignore',
-  integrations: [sitemap()],
+  integrations: [mdx(), sitemap()],
   markdown: {
     remarkPlugins: [remarkCallouts],
     rehypePlugins: [[rehypeBaseLinks, { base }]],

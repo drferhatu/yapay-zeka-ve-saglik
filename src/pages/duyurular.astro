@@ -3,6 +3,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
 import { getCollection, render } from 'astro:content';
 import { formatDateObj } from '@/lib/site';
+import Channels from '@/components/Channels.astro';
 const list = (await getCollection('announcements')).sort((a, b) =>
   Number(b.data.pinned) - Number(a.data.pinned) || b.data.date.getTime() - a.data.date.getTime());
 const rendered = await Promise.all(list.map(async (a) => ({ a, C: (await render(a)).Content })));
@@ -12,7 +13,9 @@ const KIND = { bilgi: ['Bilgi', 'bg-brand-soft text-brand'], onemli: ['Önemli',
   <div class="wrap py-14 md:py-20">
     <SectionHeading eyebrow="Duyurular" title="Güncel bilgiler" lede="Program değişiklikleri, sınav tarihleri ve hatırlatmalar burada yayımlanır." />
   </div>
+  <div class="wrap pb-16"><Channels title="Duyuruları kaçırmayın" /></div>
   <div class="wrap-narrow pb-24">
+    <h2 class="display mb-6 text-2xl">Duyurular</h2>
     {rendered.length === 0 && <p class="text-ink-2">Henüz duyuru yok.</p>}
     <ol class="space-y-6">
       {rendered.map(({ a, C }) => (

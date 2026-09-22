@@ -22,10 +22,11 @@ content/
   data/course.json        ders künyesi, amaç, öğrenim çıktıları, değerlendirme, kaynaklar
   data/modules.json       8 modül (başlık, haftalar, renk, özet)
   data/schedule.json      haftalık tarihler ve durumlar (tatil/ertelendi/sınav)
-  weeks/hafta-01.md …     28 haftalık ders dosyası (her hafta tek dosya)
+  weeks/hafta-01.mdx …    28 haftalık ders dosyası (her hafta tek dosya; .md veya .mdx)
+  guides/*.md             kurulum rehberleri (/rehber/<ad>)
   announcements/*.md      duyurular
 src/
-  pages/                  rotalar (index, ders-hakkinda, ders-akisi, haftalar/, kaynaklar, duyurular, arama)
+  pages/                  rotalar (index, ders-hakkinda, ders-akisi, haftalar/, rehber/, kaynaklar, duyurular, arama)
   components/             yeniden kullanılabilir parçalar (Roadmap, WeekCard, Toc, WeekPager …)
   layouts/BaseLayout.astro
   lib/site.ts             yardımcılar (href, modül/takvim erişimi, tarih biçimi)
@@ -37,7 +38,7 @@ scripts/
   generate_week_files.py  28 haftalık Markdown iskeletini üretir (mevcut dosyaları ezmez)
   validate_content.py     içerik + derleme doğrulaması (haftalar, takvim, defter, kırık bağlantı)
   build_notebooks.py      defter tanımlarından .ipynb üretir, çalıştırır ve HTML'e çevirir
-public/                   favicon, og.png, robots.txt, .nojekyll
+public/                   favicon, og.png, robots.txt, .nojekyll, qr/ (iletişim kanalları karekodları)
 .github/workflows/deploy.yml  GitHub Pages dağıtımı
 ```
 
@@ -106,6 +107,18 @@ Türler: `not`, `uyari`, `ornek`, `neden`, `nerede`, `tanim`. Başlık verilmezs
 
 Başka bir haftaya bağlantı vermek için kök yol yazın; base otomatik eklenir: `[13. hafta](/haftalar/hafta-13)`.
 
+**Defteri notların arasına yerleştirmek** için dosyayı `.mdx` yapın, frontmatter'a `placement: inline` ekleyin ve gövdede istediğiniz yere koyun (bkz. `hafta-01.mdx`):
+
+```mdx
+import NotebookEmbed from '@/components/NotebookEmbed.astro';
+
+... notlar ...
+
+<NotebookEmbed file="notebooks/hafta-01.ipynb" title="Hafta 1 · İlk Kod" />
+```
+
+`placement: auto` (varsayılan) ise defter, notların bittiği yere sayfa tarafından eklenir.
+
 ### Haftaların tarihini değiştirmek, tatil veya erteleme işlemek
 
 `content/data/schedule.json` içindeki ilgili satırı düzenleyin:
@@ -159,6 +172,18 @@ Ara sınav 12 Kasım Perşembe 10.00'da ...
 ### Ders künyesi, öğrenim çıktıları, kaynaklar
 
 `content/data/course.json` içinde. Öğrenim çıktılarının `weeks` alanı, Ders Hakkında sayfasındaki hafta bağlantılarını üretir.
+
+### İletişim kanalları ve karekodlar
+
+Kanallar `course.json → channels` dizisinde. Bağlantı değişirse karekodu yeniden üretin:
+
+```bash
+/opt/miniconda3/envs/ferhat_ml/bin/python scripts/make_qr.py
+```
+
+### Kurulum rehberi eklemek
+
+`content/guides/<ad>.md` dosyası oluşturun (`title`, `description`, `order`). Sayfa `/rehber/<ad>` adresinde açılır ve Kaynaklar sayfasında listelenir.
 
 ### Modül eklemek/değiştirmek
 

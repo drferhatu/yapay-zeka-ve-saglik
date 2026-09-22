@@ -46,7 +46,7 @@ def check_weeks():
     modules = json.loads((DATA / "modules.json").read_text(encoding="utf-8"))
     mod_by_id = {m["id"]: m for m in modules}
     seen = {}
-    for p in sorted(WEEKS_DIR.glob("*.md")):
+    for p in sorted(list(WEEKS_DIR.glob("*.md")) + list(WEEKS_DIR.glob("*.mdx"))):
         fm = frontmatter(p)
         try:
             n = int(fm.get("week", -1))
@@ -82,7 +82,7 @@ def check_weeks():
 
 def check_notebooks():
     n = 0
-    for p in sorted(WEEKS_DIR.glob("*.md")):
+    for p in sorted(list(WEEKS_DIR.glob("*.md")) + list(WEEKS_DIR.glob("*.mdx"))):
         text = p.read_text(encoding="utf-8")
         m = re.search(r"^notebook:\n(?:  .*\n)*?  file:\s*(\S+)", text, re.M)
         if not m:

@@ -13,7 +13,7 @@ tags:
   - "büyük dil modeli"
   - "halüsinasyon"
   - "ChatGPT"
-  - "üretken yapay zekâ"
+  - "üretken yapay zeka"
 objectives:
   - "LLM'nin bir sonraki kelimeyi tahmin eden olasılıksal bir model olduğunu açıklar."
   - "Halüsinasyonun neden kaçınılmaz bir özellik olduğunu kavrar."

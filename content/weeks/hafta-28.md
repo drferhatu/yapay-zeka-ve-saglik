@@ -2,7 +2,7 @@
 week: 28
 title: "Proje Sunumları ve Geleceğe Bakış"
 topic: "Proje sunumları, geleceğe bakış (hekimlikte YZ kariyer/araştırma yolları) ve genel değerlendirme"
-description: "Öğrenci proje sunumları, hekimlikte yapay zekâ kariyer ve araştırma yolları, yıl sonu değerlendirmesi."
+description: "Öğrenci proje sunumları, hekimlikte yapay zeka kariyer ve araştırma yolları, yıl sonu değerlendirmesi."
 module: m8
 semester: 2
 exam: false

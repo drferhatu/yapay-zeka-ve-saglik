@@ -1,7 +1,7 @@
 ---
 week: 22
-title: "Ara Değerlendirme ve Agentic Yapay Zekâ I: Ajan Kavramı"
-topic: "Ara değerlendirme; agentic (ajan tabanlı) yapay zekâ I: ajan kavramı ve araç kullanımı"
+title: "Ara Değerlendirme ve Agentic Yapay Zeka I: Ajan Kavramı"
+topic: "Ara değerlendirme; agentic (ajan tabanlı) yapay zeka I: ajan kavramı ve araç kullanımı"
 description: "Bahar ara değerlendirmesi; ajan (agent) kavramı, araç kullanımı ve çok adımlı görevler."
 module: m7
 semester: 2
@@ -29,7 +29,7 @@ Ara değerlendirme 15–21. haftaların içeriğini kapsar.
 
 ## Ders Notları
 
-> [!not] Bu bölüm ders notlarının genişletileceği alandır. Haftanın özgün konu başlığı: **Ara değerlendirme; agentic (ajan tabanlı) yapay zekâ I: ajan kavramı ve araç kullanımı**
+> [!not] Bu bölüm ders notlarının genişletileceği alandır. Haftanın özgün konu başlığı: **Ara değerlendirme; agentic (ajan tabanlı) yapay zeka I: ajan kavramı ve araç kullanımı**
 
 Ders notları ilerleyen haftalarda buraya eklenecektir.
 

@@ -1,7 +1,7 @@
 ---
 week: 24
-title: "Yapay Zekâ Araçları Ekosistemi: Hekimlik İçin Faydalı Araçlar"
-topic: "Yapay zekâ araçları ekosistemi: transkripsiyon, görsel/ses, NotebookLM ve hekimlik için faydalı araçlar"
+title: "Yapay Zeka Araçları Ekosistemi: Hekimlik İçin Faydalı Araçlar"
+topic: "Yapay zeka araçları ekosistemi: transkripsiyon, görsel/ses, NotebookLM ve hekimlik için faydalı araçlar"
 description: "Transkripsiyon, görsel ve ses üretimi, NotebookLM gibi araçlar ve hekimlik pratiğine uygun kullanım alanları."
 module: m7
 semester: 2
@@ -26,7 +26,7 @@ tools:
 
 ## Ders Notları
 
-> [!not] Bu bölüm ders notlarının genişletileceği alandır. Haftanın özgün konu başlığı: **Yapay zekâ araçları ekosistemi: transkripsiyon, görsel/ses, NotebookLM ve hekimlik için faydalı araçlar**
+> [!not] Bu bölüm ders notlarının genişletileceği alandır. Haftanın özgün konu başlığı: **Yapay zeka araçları ekosistemi: transkripsiyon, görsel/ses, NotebookLM ve hekimlik için faydalı araçlar**
 
 Ders notları ilerleyen haftalarda buraya eklenecektir.
 

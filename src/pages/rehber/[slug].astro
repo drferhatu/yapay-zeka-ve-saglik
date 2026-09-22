@@ -1,0 +1,27 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Toc from '@/components/Toc.astro';
+import { getCollection, render } from 'astro:content';
+import { href } from '@/lib/site';
+
+export async function getStaticPaths() {
+  const guides = await getCollection('guides');
+  return guides.map((g) => ({ params: { slug: g.id }, props: { guide: g } }));
+}
+const { guide } = Astro.props;
+const { Content, headings } = await render(guide);
+---
+<BaseLayout title={guide.data.title} description={guide.data.description} ogType="article">
+  <header class="border-b border-line">
+    <div class="wrap py-12 md:py-16">
+      <nav aria-label="Konum" class="text-sm text-ink-3"><a href={href('/kaynaklar')} class="hover:text-ink">Kaynaklar</a> <span aria-hidden="true">/</span> Rehber</nav>
+      <p class="eyebrow mt-6">Rehber</p>
+      <h1 class="display mt-2 max-w-3xl text-3xl sm:text-4xl md:text-5xl">{guide.data.title}</h1>
+      <p class="mt-4 max-w-2xl text-lg text-ink-2">{guide.data.description}</p>
+    </div>
+  </header>
+  <div class="wrap grid gap-12 py-12 lg:grid-cols-[1fr_240px]">
+    <article class="prose-lesson min-w-0 max-w-3xl" data-reading-progress><Content /></article>
+    <aside class="hidden lg:block"><div class="sticky top-24"><Toc headings={headings} /></div></aside>
+  </div>
+</BaseLayout>

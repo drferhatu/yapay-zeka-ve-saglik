@@ -25,14 +25,14 @@ def module_of(week):
 # Haftalık içerik (DOCX'teki ders akışı esas alınmıştır; "topic" alanı özgün metindir)
 # ---------------------------------------------------------------------------
 WEEKS = [
- dict(n=1, title="Yapay Zekâ Tıbbı Nasıl Dönüştürüyor? İlk Kod",
-  topic="Yapay zekânın tıbbı dönüştürmesi ve çalışma ortamının kurulumu (Google Colab/Jupyter); ilk kod",
-  desc="Yapay zekânın tıptaki yerine genel bakış, Google Colab ortamının kurulumu ve ilk Python kodunuz.",
-  tags=["yapay zekâ", "colab", "jupyter", "python", "giriş"],
-  objectives=["Yapay zekânın tıpta kullanıldığı başlıca alanları (görüntüleme, karar destek, üretken YZ) sıralar.",
+ dict(n=1, title="Yapay Zeka Tıbbı Nasıl Dönüştürüyor? İlk Kod",
+  topic="Yapay zekanın tıbbı dönüştürmesi ve çalışma ortamının kurulumu (Google Colab/Jupyter); ilk kod",
+  desc="Yapay zekanın tıptaki yerine genel bakış, Google Colab ortamının kurulumu ve ilk Python kodunuz.",
+  tags=["yapay zeka", "colab", "jupyter", "python", "giriş"],
+  objectives=["Yapay zekanın tıpta kullanıldığı başlıca alanları (görüntüleme, karar destek, üretken YZ) sıralar.",
               "Google Colab / Jupyter ortamını açar, bir not defteri oluşturur ve hücre çalıştırır.",
               "İlk Python komutlarını (print, basit aritmetik) yazar ve çıktısını yorumlar."],
-  concepts=[("Yapay zekâ (YZ)", "Normalde insan zekâsı gerektiren görevleri yerine getiren bilgisayar sistemleri; tıpta çoğunlukla veriden öğrenen modeller biçiminde karşımıza çıkar."),
+  concepts=[("Yapay zeka (YZ)", "Normalde insan zekası gerektiren görevleri yerine getiren bilgisayar sistemleri; tıpta çoğunlukla veriden öğrenen modeller biçiminde karşımıza çıkar."),
             ("Not defteri (notebook)", "Kod, çıktı ve açıklama metnini aynı belgede tutan etkileşimli çalışma ortamı."),
             ("Hücre", "Not defterinde tek başına çalıştırılabilen kod veya metin bloğu.")],
   examples=["Göğüs röntgeninde pnömoni bulgularını işaretleyen bir model radyoloğun iş yükünü nasıl değiştirir?",
@@ -41,7 +41,7 @@ WEEKS = [
   activity="Colab'de yeni bir not defteri açın; adınızı ve dersin adını yazdıran bir `print` komutu çalıştırın. Ardından iki vital bulguyu (nabız, sistolik basınç) değişkene atayıp toplamını yazdırın.",
   questions=["Hangi klinik kararlarda bir yazılımın öneri vermesini kabul edilebilir bulursunuz, hangilerinde bulmazsınız?",
              "“Kod yazabilen hekim” sizce ne anlama geliyor?"],
-  summary="Bu hafta yapay zekânın tıptaki güncel rolünü tanıdık ve dersin çalışma ortamı olan Colab'de ilk kodumuzu yazdık.",
+  summary="Bu hafta yapay zekanın tıptaki güncel rolünü tanıdık ve dersin çalışma ortamı olan Colab'de ilk kodumuzu yazdık.",
   before="Bir Google hesabınızın olduğundan emin olun; colab.research.google.com adresini tarayıcınızda açın."),
 
  dict(n=2, title="Python Temelleri I: Değişkenler ve Klinik Hesaplamalar",
@@ -310,7 +310,7 @@ WEEKS = [
  dict(n=17, title="Büyük Dil Modelleri (LLM): Nasıl Çalışır, Neden Halüsinasyon Görür?",
   topic="Büyük dil modelleri (LLM) nedir, nasıl çalışır; tıpta olanaklar, sınırlar ve halüsinasyon",
   desc="LLM'lerin çalışma ilkesi, token ve olasılıksal üretim, tıptaki olanaklar, sınırlar ve halüsinasyon.",
-  tags=["LLM", "büyük dil modeli", "halüsinasyon", "ChatGPT", "üretken yapay zekâ"],
+  tags=["LLM", "büyük dil modeli", "halüsinasyon", "ChatGPT", "üretken yapay zeka"],
   objectives=["LLM'nin bir sonraki kelimeyi tahmin eden olasılıksal bir model olduğunu açıklar.",
               "Halüsinasyonun neden kaçınılmaz bir özellik olduğunu kavrar.",
               "Tıpta LLM'lerin uygun ve uygunsuz kullanım alanlarını ayırt eder."],
@@ -325,14 +325,14 @@ WEEKS = [
   questions=["LLM'nin “emin” bir tonla yanlış bilgi vermesi hekim için neden özellikle tehlikelidir?"],
   summary="Sohbet botlarının arkasındaki mekanizmayı anladık ve çıktılarına neden şüpheyle yaklaşmamız gerektiğini gördük."),
 
- dict(n=18, title="Üretken Yapay Zekâ Okuryazarlığı: Araçların Etkin ve Eleştirel Kullanımı",
-  topic="Üretken yapay zekâ okuryazarlığı: araçların (ChatGPT, Claude vb.) etkin ve eleştirel kullanımı",
+ dict(n=18, title="Üretken Yapay Zeka Okuryazarlığı: Araçların Etkin ve Eleştirel Kullanımı",
+  topic="Üretken yapay zeka okuryazarlığı: araçların (ChatGPT, Claude vb.) etkin ve eleştirel kullanımı",
   desc="Popüler üretken YZ araçlarının karşılaştırılması, güçlü ve zayıf yönleri, eleştirel kullanım ilkeleri.",
-  tags=["üretken yapay zekâ", "ChatGPT", "Claude", "Gemini", "okuryazarlık"],
+  tags=["üretken yapay zeka", "ChatGPT", "Claude", "Gemini", "okuryazarlık"],
   objectives=["Başlıca üretken YZ araçlarını özellikleri ile karşılaştırır.",
               "Bir çıktının doğruluğunu kontrol etme alışkanlığı geliştirir.",
               "Araçların hangi görevlerde güvenilir yardımcı olduğunu belirler."],
-  concepts=[("Üretken yapay zekâ", "Metin, görsel, ses gibi yeni içerik üreten YZ sistemleri."),
+  concepts=[("Üretken yapay zeka", "Metin, görsel, ses gibi yeni içerik üreten YZ sistemleri."),
             ("Bağlam penceresi", "Modelin aynı anda dikkate alabildiği metin miktarı."),
             ("Web araması / kaynaklı yanıt", "Modelin güncel kaynaklara erişerek yanıt üretmesi."),
             ("Doğrulama refleksi", "Her önemli bilgiyi bağımsız kaynakla teyit etme alışkanlığı.")],
@@ -378,8 +378,8 @@ WEEKS = [
   questions=["Bir YZ özetine güvenmek için hangi kontrol adımlarını asgari kabul edersiniz?"],
   summary="Model çıktısını işlenebilir yapıya sokmayı ve sistematik olarak doğrulamayı öğrendik."),
 
- dict(n=21, title="Yapay Zekâ ile Literatür Taraması ve Kanıta Dayalı Tıp",
-  topic="Yapay zekâ ile literatür taraması ve kanıta dayalı tıp; uydurma referans (halüsinasyon) tuzakları",
+ dict(n=21, title="Yapay Zeka ile Literatür Taraması ve Kanıta Dayalı Tıp",
+  topic="Yapay zeka ile literatür taraması ve kanıta dayalı tıp; uydurma referans (halüsinasyon) tuzakları",
   desc="YZ destekli literatür araçları, kanıta dayalı tıp piramidi, uydurma referans tuzağı ve doğrulama yolları.",
   tags=["literatür", "kanıta dayalı tıp", "referans", "halüsinasyon", "PubMed"],
   objectives=["YZ destekli literatür araçlarını (kaynaklı arama, özetleme) tanır.",
@@ -396,8 +396,8 @@ WEEKS = [
   questions=["YZ araçları sistematik derlemede hangi adımları hızlandırır, hangilerinde risk yaratır?"],
   summary="YZ'yi literatürde bir hızlandırıcı olarak kullanmayı, ancak her kaynağı doğrulamayı öğrendik."),
 
- dict(n=22, title="Ara Değerlendirme ve Agentic Yapay Zekâ I: Ajan Kavramı",
-  topic="Ara değerlendirme; agentic (ajan tabanlı) yapay zekâ I: ajan kavramı ve araç kullanımı",
+ dict(n=22, title="Ara Değerlendirme ve Agentic Yapay Zeka I: Ajan Kavramı",
+  topic="Ara değerlendirme; agentic (ajan tabanlı) yapay zeka I: ajan kavramı ve araç kullanımı",
   desc="Bahar ara değerlendirmesi; ajan (agent) kavramı, araç kullanımı ve çok adımlı görevler.",
   tags=["agentic", "ajan", "araç kullanımı", "ara sınav"],
   exam=True,
@@ -415,8 +415,8 @@ WEEKS = [
   summary="Bahar ara değerlendirmesini yaptık ve kendi başına adım atabilen YZ sistemlerini tanımaya başladık.",
   before="Ara değerlendirme 15–21. haftaların içeriğini kapsar."),
 
- dict(n=23, title="Agentic Yapay Zekâ II: YZ'ye Kod ve Veri Analizi Yaptırma",
-  topic="Agentic yapay zekâ II: yapay zekâya kod ve veri analizi yaptırma; çıktının doğrulanması ve sorumluluk",
+ dict(n=23, title="Agentic Yapay Zeka II: YZ'ye Kod ve Veri Analizi Yaptırma",
+  topic="Agentic yapay zeka II: yapay zekaya kod ve veri analizi yaptırma; çıktının doğrulanması ve sorumluluk",
   desc="YZ ile kod yazdırma ve veri analizi, üretilen kodun okunması ve doğrulanması, sorumluluk.",
   tags=["agentic", "kod üretimi", "veri analizi", "doğrulama", "sorumluluk"],
   objectives=["Bir analiz görevini YZ ajanına tanımlar ve üretilen kodu okur.",
@@ -432,8 +432,8 @@ WEEKS = [
   questions=["Kendiniz yazamayacağınız bir kodu YZ'den alıp kullanmak etik midir? Hangi koşullarda?"],
   summary="YZ'ye analiz yaptırmanın gücünü ve bunun beraberinde getirdiği doğrulama sorumluluğunu deneyimledik."),
 
- dict(n=24, title="Yapay Zekâ Araçları Ekosistemi: Hekimlik İçin Faydalı Araçlar",
-  topic="Yapay zekâ araçları ekosistemi: transkripsiyon, görsel/ses, NotebookLM ve hekimlik için faydalı araçlar",
+ dict(n=24, title="Yapay Zeka Araçları Ekosistemi: Hekimlik İçin Faydalı Araçlar",
+  topic="Yapay zeka araçları ekosistemi: transkripsiyon, görsel/ses, NotebookLM ve hekimlik için faydalı araçlar",
   desc="Transkripsiyon, görsel ve ses üretimi, NotebookLM gibi araçlar ve hekimlik pratiğine uygun kullanım alanları.",
   tags=["araçlar", "transkripsiyon", "NotebookLM", "ses", "görsel"],
   objectives=["Konuşmayı metne çeviren araçları ve klinik not alma senaryolarını değerlendirir.",
@@ -450,7 +450,7 @@ WEEKS = [
   summary="Sohbet botlarının ötesindeki YZ araçlarını ve bunların hekimlikteki yerini gördük."),
 
  dict(n=25, title="Sağlık Verisinde Mahremiyet, KVKK ve Veri Güvenliği",
-  topic="Sağlık verisinde mahremiyet, KVKK ve veri güvenliği; hasta verisinin yapay zekâ araçlarıyla kullanımı",
+  topic="Sağlık verisinde mahremiyet, KVKK ve veri güvenliği; hasta verisinin yapay zeka araçlarıyla kullanımı",
   desc="Kişisel sağlık verisi kavramı, KVKK ilkeleri, anonimleştirme ve hasta verisinin YZ araçlarında kullanım kuralları.",
   tags=["KVKK", "mahremiyet", "veri güvenliği", "anonimleştirme", "hasta verisi"],
   objectives=["Sağlık verisinin “özel nitelikli kişisel veri” statüsünü ve sonuçlarını açıklar.",
@@ -467,8 +467,8 @@ WEEKS = [
   questions=["Tamamen anonim veri mümkün müdür? Birkaç bilginin birleşmesi kimliği nasıl ortaya çıkarır?"],
   summary="Hasta verisini korumanın hukuki ve teknik temellerini ve YZ araçlarıyla güvenli çalışma kurallarını öğrendik."),
 
- dict(n=26, title="Tıpta Yapay Zekâ Etiği ve Regülasyon",
-  topic="Tıpta yapay zekâ etiği ve regülasyon: sorumluluk, aydınlatılmış onam, şeffaflık, FDA/CE ve insan denetimi",
+ dict(n=26, title="Tıpta Yapay Zeka Etiği ve Regülasyon",
+  topic="Tıpta yapay zeka etiği ve regülasyon: sorumluluk, aydınlatılmış onam, şeffaflık, FDA/CE ve insan denetimi",
   desc="Etik ilkeler, sorumluluk, aydınlatılmış onam, şeffaflık ve açıklanabilirlik; FDA/CE onayı ve insan denetimi.",
   tags=["etik", "regülasyon", "FDA", "CE", "aydınlatılmış onam", "şeffaflık"],
   objectives=["Tıpta YZ için temel etik ilkeleri (yarar, zarar vermeme, adalet, özerklik) YZ bağlamında uygular.",
@@ -485,8 +485,8 @@ WEEKS = [
   questions=["Hastaya “bu öneriyi bir algoritma üretti” demek zorunlu olmalı mı?"],
   summary="YZ'nin klinikte güvenilir biçimde kullanımı için gereken etik ve düzenleyici çerçeveyi inceledik."),
 
- dict(n=27, title="Öğrenme Sürecinde Yapay Zekâ: Etik ve Etkin Kullanım, Akademik Dürüstlük",
-  topic="Öğrenme sürecinde yapay zekânın etik ve etkin kullanımı; akademik dürüstlük",
+ dict(n=27, title="Öğrenme Sürecinde Yapay Zeka: Etik ve Etkin Kullanım, Akademik Dürüstlük",
+  topic="Öğrenme sürecinde yapay zekanın etik ve etkin kullanımı; akademik dürüstlük",
   desc="YZ ile ders çalışmanın etkili yolları, öğrenmeyi engelleyen kullanım biçimleri ve akademik dürüstlük kuralları.",
   tags=["akademik dürüstlük", "öğrenme", "çalışma yöntemi", "intihal"],
   objectives=["YZ'nin öğrenmeyi derinleştiren ve sığlaştıran kullanımlarını ayırt eder.",
@@ -504,7 +504,7 @@ WEEKS = [
 
  dict(n=28, title="Proje Sunumları ve Geleceğe Bakış",
   topic="Proje sunumları, geleceğe bakış (hekimlikte YZ kariyer/araştırma yolları) ve genel değerlendirme",
-  desc="Öğrenci proje sunumları, hekimlikte yapay zekâ kariyer ve araştırma yolları, yıl sonu değerlendirmesi.",
+  desc="Öğrenci proje sunumları, hekimlikte yapay zeka kariyer ve araştırma yolları, yıl sonu değerlendirmesi.",
   tags=["proje", "sunum", "kariyer", "araştırma", "gelecek"],
   objectives=["Yıl boyunca geliştirilen projeyi açık ve eleştirel biçimde sunar.",
               "Hekimlikte YZ ile ilgili kariyer ve araştırma yollarını tanır.",
@@ -572,7 +572,7 @@ def main():
     written = skipped = 0
     for w in WEEKS:
         path = OUT / f"hafta-{w['n']:02d}.md"
-        if path.exists() and not force:
+        if (path.exists() or path.with_suffix(".mdx").exists()) and not force:
             skipped += 1
             continue
         path.write_text(render(w), encoding="utf-8")

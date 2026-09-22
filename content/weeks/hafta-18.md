@@ -1,7 +1,7 @@
 ---
 week: 18
-title: "Üretken Yapay Zekâ Okuryazarlığı: Araçların Etkin ve Eleştirel Kullanımı"
-topic: "Üretken yapay zekâ okuryazarlığı: araçların (ChatGPT, Claude vb.) etkin ve eleştirel kullanımı"
+title: "Üretken Yapay Zeka Okuryazarlığı: Araçların Etkin ve Eleştirel Kullanımı"
+topic: "Üretken yapay zeka okuryazarlığı: araçların (ChatGPT, Claude vb.) etkin ve eleştirel kullanımı"
 description: "Popüler üretken YZ araçlarının karşılaştırılması, güçlü ve zayıf yönleri, eleştirel kullanım ilkeleri."
 module: m6
 semester: 2
@@ -9,7 +9,7 @@ exam: false
 status: taslak
 changeNote: ""
 tags:
-  - "üretken yapay zekâ"
+  - "üretken yapay zeka"
   - "ChatGPT"
   - "Claude"
   - "Gemini"
@@ -27,13 +27,13 @@ tools:
 
 ## Ders Notları
 
-> [!not] Bu bölüm ders notlarının genişletileceği alandır. Haftanın özgün konu başlığı: **Üretken yapay zekâ okuryazarlığı: araçların (ChatGPT, Claude vb.) etkin ve eleştirel kullanımı**
+> [!not] Bu bölüm ders notlarının genişletileceği alandır. Haftanın özgün konu başlığı: **Üretken yapay zeka okuryazarlığı: araçların (ChatGPT, Claude vb.) etkin ve eleştirel kullanımı**
 
 Ders notları ilerleyen haftalarda buraya eklenecektir.
 
 ## Temel Kavramlar
 
-- **Üretken yapay zekâ** — Metin, görsel, ses gibi yeni içerik üreten YZ sistemleri.
+- **Üretken yapay zeka** — Metin, görsel, ses gibi yeni içerik üreten YZ sistemleri.
 - **Bağlam penceresi** — Modelin aynı anda dikkate alabildiği metin miktarı.
 - **Web araması / kaynaklı yanıt** — Modelin güncel kaynaklara erişerek yanıt üretmesi.
 - **Doğrulama refleksi** — Her önemli bilgiyi bağımsız kaynakla teyit etme alışkanlığı.

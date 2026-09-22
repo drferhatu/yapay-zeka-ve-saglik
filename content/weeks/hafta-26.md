@@ -1,7 +1,7 @@
 ---
 week: 26
-title: "Tıpta Yapay Zekâ Etiği ve Regülasyon"
-topic: "Tıpta yapay zekâ etiği ve regülasyon: sorumluluk, aydınlatılmış onam, şeffaflık, FDA/CE ve insan denetimi"
+title: "Tıpta Yapay Zeka Etiği ve Regülasyon"
+topic: "Tıpta yapay zeka etiği ve regülasyon: sorumluluk, aydınlatılmış onam, şeffaflık, FDA/CE ve insan denetimi"
 description: "Etik ilkeler, sorumluluk, aydınlatılmış onam, şeffaflık ve açıklanabilirlik; FDA/CE onayı ve insan denetimi."
 module: m8
 semester: 2
@@ -26,7 +26,7 @@ tools:
 
 ## Ders Notları
 
-> [!not] Bu bölüm ders notlarının genişletileceği alandır. Haftanın özgün konu başlığı: **Tıpta yapay zekâ etiği ve regülasyon: sorumluluk, aydınlatılmış onam, şeffaflık, FDA/CE ve insan denetimi**
+> [!not] Bu bölüm ders notlarının genişletileceği alandır. Haftanın özgün konu başlığı: **Tıpta yapay zeka etiği ve regülasyon: sorumluluk, aydınlatılmış onam, şeffaflık, FDA/CE ve insan denetimi**
 
 Ders notları ilerleyen haftalarda buraya eklenecektir.
 

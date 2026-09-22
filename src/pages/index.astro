@@ -14,9 +14,9 @@ const announcements = (await getCollection('announcements'))
   .slice(0, 2);
 
 const pillars = [
-  { t: 'Kod yazan hekim', d: 'İlk haftadan Python ile klinik hesaplayıcılar yazarsınız; VKİ, eGFR, risk skorları.', icon: 'M8 9l-4 3 4 3M16 9l4 3-4 3M13 6l-2 12' },
+  { t: 'Kodlayan hekim', d: 'Kodu çoğu zaman yapay zeka yazar; siz doğru istemeyi, kodu okumayı ve hata mesajını anlamayı öğrenirsiniz. İlk haftadan klinik hesaplayıcılar çalıştırırsınız.', icon: 'M8 9l-4 3 4 3M16 9l4 3-4 3M13 6l-2 12' },
   { t: 'Veriyle düşünen hekim', d: 'Gerçek sağlık veri setlerini yükler, temizler, görselleştirir ve istatistiksel olarak yorumlarsınız.', icon: 'M4 19h16M6 16V9M11 16V5M16 16v-6' },
-  { t: 'Yapay zekâyı anlayan hekim', d: 'Görüntü modellerinden büyük dil modellerine, nasıl çalıştıklarını ve nerede yanıldıklarını öğrenirsiniz.', icon: 'M12 3a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4 4 4 0 0 1-4-4V7a4 4 0 0 1 4-4zM6 21v-1a6 6 0 0 1 12 0v1' },
+  { t: 'Yapay zekayı anlayan hekim', d: 'Görüntü modellerinden büyük dil modellerine, nasıl çalıştıklarını ve nerede yanıldıklarını öğrenirsiniz.', icon: 'M12 3a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4 4 4 0 0 1-4-4V7a4 4 0 0 1 4-4zM6 21v-1a6 6 0 0 1 12 0v1' },
   { t: 'Sorumlu kullanan hekim', d: 'KVKK, etik, regülasyon ve akademik dürüstlük çerçevesinde araçları güvenle kullanırsınız.', icon: 'M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4zM9 12l2 2 4-4' },
 ];
 ---
@@ -28,11 +28,11 @@ const pillars = [
       <div>
         <p class="eyebrow">{course.university} · {course.faculty} · Seçmeli Ders</p>
         <h1 class="display mt-4 text-[2.6rem] leading-[1.02] text-ink sm:text-6xl md:text-7xl">
-          Yapay Zekâ<br /><span class="text-brand">ve</span> Sağlık
+          Yapay Zeka<br /><span class="text-brand">ve</span> Sağlık
         </h1>
         <p class="lede mt-6 max-w-xl">
-          Kod yazabilen, veriyle düşünebilen hekimler için 28 haftalık uygulamalı bir yolculuk.
-          Python'dan büyük dil modellerine, sağlık verisinden tıbbi etiğe.
+          Kodlayan, veriyle düşünen hekimler için 28 haftalık uygulamalı bir yolculuk.
+          Kodu yapay zekaya yazdırmayı, okumayı ve doğrulamayı; sağlık verisinden tıbbi etiğe uzanan yolu öğrenin.
         </p>
         <div class="mt-8 flex flex-wrap gap-3">
           <a href={weekHref(1)} class="btn-primary">1. Haftadan başla</a>
@@ -150,7 +150,7 @@ const pillars = [
         <h2 class="display mt-2 text-3xl md:text-4xl">Önce bir Google hesabı, sonra ilk kodunuz.</h2>
         <p class="mt-4 leading-relaxed text-paper/75">
           Kurulum yok, ücret yok. Dersin tamamı tarayıcıda çalışan Google Colab üzerinde yürür.
-          1. haftada ortamı birlikte kurup ilk Python satırınızı yazacağız. Programlama deneyiminiz olmasa da sorun değil; ders sıfırdan başlar.
+          1. haftada ortamı birlikte kurup ilk Python satırınızı çalıştıracağız. Programlama deneyiminiz olmasa da sorun değil; ders sıfırdan başlar ve kodu ezberletmez, okutur.
         </p>
         <ol class="mt-8 space-y-4">
           {firstWeeks.map((w) => (

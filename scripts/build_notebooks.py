@@ -23,17 +23,18 @@ REPO = "drferhatu/yapay-zeka-ve-saglik"
 md, code = new_markdown_cell, new_code_cell
 
 # --------------------------------------------------------------------------
-# HAFTA 1 — Yapay zekâ tıbbı nasıl dönüştürüyor? İlk kod
+# HAFTA 1 — Yapay zeka tıbbı nasıl dönüştürüyor? İlk kod
 # --------------------------------------------------------------------------
 WEEK01 = [
-md(f"""# Hafta 1 · Yapay Zekâ Tıbbı Nasıl Dönüştürüyor? İlk Kod
+md(f"""# Hafta 1 · Yapay Zeka Tıbbı Nasıl Dönüştürüyor? İlk Kod
 
 **Yapay Zeka ve Sağlık** · Fırat Üniversitesi Tıp Fakültesi
 
 Bu defter dersin ilk saatinde birlikte çalıştıracağımız kodları içerir. Hiçbir şey kurmanız gerekmez:
 sağ üstteki **Bağlan** düğmesine basın, sonra her hücrenin solundaki ▶ simgesine tıklayın (veya `Shift+Enter`).
 
-> Amaç bugün Python öğrenmek değil; *bir hekimin tarayıcıdan çıkmadan gerçek veriyle ve yapay zekâyla neler yapabildiğini* görmek.
+> Amaç bugün Python öğrenmek değil; *bir hekimin tarayıcıdan çıkmadan gerçek veriyle ve yapay zekayla neler yapabildiğini* görmek.
+> Kodların hepsi hazır. Sizden beklenen yazmak değil: **çalıştırmak, okumak ve ne olduğunu söylemek.**
 """),
 md("""## 0 · Merhaba
 
@@ -73,6 +74,26 @@ for kod, kilo, boy in hastalar:
     vki = kilo / boy ** 2
     uyari = "  ← dikkat" if vki >= 30 else ""
     print(f"{kod}: VKİ {vki:4.1f}{uyari}")'''),
+md("""## 2b · Bir hatayı okumak
+
+Kodlayan hekimin ilk becerisi: hata mesajından korkmamak. Aşağıdaki hücre **bilerek** hata verecek.
+`np` adında bir şey kullanıyoruz ama onu henüz tanıtmadık (import etmedik). Çalıştırın ve **son satırı** okuyun."""),
+code("""ortalama_vki = np.mean([27.1, 22.1, 29.3, 24.8])
+print(ortalama_vki)"""),
+md("""`NameError: name 'np' is not defined` → "np diye bir şey tanımıyorum." Çözüm, eksik olan kütüphaneyi çağırmak.
+Bir yapay zeka asistanına bu hata mesajını yapıştırsanız aynı şeyi söyler; ama siz zaten okuyabildiniz."""),
+code("""import numpy as np          # ← eksik olan satır: kütüphaneyi tanıtıyoruz
+
+ortalama_vki = np.mean([27.1, 22.1, 29.3, 24.8])
+print("Ortalama VKİ:", round(ortalama_vki, 1))"""),
+md("""Bir de `def` görelim. Aşağıdaki kod bir **fonksiyon tanımlıyor**: VKİ hesabını isimlendirip tekrar kullanılabilir yapıyor.
+Bu kodu siz yazmadınız; yapay zeka yazmış olabilir. Sorun şu: *ne yapıyor?* Satır satır okuyup söyleyin."""),
+code("""def vki_hesapla(kilo, boy):
+    \"\"\"Kilo (kg) ve boy (m) alır, VKİ döndürür.\"\"\"
+    return kilo / boy ** 2
+
+print(vki_hesapla(82, 1.74))
+print(vki_hesapla(58, 1.62))"""),
 md("""## 3 · Gerçek bir sağlık veri seti, 3 satırda
 
 Şimdi internetten gerçek bir veri seti indiriyoruz: **Pima Kızılderilileri Diyabet Veri Seti** (768 kadın hasta,
@@ -120,7 +141,7 @@ ax.legend()
 plt.tight_layout()
 plt.show()'''),
 md("""> **Tartışma:** İki dağılım örtüşüyor. Tek başına glukoz tanı koymaya yeter mi? Bu örtüşme, ileride öğreneceğimiz *duyarlılık/özgüllük* kavramının ta kendisi."""),
-md("""## 5 · Bir dakikada "yapay zekâ": bilgisayar kendi kuralını öğreniyor
+md("""## 5 · Bir dakikada "yapay zeka": bilgisayar kendi kuralını öğreniyor
 
 Şimdiye kadar kuralı **biz** yazdık (VKİ eşikleri). Makine öğrenmesinde kuralı **veri** yazar.
 Aşağıda bilgisayara 768 hastanın verisini verip "diyabeti tahmin et" diyoruz. Bunun nasıl çalıştığını
@@ -195,6 +216,7 @@ md("""> **Tartışma:** Model bu yorumu nereden biliyor? Yanlış bir şey söyl
 |---|---|---|
 | 5 | İlk `print`, değişken | Hafta 2 |
 | 10 | VKİ hesabı, koşullar, döngü | Hafta 2–3 |
+| 5 | Bir hatayı okumak, `import` ve `def` tanımak | Hafta 3–4 |
 | 10 | Gerçek veri setini yükleme ve özetleme | Hafta 6–7 |
 | 5 | Grafik | Hafta 8–9 |
 | 10 | İlk makine öğrenmesi modeli | Hafta 12–13 |

@@ -2,7 +2,7 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 const weeks = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './content/weeks' }),
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './content/weeks' }),
   schema: z.object({
     week: z.number().int().min(1),
     title: z.string(),
@@ -24,6 +24,9 @@ const weeks = defineCollection({
         file: z.string(),            // depo içi yol, ör. notebooks/hafta-01.ipynb
         title: z.string().optional(),
         embed: z.boolean().default(true), // public/notebooks/hafta-XX.html gömülsün mü
+        // auto: sayfa defteri notların altına kendisi yerleştirir
+        // inline: yazar .mdx gövdesinde <NotebookEmbed .../> ile istediği yere koyar
+        placement: z.enum(['auto', 'inline']).default('auto'),
       })
       .optional(),
     resources: z
@@ -43,4 +46,14 @@ const announcements = defineCollection({
   }),
 });
 
-export const collections = { weeks, announcements };
+const guides = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './content/guides' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    order: z.number().default(99),
+    icon: z.string().optional(),
+  }),
+});
+
+export const collections = { weeks, announcements, guides };

@@ -1,7 +1,7 @@
 ---
 week: 25
 title: "Sağlık Verisinde Mahremiyet, KVKK ve Veri Güvenliği"
-topic: "Sağlık verisinde mahremiyet, KVKK ve veri güvenliği; hasta verisinin yapay zekâ araçlarıyla kullanımı"
+topic: "Sağlık verisinde mahremiyet, KVKK ve veri güvenliği; hasta verisinin yapay zeka araçlarıyla kullanımı"
 description: "Kişisel sağlık verisi kavramı, KVKK ilkeleri, anonimleştirme ve hasta verisinin YZ araçlarında kullanım kuralları."
 module: m8
 semester: 2
@@ -25,7 +25,7 @@ tools:
 
 ## Ders Notları
 
-> [!not] Bu bölüm ders notlarının genişletileceği alandır. Haftanın özgün konu başlığı: **Sağlık verisinde mahremiyet, KVKK ve veri güvenliği; hasta verisinin yapay zekâ araçlarıyla kullanımı**
+> [!not] Bu bölüm ders notlarının genişletileceği alandır. Haftanın özgün konu başlığı: **Sağlık verisinde mahremiyet, KVKK ve veri güvenliği; hasta verisinin yapay zeka araçlarıyla kullanımı**
 
 Ders notları ilerleyen haftalarda buraya eklenecektir.
 

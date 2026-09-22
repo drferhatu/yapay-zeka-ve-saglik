@@ -2,6 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
 import Toc from '@/components/Toc.astro';
+import Channels from '@/components/Channels.astro';
 import { course, href, weekHref } from '@/lib/site';
 
 const facts = [
@@ -21,17 +22,19 @@ const facts = [
 const toc = [
   { slug: 'amac', text: 'Dersin amacı' },
   { slug: 'kimler-icin', text: 'Kimler için?' },
+  { slug: 'kodlayan-hekim', text: 'Kodlayan hekim ne demek?' },
   { slug: 'ogrenim-ciktilari', text: 'Öğrenim çıktıları' },
   { slug: 'yontem', text: 'Öğretim yöntemi' },
   { slug: 'degerlendirme', text: 'Değerlendirme' },
   { slug: 'is-yuku', text: 'İş yükü ve AKTS' },
   { slug: 'kunye', text: 'Ders künyesi' },
   { slug: 'ogretim-uyesi', text: 'Öğretim üyesi' },
+  { slug: 'kanallar', text: 'İletişim kanalları' },
 ];
 ---
 <BaseLayout title="Ders Hakkında" description="Yapay Zeka ve Sağlık dersinin amacı, öğrenim çıktıları, değerlendirme yöntemi ve künyesi.">
   <div class="wrap py-14 md:py-20">
-    <SectionHeading eyebrow="Ders Hakkında" title="Kod yazabilen, veriyle düşünebilen hekim" lede={course.justification} />
+    <SectionHeading eyebrow="Ders Hakkında" title="Kodlayan, veriyle düşünen hekim" lede={course.justification} />
   </div>
 
   <div class="wrap grid gap-12 pb-24 lg:grid-cols-[220px_1fr]">
@@ -43,7 +46,16 @@ const toc = [
 
       <h2 id="kimler-icin">Kimler için?</h2>
       <p>Bu ders, programlama deneyimi olmayan tıp öğrencileri için tasarlanmıştır. Sohbet botlarını kullanmış olmanız yeterli; gerisini birlikte öğreneceğiz.</p>
-      <aside class="callout callout-why"><p class="callout-title">Neden önemli?</p><p>Yapay zekâ araçları kliniğe girerken, çıktısını sorgulayabilen ve sınırlarını bilen hekimler hasta güvenliğinin son halkasıdır. Bu ders o halkayı güçlendirir.</p></aside>
+      <aside class="callout callout-why"><p class="callout-title">Neden önemli?</p><p>Yapay zeka araçları kliniğe girerken, çıktısını sorgulayabilen ve sınırlarını bilen hekimler hasta güvenliğinin son halkasıdır. Bu ders o halkayı güçlendirir.</p></aside>
+
+      <h2 id="kodlayan-hekim">Kodlayan hekim ne demek?</h2>
+      <p>{course.codingPhilosophy}</p>
+      <ul>
+        <li><strong>Okumak:</strong> <code>def</code> gördüğünüzde bunun bir fonksiyon tanımı olduğunu, <code>import</code> edilmemiş bir kütüphanenin neden çalışmadığını bilmek.</li>
+        <li><strong>İstemek:</strong> Yapay zekaya ne istediğinizi klinik bağlamıyla, adım adım ve doğrulanabilir biçimde söylemek.</li>
+        <li><strong>Doğrulamak:</strong> Üretilen kodun ve çıktının doğru olup olmadığını bağımsız bir yolla kontrol etmek; sorumluluğun sizde kaldığını unutmamak.</li>
+      </ul>
+      <p>Bu yaklaşım, yazılım dünyasında “vibe coding” diye anılan yapay zeka destekli geliştirme pratiğinin hekimlik için uyarlanmış hâlidir. Yazmayı değil, yönetmeyi öğreniyoruz.</p>
 
       <h2 id="ogrenim-ciktilari">Öğrenim çıktıları</h2>
       <p>Dersi başarıyla tamamlayan öğrenci:</p>
@@ -88,6 +100,7 @@ const toc = [
 
       <h2 id="ogretim-uyesi">Öğretim üyesi</h2>
       <p><strong>{course.instructor.name}</strong><br /><a href={`mailto:${course.instructor.email}`}>{course.instructor.email}</a></p>
+      <div class="mt-8"><Channels /></div>
       <p><a href={href('/ders-akisi')} class="btn-primary !no-underline !text-paper">Ders akışına geç →</a></p>
     </article>
   </div>

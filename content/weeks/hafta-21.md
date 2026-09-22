@@ -1,7 +1,7 @@
 ---
 week: 21
-title: "Yapay Zekâ ile Literatür Taraması ve Kanıta Dayalı Tıp"
-topic: "Yapay zekâ ile literatür taraması ve kanıta dayalı tıp; uydurma referans (halüsinasyon) tuzakları"
+title: "Yapay Zeka ile Literatür Taraması ve Kanıta Dayalı Tıp"
+topic: "Yapay zeka ile literatür taraması ve kanıta dayalı tıp; uydurma referans (halüsinasyon) tuzakları"
 description: "YZ destekli literatür araçları, kanıta dayalı tıp piramidi, uydurma referans tuzağı ve doğrulama yolları."
 module: m6
 semester: 2
@@ -28,7 +28,7 @@ tools:
 
 ## Ders Notları
 
-> [!not] Bu bölüm ders notlarının genişletileceği alandır. Haftanın özgün konu başlığı: **Yapay zekâ ile literatür taraması ve kanıta dayalı tıp; uydurma referans (halüsinasyon) tuzakları**
+> [!not] Bu bölüm ders notlarının genişletileceği alandır. Haftanın özgün konu başlığı: **Yapay zeka ile literatür taraması ve kanıta dayalı tıp; uydurma referans (halüsinasyon) tuzakları**
 
 Ders notları ilerleyen haftalarda buraya eklenecektir.
 
