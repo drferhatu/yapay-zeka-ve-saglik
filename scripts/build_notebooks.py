@@ -178,7 +178,7 @@ code('''import os
 
 # Sağlayıcıya göre değiştirilebilir (OpenAI-uyumlu uç noktalar): Gemini, OpenAI, Groq, OpenRouter...
 BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
-MODEL = "gemini-2.5-flash"
+MODEL = "gemini-3.6-flash"
 
 def anahtar_al():
     try:
