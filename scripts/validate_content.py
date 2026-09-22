@@ -80,6 +80,23 @@ def check_weeks():
     print(f"✓ {len(seen)} hafta dosyası, {len(modules)} modül")
 
 
+def check_notebooks():
+    n = 0
+    for p in sorted(WEEKS_DIR.glob("*.md")):
+        text = p.read_text(encoding="utf-8")
+        m = re.search(r"^notebook:\n(?:  .*\n)*?  file:\s*(\S+)", text, re.M)
+        if not m:
+            continue
+        n += 1
+        f = m.group(1).strip('"')
+        if not (ROOT / f).exists():
+            errors.append(f"{p.name}: defter dosyası yok: {f}")
+        html = ROOT / "public" / "notebooks" / (Path(f).stem + ".html")
+        if not html.exists():
+            errors.append(f"{p.name}: gömülü görünüm yok: {html.relative_to(ROOT)} (scripts/build_notebooks.py çalıştırın)")
+    print(f"✓ {n} haftada Colab defteri tanımlı")
+
+
 def check_schedule():
     sch = json.loads((DATA / "schedule.json").read_text(encoding="utf-8"))["weeks"]
     nums = [r["week"] for r in sch]
@@ -153,6 +170,7 @@ def check_dist():
 
 def main():
     check_weeks()
+    check_notebooks()
     check_schedule()
     check_dist()
     if errors:

@@ -2,11 +2,11 @@
 week: 1
 title: "Yapay Zekâ Tıbbı Nasıl Dönüştürüyor? İlk Kod"
 topic: "Yapay zekânın tıbbı dönüştürmesi ve çalışma ortamının kurulumu (Google Colab/Jupyter); ilk kod"
-description: "Yapay zekânın tıptaki yerine genel bakış, Google Colab ortamının kurulumu ve ilk Python kodunuz."
+description: "Yapay zekânın tıptaki yerine güncel örneklerle bakış, Google Colab ortamının kurulumu ve ilk saatte gerçek veriyle çalışan ilk Python kodunuz."
 module: m1
 semester: 1
 exam: false
-status: taslak
+status: hazir
 changeNote: ""
 tags:
   - "yapay zekâ"
@@ -14,45 +14,140 @@ tags:
   - "jupyter"
   - "python"
   - "giriş"
+  - "pima"
+  - "diyabet"
 objectives:
-  - "Yapay zekânın tıpta kullanıldığı başlıca alanları (görüntüleme, karar destek, üretken YZ) sıralar."
-  - "Google Colab / Jupyter ortamını açar, bir not defteri oluşturur ve hücre çalıştırır."
-  - "İlk Python komutlarını (print, basit aritmetik) yazar ve çıktısını yorumlar."
+  - "Yapay zekânın tıpta kullanıldığı başlıca alanları (görüntüleme, karar destek, üretken yapay zekâ) güncel örneklerle sıralar."
+  - "Google Colab ortamını açar, bir not defteri oluşturur, hücre çalıştırır ve hata mesajını okur."
+  - "Bir klinik hesabı (VKİ) Python ile yapar ve aynı işlemi bir hasta listesine uygular."
+  - "Gerçek bir sağlık veri setinin nasıl yüklendiğini, özetlendiğini ve bir modelle nasıl tahmin üretildiğini gözlemler."
 tools:
   - "Google Colab"
-  - "Jupyter"
+  - "Python"
+  - "pandas"
+  - "matplotlib"
+  - "scikit-learn"
+notebook:
+  file: notebooks/hafta-01.ipynb
+  title: "Hafta 1 · İlk Kod"
+  embed: true
+resources:
+  - title: "Google Colab — Colab'e hoş geldiniz"
+    url: "https://colab.research.google.com/notebooks/intro.ipynb"
+    note: "Colab'in resmî tanıtım defteri; hücre, çalışma zamanı ve kaydetme."
+  - title: "Topol E. High-performance medicine: the convergence of human and artificial intelligence. Nat Med 2019"
+    url: "https://www.nature.com/articles/s41591-018-0300-7"
+    note: "Yapay zekânın tıptaki yerine dair en çok atıf alan derleme."
+  - title: "Pima Indians Diabetes veri seti hakkında"
+    url: "https://www.kaggle.com/datasets/uciml/pima-indians-diabetes-database"
+    note: "Derste kullandığımız veri setinin açıklaması ve sütun tanımları."
+  - title: "Deep Medicine — Eric Topol (ders kitabı)"
+    url: "https://www.basicbooks.com/titles/eric-topol/deep-medicine/9781541644632/"
+    note: "Giriş ve 1. bölüm bu haftanın konusuyla örtüşür."
 ---
 
 ## Derse Başlamadan Önce
 
-Bir Google hesabınızın olduğundan emin olun; colab.research.google.com adresini tarayıcınızda açın.
+- Bir **Google hesabınız** olsun (Gmail yeterli). Tarayıcıda [colab.research.google.com](https://colab.research.google.com) adresini açıp giriş yapın.
+- Bilgisayar tercih edilir ama tablet veya telefon da iş görür; hiçbir kurulum gerekmez.
+- Şu soruyu düşünerek gelin: *Son bir yılda yapay zekâ içeren bir sağlık haberi okudunuz mu? Neydi?*
+
+> [!not] Dersin akışı
+> Çarşamba 10.15'te başlıyoruz. İlk saat kesintisiz anlatım ve birlikte kodlama; kalan süre isteğe bağlı deneme ve soru-cevap için ayrılmıştır.
 
 ## Ders Notları
 
-> [!not] Bu bölüm ders notlarının genişletileceği alandır. Haftanın özgün konu başlığı: **Yapay zekânın tıbbı dönüştürmesi ve çalışma ortamının kurulumu (Google Colab/Jupyter); ilk kod**
+### Neden bir tıp öğrencisi kod yazsın?
 
-Ders notları ilerleyen haftalarda buraya eklenecektir.
+Bir hekim günde onlarca karar verir ve bu kararların çoğu **veriye** dayanır: laboratuvar sonuçları, görüntüler, vital bulgular, öykü. Bu veri artık kâğıtta değil, dijital sistemlerde. Ve bu sistemlerin içine giderek daha çok **algoritma** yerleşiyor: göğüs röntgeninde pnömoni bulgusu işaretleyen, sepsis riskini erkenden uyaran, taburcu özetini hasta diline çeviren yazılımlar.
+
+Bu ders sizi yazılım mühendisi yapmayı hedeflemez. Hedef, **bu araçların ne yaptığını, nasıl yanılabileceğini ve çıktısını nasıl sorgulayacağınızı** bilen bir hekim olmanız. Bunun en kestirme yolu da bir parça kod yazarak makinenin nasıl "düşündüğünü" içeriden görmek.
+
+> [!neden] Neden önemli?
+> Yapay zekâ destekli bir sistem hata yaptığında hastanın karşısında yazılım değil, hekim vardır. Çıktıyı sorgulayabilen hekim, hasta güvenliğinin son halkasıdır.
+
+### Yapay zekâ tıpta bugün nerede?
+
+Yapay zekâ tek bir şey değil; birbirinden farklı üç dalga klinik pratiğe girmiş durumda.
+
+> [!nerede] Tıpta nerede kullanılır?
+> **Görüntü analizi.** Radyoloji, patoloji, dermatoloji, oftalmoloji. Diyabetik retinopati taramasında otonom karar veren ilk yapay zekâ sistemi 2018'de FDA onayı aldı; mamografi ve göğüs röntgeninde onaylı ürün sayısı yüzleri geçti. Onaylı yapay zekâ tıbbi cihazlarının büyük çoğunluğu radyolojidedir.
+>
+> **Tahmin ve karar destek.** Hastane verisinden sepsis, yeniden yatış, böbrek hasarı gibi riskleri öngören skorlar. Etkileyici ama tartışmalı: bazı yaygın sepsis uyarı sistemlerinin gerçek hastanelerde vaatlerinin çok altında performans gösterdiği bağımsız çalışmalarla ortaya kondu.
+>
+> **Üretken yapay zekâ.** ChatGPT, Claude, Gemini gibi büyük dil modelleri. Hasta görüşmesini dinleyip taslak not yazan "ambient scribe" sistemleri, tıbbi literatür özetleme, hasta bilgilendirme metinleri. En hızlı yayılan ve en az denetlenen alan.
+
+Bu üç dalganın ortak paydası: hepsi **veriden öğrenir**. Bir kural kitabı yazılmaz; sisteme binlerce örnek gösterilir ve örüntüyü kendisi bulur. Bu, hem gücünün hem de zayıflığının kaynağıdır. Öğrendiği veride olmayan bir hasta tipi geldiğinde ne yapacağı belirsizdir.
+
+> [!ornek] Kısayol öğrenme
+> Göğüs röntgeninden pnömoni tanıyan bir model, bazı hastanelerde çok başarılı görünürken başka hastanelerde çöktü. Sebep: model hastalığı değil, ağır hastaların çekildiği **portatif cihazın görüntüdeki izini** öğrenmişti. Veriye bakmadan modele güvenmenin klasik dersi.
+
+### Çalışma ortamımız: Google Colab
+
+Bu derste bilgisayarınıza hiçbir şey kurmayacağız. Google Colab, tarayıcıda çalışan bir **Jupyter not defteri** ortamıdır. Kod, çıktı ve açıklama metni aynı sayfada durur; hücre hücre çalıştırırsınız.
+
+- **Hücre**: tek başına çalıştırılabilen kod ya da metin bloğu. Sol taraftaki ▶ düğmesi veya `Shift + Enter` ile çalışır.
+- **Çalışma zamanı**: kodunuzu çalıştıran uzak bilgisayar. Sağ üstteki **Bağlan** ile başlar; bir süre boş kalınca kapanır, değişkenleriniz silinir, yeniden çalıştırmak yeter.
+- **Kaydetme**: Dosya → Drive'a kopya kaydet. Ders defterlerini kendi Drive'ınıza kopyalayıp üzerinde oynayın.
+
+> [!uyari] Hasta verisi ve bulut
+> Colab, Google'ın sunucularında çalışır. Bu derste yalnızca **açık ve anonim** veri setleri kullanacağız. Gerçek hasta verisini hiçbir bulut aracına yüklemeyin; 25. haftada bunun hukuki ve etik çerçevesini ayrıntılı işleyeceğiz.
+
+### İlk saatte ne yapacağız?
+
+Aşağıdaki defteri birlikte, satır satır çalıştıracağız. Plan yaklaşık 50 dakika; her adım ileride bir haftaya dönüşecek konunun küçük bir ön izlemesi.
+
+| Süre | Adım | Ne göreceğiz |
+|---|---|---|
+| 5 dk | `print` ve ilk değişken | Bilgisayarla konuşmanın en basit hâli |
+| 10 dk | VKİ hesabı, koşul, döngü | Kuralı biz yazıyoruz: klinik eşikler koda dönüşüyor |
+| 10 dk | Gerçek veri seti: 768 hasta | Üç satırda yükle, özetle, gruplara göre karşılaştır |
+| 5 dk | Grafik | Glukoz dağılımının diyabet durumuna göre örtüşmesi |
+| 10 dk | İlk makine öğrenmesi modeli | Kuralı veri yazıyor: model diyabeti tahmin ediyor |
+| 5 dk | Python'dan büyük dil modeline soru | Sohbet botu tarayıcı dışında da, kodun içinden çağrılabiliyor |
+
+> [!tanim] Neden "her şey arkada çalışıyor" cümlesi önemli?
+> ChatGPT'yi bir web sayfası olarak tanıyorsunuz. Oysa aynı model bir **programın içinden** çağrılabilir: yüzlerce hastanın bulgusunu otomatik özetlemek, bir veri setini yorumlatmak, çıktıyı tabloya dökmek. Tarayıcıdaki sohbet kutusu buzdağının görünen ucudur. Bu dersin ikinci yarısı buzdağının altını anlatır.
+
+### Bugün öğrenmeniz beklenmeyen şeyler
+
+Defterdeki `pandas`, `matplotlib`, `LogisticRegression` gibi isimleri bugün anlamanız gerekmiyor. Bunlar sırasıyla 6., 8. ve 12. haftaların konusu. Bugünün amacı yalnızca **neyin mümkün olduğunu** görmek ve ilk kodunuzu hatasız çalıştırmanın verdiği küçük sevinci yaşamak.
 
 ## Temel Kavramlar
 
 - **Yapay zekâ (YZ)** — Normalde insan zekâsı gerektiren görevleri yerine getiren bilgisayar sistemleri; tıpta çoğunlukla veriden öğrenen modeller biçiminde karşımıza çıkar.
-- **Not defteri (notebook)** — Kod, çıktı ve açıklama metnini aynı belgede tutan etkileşimli çalışma ortamı.
+- **Makine öğrenmesi** — Kuralları elle yazmak yerine örneklerden örüntü çıkaran YZ yaklaşımı. Bugünkü diyabet modeli bunun en basit örneği.
+- **Büyük dil modeli (LLM)** — Devasa metin verisinden dil örüntülerini öğrenen, metin üreten model. ChatGPT, Claude ve Gemini'nin arkasındaki teknoloji.
+- **Not defteri (notebook)** — Kod, çıktı ve açıklama metnini aynı belgede tutan etkileşimli çalışma ortamı. Jupyter standart, Colab bulut sürümü.
 - **Hücre** — Not defterinde tek başına çalıştırılabilen kod veya metin bloğu.
+- **Değişken** — Bir değeri isimle saklayan kutu; `kilo = 82` gibi.
+- **Veri seti** — Satırları hasta, sütunları ölçüm olan tablo. Pima diyabet veri setinde 768 satır, 9 sütun var.
 
 ## Tıptan Örnekler
 
-- Göğüs röntgeninde pnömoni bulgularını işaretleyen bir model radyoloğun iş yükünü nasıl değiştirir?
-- Bir hastane, sepsis riskini erken uyaran algoritmayı hangi verilerle besler?
+- **Diyabetik retinopati taraması**: Otonom karar veren ilk FDA onaylı YZ sistemi (2018). Birinci basamakta, göz hekimi olmadan retina fotoğrafından sevk kararı.
+- **Sepsis erken uyarı**: Elektronik hasta kaydına gömülü risk skorları. Yaygın bir sistemin bağımsız değerlendirmede sepsis vakalarının büyük bölümünü kaçırdığı ve çok sayıda yanlış alarm ürettiği gösterildi. Model çıktısını sorgulamanın önemi.
+- **Ambient scribe**: Hasta görüşmesini dinleyip taslak klinik not üreten LLM tabanlı sistemler. Zaman kazandırıyor; mahremiyet ve doğruluk soruları 24–25. haftanın konusu.
+- **Pima diyabet veri seti**: Bugün kullandığımız veri. 1990'lardan kalma, küçük ve kusurlu ama öğretici; eksik değerlerin sıfır olarak kaydedilmiş olması 7. haftada "veri temizleme" dersimizin çıkış noktası olacak.
 
 ## Uygulama / Etkinlik
 
-Colab'de yeni bir not defteri açın; adınızı ve dersin adını yazdıran bir `print` komutu çalıştırın. Ardından iki vital bulguyu (nabız, sistolik basınç) değişkene atayıp toplamını yazdırın.
+1. Colab'i açın, aşağıdaki **Colab'de aç** düğmesiyle haftanın defterini kendi hesabınıza kopyalayın.
+2. Bölüm 0'daki `ad` değişkenine adınızı yazıp çalıştırın. Bir yazım hatası yapıp hata mesajını okuyun; korkutucu görünür ama satır numarasını ve sorunu söyler.
+3. Bölüm 1'de `kilo` ve `boy` değerlerini değiştirip VKİ sınıflamasının nasıl değiştiğini gözleyin.
+4. Bölüm 2'deki hasta listesine kendi uydurduğunuz bir hasta ekleyin (gerçek kişi verisi kullanmayın).
+5. Derste zaman kalırsa: Bölüm 5'te `yeni_hasta` değerlerini değiştirip modelin olasılığını nasıl güncellediğine bakın.
+
+> [!not] İsteğe bağlı ev çalışması (10 dk)
+> Defteri Drive'ınıza kaydedin ve bir sonraki derse kadar en az bir kez baştan sona kendi başınıza çalıştırın. Takıldığınız hücrenin ekran görüntüsünü alıp derse getirin; 2. haftada bu takılmalardan başlayacağız.
 
 ## Tartışma Soruları
 
-1. Hangi klinik kararlarda bir yazılımın öneri vermesini kabul edilebilir bulursunuz, hangilerinde bulmazsınız?
-2. “Kod yazabilen hekim” sizce ne anlama geliyor?
+1. Hangi klinik kararlarda bir yazılımın öneri vermesini kabul edilebilir bulursunuz, hangilerinde bulmazsınız? Aradaki çizgiyi ne belirliyor?
+2. Diyabet modelimiz %72 doğruluk verdi. Bu iyi mi, kötü mü? "İyi" demek için başka ne bilmemiz gerekir?
+3. Büyük dil modeli veri tablosunu yorumlarken yanlış bir şey söylediyse bunu nasıl fark ederdiniz? Kimin sorumluluğu?
+4. "Kod yazabilen hekim" ifadesi sizce ne anlama geliyor? Bu derste kazanmak istediğiniz tek bir beceri olsa ne olurdu?
 
 ## Haftanın Özeti
 
-Bu hafta yapay zekânın tıptaki güncel rolünü tanıdık ve dersin çalışma ortamı olan Colab'de ilk kodumuzu yazdık.
+Yapay zekâ tıpta üç dalga hâlinde (görüntü, tahmin/karar destek, üretken) klinik pratiğe girdi ve hepsinin ortak noktası veriden öğrenmesi. Bu ders, o araçları anlayan ve denetleyen hekimler yetiştirmek için sizi kodun içine sokuyor. İlk saatte Colab ortamını kurduk; VKİ hesabından başlayıp 768 hastalık gerçek bir veri setini yükledik, grafiğini çizdik, ilk tahmin modelimizi eğittik ve bir büyük dil modeline Python içinden soru gönderdik. Bugün gördüğünüz her adım, önümüzdeki 27 haftada birer derse dönüşecek.

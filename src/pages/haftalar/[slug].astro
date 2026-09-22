@@ -3,6 +3,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Toc from '@/components/Toc.astro';
 import WeekPager from '@/components/WeekPager.astro';
 import ModuleChip from '@/components/ModuleChip.astro';
+import NotebookEmbed from '@/components/NotebookEmbed.astro';
 import { render } from 'astro:content';
 import { getWeeksSorted, moduleOf, moduleColorVar, scheduleOf, formatDate, STATUS_LABEL, href, weekSlug } from '@/lib/site';
 
@@ -19,7 +20,7 @@ const m = moduleOf(week.data.module);
 const s = scheduleOf(week.data.week);
 const dateLong = formatDate(s?.date, true);
 const statusLabel = s && s.status !== 'normal' ? STATUS_LABEL[s.status] : '';
-const tocExtra = [{ slug: 'ogrenme-hedefleri', text: 'Öğrenme hedefleri' }];
+const tocExtra = [{ slug: 'ogrenme-hedefleri', text: 'Öğrenme hedefleri' }, ...(week.data.notebook ? [{ slug: 'defter', text: 'Colab defteri' }] : [])];
 const pageTitle = `Hafta ${week.data.week} — ${week.data.title}`;
 ---
 <BaseLayout title={pageTitle} description={week.data.description} ogType="article">
@@ -65,6 +66,8 @@ const pageTitle = `Hafta ${week.data.week} — ${week.data.title}`;
           ))}
         </ul>
       </section>
+
+      {week.data.notebook && <NotebookEmbed {...week.data.notebook} />}
 
       <Content />
 

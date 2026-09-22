@@ -12,6 +12,7 @@ const facts = [
   ['Düzey', course.level],
   ['Dönem', course.semesters.join(' ve ')],
   ['Öğretim dili', course.language],
+  ['Ders saati', course.classTime],
   ['Saatler (T/U/L)', `${course.credits.theory} / ${course.credits.practice} / ${course.credits.lab}`],
   ['Yerel kredi', String(course.credits.local)],
   ['AKTS', String(course.credits.ects)],
@@ -87,7 +88,6 @@ const toc = [
 
       <h2 id="ogretim-uyesi">Öğretim üyesi</h2>
       <p><strong>{course.instructor.name}</strong><br /><a href={`mailto:${course.instructor.email}`}>{course.instructor.email}</a></p>
-      <p class="text-sm text-ink-3">{course.instructor.note}</p>
       <p><a href={href('/ders-akisi')} class="btn-primary !no-underline !text-paper">Ders akışına geç →</a></p>
     </article>
   </div>

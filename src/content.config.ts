@@ -18,6 +18,14 @@ const weeks = defineCollection({
     tags: z.array(z.string()).default([]),
     objectives: z.array(z.string()).default([]),
     tools: z.array(z.string()).default([]),
+    // Haftanın Colab defteri: notebooks/hafta-XX.ipynb → Colab bağlantısı ve sitede gömülü görünüm
+    notebook: z
+      .object({
+        file: z.string(),            // depo içi yol, ör. notebooks/hafta-01.ipynb
+        title: z.string().optional(),
+        embed: z.boolean().default(true), // public/notebooks/hafta-XX.html gömülsün mü
+      })
+      .optional(),
     resources: z
       .array(z.object({ title: z.string(), url: z.string().url(), note: z.string().optional() }))
       .default([]),

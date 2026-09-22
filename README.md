@@ -35,7 +35,8 @@ src/
 scripts/
   extract_course_docx.py  DOCX ders formunu düz metin/JSON'a çıkarır
   generate_week_files.py  28 haftalık Markdown iskeletini üretir (mevcut dosyaları ezmez)
-  validate_content.py     içerik + derleme doğrulaması (haftalar, takvim, kırık bağlantı)
+  validate_content.py     içerik + derleme doğrulaması (haftalar, takvim, defter, kırık bağlantı)
+  build_notebooks.py      defter tanımlarından .ipynb üretir, çalıştırır ve HTML'e çevirir
 public/                   favicon, og.png, robots.txt, .nojekyll
 .github/workflows/deploy.yml  GitHub Pages dağıtımı
 ```
@@ -118,6 +119,28 @@ Başka bir haftaya bağlantı vermek için kök yol yazın; base otomatik ekleni
 - `note` kısa açıklama olarak gösterilir.
 
 İki haftanın konusunu yer değiştirmek için iki Markdown dosyasının içeriğini takas edin (sadece `week` alanını koruyun) ve `changeNote` ile açıklayın.
+
+### Haftaya Colab defteri eklemek
+
+1. Defteri `notebooks/hafta-XX.ipynb` olarak kaydedin (Colab'den Dosya → İndir → .ipynb, ya da `scripts/build_notebooks.py` içindeki hücre listesine ekleyin).
+2. Sitede gömülü görünümü üretin:
+
+```bash
+/opt/miniconda3/envs/ferhat_ml/bin/python scripts/build_notebooks.py --execute
+```
+
+`--execute` defteri çalıştırıp çıktılarıyla kaydeder (internet gerekir; LLM hücresi anahtar yoksa hata vermez). `--force` scriptteki tanımdan defteri yeniden üretir ve elle yapılan değişiklikleri **ezer**; Colab'de düzenlediğiniz defterlerde kullanmayın.
+
+3. Haftanın Markdown dosyasına ekleyin:
+
+```yaml
+notebook:
+  file: notebooks/hafta-01.ipynb
+  title: "Hafta 1 · İlk Kod"
+  embed: true       # false ise yalnızca "Colab'de aç" düğmesi görünür
+```
+
+"Colab'de aç" bağlantısı GitHub'daki `main` dalındaki dosyayı açar; öğrenci kendi Drive'ına kopyalayıp çalıştırır. LLM hücresi için Colab Secrets'a `LLM_API_KEY` eklenir; anahtar depoya asla yazılmaz.
 
 ### Yeni duyuru eklemek
 

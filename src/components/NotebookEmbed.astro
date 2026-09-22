@@ -1,0 +1,49 @@
+---
+/**
+ * Haftanın Colab defteri: "Colab'de aç" düğmesi + sitede gömülü statik görünüm.
+ * HTML görünümü scripts/build_notebooks.py tarafından public/notebooks/ altına üretilir.
+ */
+import { href } from '@/lib/site';
+interface Props { file: string; title?: string; embed?: boolean; }
+const { file, title = 'Haftanın defteri', embed = true } = Astro.props;
+const REPO = 'drferhatu/yapay-zeka-ve-saglik';
+const colab = `https://colab.research.google.com/github/${REPO}/blob/main/${file}`;
+const github = `https://github.com/${REPO}/blob/main/${file}`;
+const stem = file.split('/').pop()!.replace(/\.ipynb$/, '');
+const html = href(`/notebooks/${stem}.html`);
+---
+<section aria-labelledby="defter" class="not-prose my-12 rounded-2xl border border-line bg-white shadow-soft">
+  <div class="flex flex-wrap items-center justify-between gap-4 border-b border-line px-5 py-4">
+    <div class="flex items-center gap-3">
+      <span class="grid size-10 place-items-center rounded-xl bg-[#fff3e0] text-[#e8710a]" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="7" cy="12" r="3.5"/><circle cx="17" cy="12" r="3.5"/><path d="M10.5 12h3"/></svg>
+      </span>
+      <div>
+        <h2 id="defter" class="!m-0 !border-0 !p-0 font-sans text-base font-bold text-ink">{title}</h2>
+        <p class="text-xs text-ink-3">Kurulum gerektirmez; Google hesabınızla tarayıcıda çalışır.</p>
+      </div>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <a href={colab} target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-sm font-semibold text-paper hover:bg-brand">
+        Colab'de aç
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+      </a>
+      <a href={github} target="_blank" rel="noopener" class="inline-flex items-center rounded-full border border-line-2 px-4 py-2 text-sm font-semibold text-ink hover:border-ink">GitHub'da gör</a>
+      {embed && <a href={html} target="_blank" rel="noopener" class="inline-flex items-center rounded-full border border-line-2 px-4 py-2 text-sm font-semibold text-ink hover:border-ink">Tam ekran</a>}
+    </div>
+  </div>
+  {embed && (
+    <div class="relative">
+      <iframe
+        src={html}
+        title={`${title} — defter görünümü`}
+        loading="lazy"
+        class="block h-[70vh] min-h-[480px] w-full rounded-b-2xl bg-white"
+        sandbox="allow-same-origin allow-scripts"
+      ></iframe>
+    </div>
+  )}
+  <p class="border-t border-line px-5 py-3 text-xs text-ink-3">
+    Gömülü görünüm salt okunurdur ve derste çalıştırılmış çıktıları gösterir. Kodu değiştirip çalıştırmak için <strong>Colab'de aç</strong>'ı kullanın; ardından Dosya → Drive'a kopya kaydet.
+  </p>
+</section>
