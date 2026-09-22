@@ -1,0 +1,11 @@
+# GitHub Actions ve yerel derleme için defter çalıştırma bağımlılıkları
+nbformat
+nbconvert
+nbclient
+ipykernel
+numpy
+pandas
+matplotlib
+seaborn
+scikit-learn
+openai

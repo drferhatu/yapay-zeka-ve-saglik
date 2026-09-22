@@ -2,13 +2,17 @@
 """Haftalık Colab defterlerini üretir ve sitede gömülmek üzere HTML'e çevirir.
 
 - notebooks/hafta-XX.ipynb dosyalarını (yoksa) bu dosyadaki tanımlardan oluşturur.
-- İsteğe bağlı çalıştırır (--execute): internet gereken/anahtar isteyen hücreler
-  anahtar yoksa dostça mesaj basar, hata vermez.
-- nbconvert ile public/notebooks/hafta-XX.html üretir (site içinde iframe olarak gömülür).
+- notebooks/ altındaki TÜM defterleri isteğe bağlı çalıştırır (--execute) ve HTML'e çevirir.
+- LLM hücreleri (chat.completions içerenler): LLM_API_KEY ortam değişkeni varsa çalıştırılır;
+  yoksa atlanır ve defterdeki mevcut çıktı (ör. Colab'da üretilmiş yanıt) korunur.
+- nbconvert ile public/notebooks/<ad>.html üretir (site içinde iframe olarak gömülür).
+  Çalıştırılan defter diske yazılmaz (--save verilmedikçe); kaynak defter Colab'dan gelen hâliyle kalır.
 
 Kullanım:
-  /opt/miniconda3/envs/ferhat_ml/bin/python scripts/build_notebooks.py [--execute] [--force]
+  /opt/miniconda3/envs/ferhat_ml/bin/python scripts/build_notebooks.py [--execute] [--save] [--force]
+GitHub Actions bu scripti her push'ta --execute ile çalıştırır (bkz. .github/workflows/deploy.yml).
 """
+import os
 import sys
 from pathlib import Path
 
@@ -245,23 +249,47 @@ def build(name, title, cells, force=False):
     return path
 
 
-def execute(path):
+LLM_MARKER = "chat.completions"
+SKIP_TAG = "skip-execution"
+
+
+def execute(path, save=False):
     from nbclient import NotebookClient
     nb = nbformat.read(path, as_version=4)
-    client = NotebookClient(nb, timeout=180, kernel_name="python3", allow_errors=True,
+    has_key = bool(os.environ.get("LLM_API_KEY"))
+    skipped = 0
+    for c in nb.cells:
+        if c.cell_type == "code" and LLM_MARKER in c.source and not has_key:
+            tags = c.metadata.setdefault("tags", [])
+            if SKIP_TAG not in tags:
+                tags.append(SKIP_TAG)
+            skipped += 1
+    client = NotebookClient(nb, timeout=300, kernel_name="python3", allow_errors=True,
+                            skip_cells_with_tag=SKIP_TAG,
                             resources={"metadata": {"path": str(path.parent)}})
     client.execute()
-    nbformat.write(nb, path)
+    for c in nb.cells:  # geçici etiketi kaldır
+        if c.cell_type == "code" and SKIP_TAG in c.metadata.get("tags", []):
+            c.metadata["tags"].remove(SKIP_TAG)
+            if not c.metadata["tags"]:
+                del c.metadata["tags"]
+    if save:
+        nbformat.write(nb, path)
     errs = [o for c in nb.cells if c.cell_type == "code" for o in c.get("outputs", []) if o.get("output_type") == "error"]
-    print(f"✓ {path.name} çalıştırıldı ({len(errs)} hata hücresi)")
+    note = f", {skipped} LLM hücresi atlandı (anahtar yok, mevcut çıktı korundu)" if skipped else ""
+    print(f"✓ {path.name} çalıştırıldı ({len(errs)} hata hücresi{note})")
+    return nb
 
 
-def to_html(path):
+def to_html(path, nb=None):
     from nbconvert import HTMLExporter
     exp = HTMLExporter(template_name="lab")
     exp.exclude_input_prompt = True
     exp.exclude_output_prompt = True
-    body, _ = exp.from_filename(str(path))
+    if nb is not None:
+        body, _ = exp.from_notebook_node(nb)
+    else:
+        body, _ = exp.from_filename(str(path))
     # site zeminiyle uyum ve iframe içinde ferah görünüm
     body = body.replace("</head>", """<style>
       body{background:#fff !important;margin:0}
@@ -279,13 +307,14 @@ def to_html(path):
 def main():
     force = "--force" in sys.argv
     run = "--execute" in sys.argv
+    save = "--save" in sys.argv
     NB_DIR.mkdir(exist_ok=True)
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     for name, (title, cells) in NOTEBOOKS.items():
-        p = build(name, title, cells, force)
-        if run:
-            execute(p)
-        to_html(p)
+        build(name, title, cells, force)
+    for p in sorted(NB_DIR.glob("*.ipynb")):
+        nb = execute(p, save=save) if run else None
+        to_html(p, nb)
     print(f"\nColab bağlantı biçimi: https://colab.research.google.com/github/{REPO}/blob/main/notebooks/<ad>.ipynb")
 
 

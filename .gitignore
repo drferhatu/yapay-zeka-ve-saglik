@@ -35,3 +35,6 @@ Thumbs.db
 # yerel çalışma dosyaları
 instructions.md
 .claude/
+
+# defterlerin gömülü görünümü derlemede üretilir (scripts/build_notebooks.py)
+public/notebooks/

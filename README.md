@@ -142,7 +142,13 @@ import NotebookEmbed from '@/components/NotebookEmbed.astro';
 /opt/miniconda3/envs/ferhat_ml/bin/python scripts/build_notebooks.py --execute
 ```
 
-`--execute` defteri çalıştırıp çıktılarıyla kaydeder (internet gerekir; LLM hücresi anahtar yoksa hata vermez). `--force` scriptteki tanımdan defteri yeniden üretir ve elle yapılan değişiklikleri **ezer**; Colab'de düzenlediğiniz defterlerde kullanmayın.
+`--execute` tüm defterleri çalıştırır ve çıktılarıyla HTML'e çevirir (internet gerekir). Kaynak `.ipynb` dosyası **değiştirilmez** (`--save` verilmedikçe). `chat.completions` içeren LLM hücreleri yalnızca `LLM_API_KEY` ortam değişkeni varsa çalıştırılır; yoksa atlanır ve defterdeki mevcut çıktı (ör. Colab'da alınan yanıt) korunur. `--force` scriptteki tanımdan defteri yeniden üretir ve elle yapılan değişiklikleri **ezer**; Colab'de düzenlediğiniz defterlerde kullanmayın.
+
+**Otomatik akış:** Colab'da *Dosya → GitHub'a kopya kaydet* ile `notebooks/hafta-XX.ipynb` dosyasını `main` dalına kaydettiğinizde GitHub Actions defteri çalıştırır, gömülü görünümü üretir ve siteyi yeniden yayımlar; elle bir şey yapmanız gerekmez. LLM hücresinin CI'da da gerçek yanıt üretmesi için depoya bir gizli anahtar ekleyin:
+
+```bash
+gh secret set LLM_API_KEY --repo drferhatu/yapay-zeka-ve-saglik
+```
 
 3. Haftanın Markdown dosyasına ekleyin:
 
@@ -200,7 +206,7 @@ Kanallar `course.json → channels` dizisinde. Bağlantı değişirse karekodu y
 ## GitHub Pages dağıtımı
 
 1. Depo: `drferhatu/yapay-zeka-ve-saglik`. Ayarlar → Pages → Source: **GitHub Actions**.
-2. `main` dalına push edildiğinde `.github/workflows/deploy.yml` çalışır: `npm ci`, `npm run build`, `dist/` yayınlanır.
+2. `main` dalına push edildiğinde `.github/workflows/deploy.yml` çalışır: Python bağımlılıkları (`scripts/requirements-notebooks.txt`), defterlerin çalıştırılıp HTML'e çevrilmesi, `npm ci`, `npm run build`, içerik doğrulaması ve `dist/` yayını.
 3. Base yolu `astro.config.mjs` içinde `/yapay-zeka-ve-saglik` olarak ayarlıdır. Depo adı değişirse bu değeri (ve `public/robots.txt`) güncelleyin. Özel alan adına geçilirse `SITE_URL` ve `BASE_PATH=/` ortam değişkenleriyle derleyin.
 
 İçeriği doğrudan GitHub web arayüzünden de düzenleyebilirsiniz; kaydettiğinizde site birkaç dakika içinde yenilenir.

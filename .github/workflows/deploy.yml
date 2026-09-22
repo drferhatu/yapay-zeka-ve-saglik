@@ -1,5 +1,7 @@
 name: GitHub Pages'e dağıt
 
+# Her push'ta (Colab'dan "GitHub'a kopya kaydet" dahil) defterler çalıştırılır,
+# gömülü HTML görünümleri üretilir ve site derlenip yayımlanır.
 on:
   push:
     branches: [main]
@@ -19,12 +21,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: scripts/requirements-notebooks.txt
+      - run: pip install -r scripts/requirements-notebooks.txt
+
+      - name: Defterleri çalıştır ve HTML'e çevir
+        env:
+          # Depo ayarları → Secrets → LLM_API_KEY eklenirse LLM hücreleri gerçek yanıt üretir;
+          # yoksa bu hücreler atlanır ve defterdeki mevcut çıktı korunur.
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+        run: python scripts/build_notebooks.py --execute
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
       - run: npm ci
       - run: npm run build
+      - name: İçerik doğrulaması
+        run: python scripts/validate_content.py
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
