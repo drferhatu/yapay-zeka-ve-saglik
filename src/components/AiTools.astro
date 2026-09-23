@@ -1,0 +1,41 @@
+---
+/** Elinizin altındaki üretken yapay zeka araçları (course.json → aiTools). */
+import { course } from '@/lib/site';
+interface Props { compact?: boolean; }
+const { compact = false } = Astro.props;
+const t = course.aiTools;
+---
+<section aria-labelledby="araclar" class="not-prose my-12">
+  <div class="mb-6">
+    <p class="eyebrow">Üretken yapay zeka araçları</p>
+    <h2 id="araclar" class="display mt-1 text-2xl md:text-3xl">Elinizin altındaki yedi araç</h2>
+    <p class="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink-2">{t.intro}</p>
+  </div>
+  <ul class:list={['grid gap-3', compact ? 'sm:grid-cols-2' : 'sm:grid-cols-2 lg:grid-cols-3']}>
+    {t.items.map((a) => (
+      <li class="flex h-full flex-col rounded-xl border border-line bg-white p-4">
+        <div class="flex items-center gap-3">
+          <span class="grid size-9 shrink-0 place-items-center rounded-lg bg-ink font-display text-lg font-semibold text-paper" aria-hidden="true">{a.name[0]}</span>
+          <div class="min-w-0">
+            <h3 class="text-[15px] font-bold leading-tight text-ink">{a.name}</h3>
+            <p class="text-xs text-ink-3">{a.by}</p>
+          </div>
+        </div>
+        <p class="mt-3 text-[13px] leading-relaxed text-ink-2">{a.desc}</p>
+        <dl class="mt-3 grid grid-cols-[auto_1fr] gap-x-2 gap-y-0.5 text-xs">
+          <dt class="font-semibold text-ink-3">Ücretsiz:</dt><dd class="text-ink">{a.free}</dd>
+          <dt class="font-semibold text-ink-3">Öne çıkan:</dt><dd class="text-ink">{a.highlight}</dd>
+        </dl>
+        <a href={a.url} target="_blank" rel="noopener" class="mt-auto pt-3 text-xs font-semibold text-brand hover:underline">Aç ↗</a>
+      </li>
+    ))}
+    <li class="flex h-full flex-col justify-between rounded-xl border border-dashed border-line-2 bg-paper-2/60 p-4">
+      <div>
+        <p class="text-xs font-bold uppercase tracking-[0.12em] text-ink-3">Taktik</p>
+        <p class="mt-2 text-[13px] leading-relaxed text-ink">{t.tip}</p>
+      </div>
+      <p class="mt-4 text-[13px] leading-relaxed text-ink-2">{t.student} <a href={t.studentUrl} target="_blank" rel="noopener" class="font-semibold text-brand hover:underline">Başvuru ↗</a></p>
+    </li>
+  </ul>
+  <p class="mt-3 text-xs text-ink-3">Hangi aracı kullanırsanız kullanın: hasta verisi girmeyin, çıktıyı doğrulamadan kullanmayın. Araçların ayrıntılı ve eleştirel kullanımı 18. haftanın konusu.</p>
+</section>

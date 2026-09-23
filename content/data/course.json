@@ -338,5 +338,76 @@
       "url": "https://calendar.app.google/3woNnqLwS7RhtEBR7",
       "cta": "Randevu al"
     }
-  ]
+  ],
+  "aiTools": {
+    "intro": "Tek bir “yapay zeka” yok; elinizin altında yedi güçlü seçenek var ve hepsinin ücretsiz katmanı var. Birinin günlük kotası bitince diğerine geçin; ücretli plana geçmeden önce ücretsizleri gerçekten tüketin.",
+    "tip": "Ücretsiz kalma taktiği: sabah Gemini, kota bitince Claude, kaynak ararken Perplexity, uzun PDF için Kimi. Dört ücretsiz hesap, sıfır lira.",
+    "student": "Google, üniversite öğrencilerine 1 yıl ücretsiz Gemini planı veriyor (başvuru 31 Aralık 2026'ya kadar). Koşullar değişebilir; gemini.google/students adresinden kontrol edin.",
+    "studentUrl": "https://gemini.google/students/",
+    "items": [
+      {
+        "id": "chatgpt",
+        "name": "ChatGPT",
+        "by": "OpenAI",
+        "url": "https://chatgpt.com",
+        "desc": "En yaygın olan. Görsel üretimi, sesli sohbet ve veri analizi modu güçlü; Colab defterlerindeki hataları yapıştırıp sormak için iyi bir ilk durak.",
+        "free": "var, günlük kota",
+        "highlight": "Veri analizi, ses modu, Codex ajanı"
+      },
+      {
+        "id": "claude",
+        "name": "Claude",
+        "by": "Anthropic",
+        "url": "https://claude.ai",
+        "desc": "Uzun metin, dikkatli yazım ve Türkçe kalitesi. Makale özetleme, vaka metni yapılandırma; masaüstü uygulaması ve Claude Code ile bilgisayarınızda kod çalıştırma.",
+        "free": "var",
+        "highlight": "Masaüstü uygulaması, Claude Code"
+      },
+      {
+        "id": "gemini",
+        "name": "Gemini",
+        "by": "Google",
+        "url": "https://gemini.google.com",
+        "desc": "Ücretsiz katmanı en cömertlerden; Drive, Docs ve YouTube ile bütünleşik. Derste LLM hücresinde kullandığımız API anahtarı da buradan (AI Studio) alınıyor.",
+        "free": "geniş",
+        "highlight": "Öğrenci kampanyası, NotebookLM, API"
+      },
+      {
+        "id": "perplexity",
+        "name": "Perplexity",
+        "by": "Perplexity AI",
+        "url": "https://www.perplexity.ai",
+        "desc": "Arama motoru gibi çalışır, her cümlesine kaynak gösterir. Güncel kılavuz ve literatür ararken ilk durak; kaynağı yine de kendiniz açın.",
+        "free": "var",
+        "highlight": "Kaynaklı cevap"
+      },
+      {
+        "id": "mistral",
+        "name": "Le Chat",
+        "by": "Mistral (Fransa)",
+        "url": "https://chat.mistral.ai",
+        "desc": "Hızlı, sade, Avrupa veri kuralları altında. Günlük yazı ve özet işleri için rahat bir alternatif.",
+        "free": "var",
+        "highlight": "Hız, Avrupa merkezli"
+      },
+      {
+        "id": "kimi",
+        "name": "Kimi",
+        "by": "Moonshot AI",
+        "url": "https://www.kimi.com",
+        "desc": "Çok uzun belgelerle ve çok adımlı ajan görevleriyle iyi. Yüzlerce sayfalık kılavuz PDF'lerini sorgulamak için.",
+        "free": "geniş",
+        "highlight": "Uzun belge, ajan modu"
+      },
+      {
+        "id": "qwen",
+        "name": "Qwen",
+        "by": "Alibaba",
+        "url": "https://chat.qwen.ai",
+        "desc": "Çok dilli, görsel anlama ve üretme; açık kaynak modelleri de var. Yedek olarak elinizin altında dursun.",
+        "free": "var",
+        "highlight": "Görsel, açık model"
+      }
+    ]
+  }
 }
