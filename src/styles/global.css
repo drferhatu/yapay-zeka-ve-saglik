@@ -117,6 +117,23 @@ body {
 .prose-lesson summary { @apply cursor-pointer font-semibold text-ink; }
 .prose-lesson details[open] summary { @apply mb-3 pb-3 border-b border-line; }
 
+/* Kod / istem kutularındaki "Kopyala" düğmesi (CopyCode.astro) */
+.code-block { position: relative; }
+.code-block > pre { padding-right: 6.25rem; }
+.copy-btn {
+  position: absolute; top: 0.5rem; right: 0.5rem; z-index: 1;
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  min-height: 2rem; padding: 0.25rem 0.65rem;
+  font: 600 0.75rem/1 var(--font-sans);
+  color: var(--color-ink-2); background: #fff;
+  border: 1px solid var(--color-line-2); border-radius: 0.5rem;
+  cursor: pointer; transition: border-color .15s, color .15s, background-color .15s;
+}
+.copy-btn:hover { color: var(--color-ink); border-color: var(--color-ink); background: var(--color-paper-2); }
+.copy-btn.is-copied { color: #0b6b4b; border-color: #0b6b4b; background: #eaf6f0; }
+.copy-btn.is-failed { color: var(--color-accent); border-color: var(--color-accent); background: var(--color-accent-soft); }
+@media print { .copy-btn { display: none; } .code-block > pre { padding-right: 1rem; } }
+
 /* Uyarı kutuları (remark-callouts) */
 .callout { @apply rounded-xl px-5 py-4 border-l-4 bg-white shadow-soft not-italic; }
 .callout > * + * { margin-top: 0.5em; }

@@ -427,6 +427,45 @@ def execute(path, save=False):
     return nb
 
 
+# Gömülü defter görünümünde kod hücrelerine eklenen "Kopyala" düğmesi.
+COPY_SNIPPET = """<style>
+  .jp-InputArea-editor{position:relative}
+  .nb-copy{position:absolute;top:6px;right:6px;z-index:2;display:inline-flex;align-items:center;gap:4px;
+    min-height:28px;padding:3px 10px;font:600 12px/1 Manrope,system-ui,sans-serif;color:#34515b;background:#fff;
+    border:1px solid #cfc6b8;border-radius:8px;cursor:pointer}
+  .nb-copy:hover{color:#10262e;border-color:#10262e;background:#f2eee6}
+  .nb-copy.ok{color:#0b6b4b;border-color:#0b6b4b;background:#eaf6f0}
+  .nb-copy.fail{color:#e4572e;border-color:#e4572e;background:#fbe6de}
+</style>
+<script>
+(function(){
+  function copy(t){
+    if(navigator.clipboard&&window.isSecureContext){return navigator.clipboard.writeText(t).then(function(){return true},function(){return fb(t)})}
+    return Promise.resolve(fb(t));
+  }
+  function fb(t){
+    var ta=document.createElement('textarea');ta.value=t;ta.setAttribute('readonly','');
+    ta.style.cssText='position:fixed;top:0;left:0;opacity:0';document.body.appendChild(ta);ta.select();
+    var ok=false;try{ok=document.execCommand('copy')}catch(e){}ta.remove();return ok;
+  }
+  document.querySelectorAll('.jp-CodeCell .jp-InputArea-editor').forEach(function(ed){
+    var b=document.createElement('button');b.type='button';b.className='nb-copy';b.textContent='Kopyala';
+    b.setAttribute('aria-label','Kodu panoya kopyala');
+    var timer;
+    b.addEventListener('click',function(){
+      var pre=ed.querySelector('pre');
+      var text=((pre||ed).textContent||'').replace(/\n+$/,'');
+      copy(text).then(function(ok){
+        b.textContent=ok?'Kopyalandı':'Kopyalanamadı';b.className='nb-copy '+(ok?'ok':'fail');
+        clearTimeout(timer);timer=setTimeout(function(){b.textContent='Kopyala';b.className='nb-copy'},2000);
+      });
+    });
+    ed.appendChild(b);
+  });
+})();
+</script>"""
+
+
 def to_html(path, nb=None):
     from nbconvert import HTMLExporter
     exp = HTMLExporter(template_name="lab")
@@ -445,6 +484,8 @@ def to_html(path, nb=None):
       .jp-RenderedHTMLCommon{font-family:Manrope,system-ui,sans-serif;color:#10262e}
       .jp-RenderedHTMLCommon table{font-size:13px}
     </style></head>""")
+    # kod hücrelerine "Kopyala" düğmesi (sitedeki CopyCode.astro ile aynı davranış)
+    body = body.replace("</body>", COPY_SNIPPET + "</body>")
     out = OUT_DIR / f"{path.stem}.html"
     out.write_text(body, encoding="utf-8")
     print(f"✓ {out.relative_to(ROOT)} ({len(body)//1024} KB)")
