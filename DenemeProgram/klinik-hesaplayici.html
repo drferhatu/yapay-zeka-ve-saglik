@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Klinik Hesaplayıcı</title>
+<style>
+  /* Renk belirteçleri: açık tema varsayılan, koyu tema sistem tercihine göre */
+  :root {
+    --zemin: #f6f7f9;
+    --kart: #ffffff;
+    --metin: #1c2330;
+    --soluk: #5b6577;
+    --cizgi: #d9dee7;
+    --vurgu: #1f6feb;
+    --vurgu-metin: #ffffff;
+    --iyi: #1a7f37;
+    --orta: #9a6700;
+    --kotu: #cf222e;
+    --iyi-zemin: #e9f6ec;
+    --orta-zemin: #fff5d6;
+    --kotu-zemin: #fdecec;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --zemin: #11151c;
+      --kart: #1a202a;
+      --metin: #e6e9ef;
+      --soluk: #9aa4b5;
+      --cizgi: #2e3643;
+      --vurgu: #4c8dff;
+      --vurgu-metin: #0b1220;
+      --iyi: #56d364;
+      --orta: #e3b341;
+      --kotu: #ff7b72;
+      --iyi-zemin: #13281a;
+      --orta-zemin: #2b2410;
+      --kotu-zemin: #2d1517;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--zemin);
+    color: var(--metin);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  .sayfa { max-width: 720px; margin: 0 auto; padding: 16px 16px 48px; }
+  h1 { font-size: 1.5rem; margin: 8px 0 4px; }
+  .uyari-bandi { color: var(--soluk); font-size: .9rem; margin: 0 0 16px; }
+
+  /* Sekmeler: dar ekranda yatay kaydırılır */
+  .sekmeler {
+    display: flex; gap: 6px; overflow-x: auto;
+    position: sticky; top: 0; z-index: 2;
+    background: var(--zemin); padding: 8px 0; margin-bottom: 8px;
+    scrollbar-width: thin;
+  }
+  .sekmeler button {
+    flex: 0 0 auto; min-height: 44px; padding: 0 14px;
+    border: 1px solid var(--cizgi); border-radius: 999px;
+    background: var(--kart); color: var(--metin); font: inherit; cursor: pointer;
+  }
+  .sekmeler button[aria-selected="true"] {
+    background: var(--vurgu); color: var(--vurgu-metin); border-color: var(--vurgu);
+  }
+
+  .panel { display: none; }
+  .panel.acik { display: block; }
+  .kart {
+    background: var(--kart); border: 1px solid var(--cizgi);
+    border-radius: 12px; padding: 16px; margin-bottom: 14px;
+  }
+  h2 { font-size: 1.2rem; margin: 0 0 12px; }
+  h3 { font-size: 1rem; margin: 0 0 8px; }
+
+  label.alan { display: block; margin-bottom: 12px; }
+  label.alan span { display: block; font-weight: 600; margin-bottom: 4px; }
+  label.alan small { color: var(--soluk); font-weight: 400; }
+  input[type="text"], select {
+    width: 100%; min-height: 44px; padding: 8px 12px;
+    border: 1px solid var(--cizgi); border-radius: 8px;
+    background: var(--zemin); color: var(--metin); font: inherit;
+  }
+  .ikili { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 420px) { .ikili { grid-template-columns: 1fr; } }
+
+  fieldset { border: 0; padding: 0; margin: 0 0 12px; }
+  legend { font-weight: 600; margin-bottom: 4px; padding: 0; }
+  .secenek {
+    display: flex; align-items: center; gap: 10px;
+    min-height: 44px; padding: 6px 4px; border-bottom: 1px solid var(--cizgi);
+    cursor: pointer;
+  }
+  .secenek:last-child { border-bottom: 0; }
+  .secenek input { width: 20px; height: 20px; flex: 0 0 auto; }
+  .secenek .puan { margin-left: auto; color: var(--soluk); font-variant-numeric: tabular-nums; }
+  .yatay { display: flex; flex-wrap: wrap; gap: 0 18px; }
+  .yatay .secenek { border-bottom: 0; }
+
+  button.hesapla {
+    width: 100%; min-height: 48px; margin-top: 4px;
+    border: 0; border-radius: 10px;
+    background: var(--vurgu); color: var(--vurgu-metin);
+    font: inherit; font-weight: 700; cursor: pointer;
+  }
+
+  .sonuc { display: none; border-left: 5px solid var(--cizgi); }
+  .sonuc.gorunur { display: block; }
+  .sonuc.iyi { border-left-color: var(--iyi); background: var(--iyi-zemin); }
+  .sonuc.orta { border-left-color: var(--orta); background: var(--orta-zemin); }
+  .sonuc.kotu { border-left-color: var(--kotu); background: var(--kotu-zemin); }
+  .sonuc .deger { font-size: 1.8rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .sonuc .sinif { font-weight: 600; margin-bottom: 8px; }
+  .sonuc ul { margin: 6px 0; padding-left: 20px; }
+  .sonuc .ara-baslik { font-weight: 600; margin-top: 10px; }
+  .dogrulanmali {
+    display: inline-block; font-size: .75rem; font-weight: 700;
+    padding: 0 6px; border-radius: 4px;
+    background: var(--orta-zemin); color: var(--orta); border: 1px solid var(--orta);
+  }
+
+  .kaynaklar { font-size: .9rem; color: var(--soluk); }
+  .kaynaklar ol { padding-left: 20px; margin: 0; }
+  .kaynaklar li { margin-bottom: 6px; }
+  .kaynaklar a { color: var(--vurgu); word-break: break-all; }
+</style>
+</head>
+<body>
+<main class="sayfa">
+  <h1>Klinik Hesaplayıcı</h1>
+  <p class="uyari-bandi">Eğitim amaçlıdır. Klinik karar vermek için tek başına kullanılmaz; sonuçları hastanın bütün tablosu ve güncel kılavuzlarla birlikte değerlendirin.</p>
+
+  <nav class="sekmeler" role="tablist" aria-label="Hesaplayıcılar">
+    <button role="tab" aria-selected="true"  aria-controls="p-vki"   id="t-vki">VKİ · Bel/boy</button>
+    <button role="tab" aria-selected="false" aria-controls="p-egfr"  id="t-egfr">eGFR</button>
+    <button role="tab" aria-selected="false" aria-controls="p-cha"   id="t-cha">CHA₂DS₂-VASc</button>
+    <button role="tab" aria-selected="false" aria-controls="p-wells" id="t-wells">Wells DVT</button>
+    <button role="tab" aria-selected="false" aria-controls="p-doz"   id="t-doz">mg/kg doz</button>
+  </nav>
+
+  <!-- ============ 1) VKİ ve bel/boy oranı ============ -->
+  <section class="panel acik" id="p-vki" role="tabpanel" aria-labelledby="t-vki">
+    <div class="kart">
+      <h2>Vücut kitle indeksi ve bel/boy oranı</h2>
+      <div class="ikili">
+        <label class="alan"><span>Kilo <small>(kg)</small></span>
+          <input type="text" inputmode="decimal" id="vki-kilo" placeholder="örn. 72"></label>
+        <label class="alan"><span>Boy <small>(cm)</small></span>
+          <input type="text" inputmode="decimal" id="vki-boy" placeholder="örn. 174"></label>
+        <label class="alan"><span>Bel çevresi <small>(cm, isteğe bağlı)</small></span>
+          <input type="text" inputmode="decimal" id="vki-bel" placeholder="örn. 86"></label>
+        <label class="alan"><span>Cinsiyet <small>(bel eşikleri için)</small></span>
+          <select id="vki-cinsiyet"><option value="kadin">Kadın</option><option value="erkek">Erkek</option></select></label>
+      </div>
+      <button class="hesapla" type="button" id="b-vki">Hesapla</button>
+    </div>
+    <div class="kart sonuc" id="s-vki" aria-live="polite"></div>
+    <div class="kart kaynaklar">
+      <h3>Kaynaklar</h3>
+      <ol>
+        <li>World Health Organization. Obesity: preventing and managing the global epidemic. WHO Technical Report Series 894. Cenevre: WHO; 2000. <em>(DOI yok; WHO raporu)</em></li>
+        <li>World Health Organization. Waist circumference and waist–hip ratio: report of a WHO expert consultation, 2008. Cenevre: WHO; 2011. <em>(DOI yok; WHO raporu)</em></li>
+        <li>Ashwell M, Hsieh SD. Six reasons why the waist-to-height ratio is a rapid and effective global indicator for health risks of obesity. <em>Int J Food Sci Nutr</em>. 2005;56(5):303–307. <a href="https://doi.org/10.1080/09637480500195066" target="_blank" rel="noopener">doi:10.1080/09637480500195066</a></li>
+        <li>Browning LM, Hsieh SD, Ashwell M. A systematic review of waist-to-height ratio as a screening tool for the prediction of cardiovascular disease and diabetes: 0·5 could be a suitable global boundary value. <em>Nutr Res Rev</em>. 2010;23(2):247–269. <a href="https://doi.org/10.1017/S0954422410000144" target="_blank" rel="noopener">doi:10.1017/S0954422410000144</a></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ 2) eGFR CKD-EPI 2021 ============ -->
+  <section class="panel" id="p-egfr" role="tabpanel" aria-labelledby="t-egfr">
+    <div class="kart">
+      <h2>eGFR (CKD-EPI 2021, ırk katsayısız)</h2>
+      <div class="ikili">
+        <label class="alan"><span>Serum kreatinin <small>(mg/dL)</small></span>
+          <input type="text" inputmode="decimal" id="egfr-kreatinin" placeholder="örn. 1,1"></label>
+        <label class="alan"><span>Yaş <small>(yıl, ≥18)</small></span>
+          <input type="text" inputmode="numeric" id="egfr-yas" placeholder="örn. 58"></label>
+        <label class="alan"><span>Cinsiyet</span>
+          <select id="egfr-cinsiyet"><option value="kadin">Kadın</option><option value="erkek">Erkek</option></select></label>
+      </div>
+      <button class="hesapla" type="button" id="b-egfr">Hesapla</button>
+    </div>
+    <div class="kart sonuc" id="s-egfr" aria-live="polite"></div>
+    <div class="kart kaynaklar">
+      <h3>Kaynaklar</h3>
+      <ol>
+        <li>Inker LA, Eneanya ND, Coresh J, et al. New creatinine- and cystatin C–based equations to estimate GFR without race. <em>N Engl J Med</em>. 2021;385(19):1737–1749. <a href="https://doi.org/10.1056/NEJMoa2102953" target="_blank" rel="noopener">doi:10.1056/NEJMoa2102953</a></li>
+        <li>Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group. KDIGO 2024 clinical practice guideline for the evaluation and management of chronic kidney disease. <em>Kidney Int</em>. 2024;105(4S):S117–S314. <a href="https://doi.org/10.1016/j.kint.2023.10.018" target="_blank" rel="noopener">doi:10.1016/j.kint.2023.10.018</a></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ 3) CHA2DS2-VASc ============ -->
+  <section class="panel" id="p-cha" role="tabpanel" aria-labelledby="t-cha">
+    <div class="kart">
+      <h2>CHA₂DS₂-VASc ve CHA₂DS₂-VA (atriyal fibrilasyon)</h2>
+      <fieldset>
+        <legend>Yaş</legend>
+        <div class="yatay">
+          <label class="secenek"><input type="radio" name="cha-yas" value="0" checked> &lt;65</label>
+          <label class="secenek"><input type="radio" name="cha-yas" value="1"> 65–74 <span class="puan">+1</span></label>
+          <label class="secenek"><input type="radio" name="cha-yas" value="2"> ≥75 <span class="puan">+2</span></label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Cinsiyet</legend>
+        <div class="yatay">
+          <label class="secenek"><input type="radio" name="cha-cinsiyet" value="erkek" checked> Erkek</label>
+          <label class="secenek"><input type="radio" name="cha-cinsiyet" value="kadin"> Kadın <span class="puan">+1 (yalnız VASc)</span></label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Öykü</legend>
+        <label class="secenek"><input type="checkbox" id="cha-kky"> Konjestif kalp yetersizliği / sol ventrikül disfonksiyonu <span class="puan">+1</span></label>
+        <label class="secenek"><input type="checkbox" id="cha-ht"> Hipertansiyon <span class="puan">+1</span></label>
+        <label class="secenek"><input type="checkbox" id="cha-dm"> Diabetes mellitus <span class="puan">+1</span></label>
+        <label class="secenek"><input type="checkbox" id="cha-inme"> İnme / GİA / tromboemboli öyküsü <span class="puan">+2</span></label>
+        <label class="secenek"><input type="checkbox" id="cha-vaskuler"> Vasküler hastalık (MI, periferik arter hastalığı, aort plağı) <span class="puan">+1</span></label>
+      </fieldset>
+      <button class="hesapla" type="button" id="b-cha">Hesapla</button>
+    </div>
+    <div class="kart sonuc" id="s-cha" aria-live="polite"></div>
+    <div class="kart kaynaklar">
+      <h3>Kaynaklar</h3>
+      <ol>
+        <li>Lip GYH, Nieuwlaat R, Pisters R, Lane DA, Crijns HJGM. Refining clinical risk stratification for predicting stroke and thromboembolism in atrial fibrillation using a novel risk factor-based approach: the Euro Heart Survey on Atrial Fibrillation. <em>Chest</em>. 2010;137(2):263–272. <a href="https://doi.org/10.1378/chest.09-1584" target="_blank" rel="noopener">doi:10.1378/chest.09-1584</a></li>
+        <li>Friberg L, Rosenqvist M, Lip GYH. Evaluation of risk stratification schemes for ischaemic stroke and bleeding in 182 678 patients with atrial fibrillation: the Swedish Atrial Fibrillation cohort study. <em>Eur Heart J</em>. 2012;33(12):1500–1510. <a href="https://doi.org/10.1093/eurheartj/ehr488" target="_blank" rel="noopener">doi:10.1093/eurheartj/ehr488</a></li>
+        <li>Van Gelder IC, Rienstra M, Bunting KV, et al. 2024 ESC Guidelines for the management of atrial fibrillation. <em>Eur Heart J</em>. 2024;45(36):3314–3414. <a href="https://doi.org/10.1093/eurheartj/ehae176" target="_blank" rel="noopener">doi:10.1093/eurheartj/ehae176</a></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ 4) Wells DVT ============ -->
+  <section class="panel" id="p-wells" role="tabpanel" aria-labelledby="t-wells">
+    <div class="kart">
+      <h2>Wells DVT skoru</h2>
+      <fieldset>
+        <legend>Klinik özellikler</legend>
+        <label class="secenek"><input type="checkbox" data-wells="1"> Aktif kanser (son 6 ayda tedavi ya da palyatif bakım) <span class="puan">+1</span></label>
+        <label class="secenek"><input type="checkbox" data-wells="1"> Alt ekstremitede paralizi, parezi ya da yakın zamanda alçı <span class="puan">+1</span></label>
+        <label class="secenek"><input type="checkbox" data-wells="1"> ≥3 gün yatağa bağımlılık veya son 12 haftada majör cerrahi <span class="puan">+1</span></label>
+        <label class="secenek"><input type="checkbox" data-wells="1"> Derin ven sistemi boyunca lokalize hassasiyet <span class="puan">+1</span></label>
+        <label class="secenek"><input type="checkbox" data-wells="1"> Tüm bacakta şişlik <span class="puan">+1</span></label>
+        <label class="secenek"><input type="checkbox" data-wells="1"> Baldır çevresinde karşı tarafa göre ≥3 cm fark <span class="puan">+1</span></label>
+        <label class="secenek"><input type="checkbox" data-wells="1"> Semptomatik bacakta gode bırakan ödem <span class="puan">+1</span></label>
+        <label class="secenek"><input type="checkbox" data-wells="1"> Kollateral yüzeyel venler (varis dışı) <span class="puan">+1</span></label>
+        <label class="secenek"><input type="checkbox" data-wells="1"> Önceden belgelenmiş DVT <span class="puan">+1</span></label>
+        <label class="secenek"><input type="checkbox" data-wells="-2"> Alternatif tanı en az DVT kadar olası <span class="puan">−2</span></label>
+      </fieldset>
+      <button class="hesapla" type="button" id="b-wells">Hesapla</button>
+    </div>
+    <div class="kart sonuc" id="s-wells" aria-live="polite"></div>
+    <div class="kart kaynaklar">
+      <h3>Kaynaklar</h3>
+      <ol>
+        <li>Wells PS, Anderson DR, Bormanis J, et al. Value of assessment of pretest probability of deep-vein thrombosis in clinical management. <em>Lancet</em>. 1997;350(9094):1795–1798. <a href="https://doi.org/10.1016/S0140-6736(97)08140-3" target="_blank" rel="noopener">doi:10.1016/S0140-6736(97)08140-3</a></li>
+        <li>Wells PS, Anderson DR, Rodger M, et al. Evaluation of D-dimer in the diagnosis of suspected deep-vein thrombosis. <em>N Engl J Med</em>. 2003;349(13):1227–1235. <a href="https://doi.org/10.1056/NEJMoa023153" target="_blank" rel="noopener">doi:10.1056/NEJMoa023153</a></li>
+        <li>Wells PS, Owen C, Doucette S, Fergusson D, Tran H. Does this patient have deep vein thrombosis? <em>JAMA</em>. 2006;295(2):199–207. <a href="https://doi.org/10.1001/jama.295.2.199" target="_blank" rel="noopener">doi:10.1001/jama.295.2.199</a> <em>(üç düzeyli yüzdeler için; doğrulanmalı)</em></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ 5) mg/kg doz ============ -->
+  <section class="panel" id="p-doz" role="tabpanel" aria-labelledby="t-doz">
+    <div class="kart">
+      <h2>mg/kg doz hesabı</h2>
+      <div class="ikili">
+        <label class="alan"><span>Kilo <small>(kg)</small></span>
+          <input type="text" inputmode="decimal" id="doz-kilo" placeholder="örn. 18"></label>
+        <label class="alan"><span>Doz <small>(mg/kg/gün)</small></span>
+          <input type="text" inputmode="decimal" id="doz-mgkg" placeholder="örn. 40"></label>
+        <label class="alan"><span>Günlük doz sayısı</span>
+          <select id="doz-sayi">
+            <option value="1">1 (günde bir)</option>
+            <option value="2" selected>2 (12 saatte bir)</option>
+            <option value="3">3 (8 saatte bir)</option>
+            <option value="4">4 (6 saatte bir)</option>
+            <option value="6">6 (4 saatte bir)</option>
+          </select></label>
+        <label class="alan"><span>Günlük tavan doz <small>(mg/gün, isteğe bağlı)</small></span>
+          <input type="text" inputmode="decimal" id="doz-tavan" placeholder="örn. 2000"></label>
+        <label class="alan"><span>Süspansiyon derişimi <small>(mg / 5 mL, isteğe bağlı)</small></span>
+          <input type="text" inputmode="decimal" id="doz-derisim" placeholder="örn. 250"></label>
+      </div>
+      <button class="hesapla" type="button" id="b-doz">Hesapla</button>
+    </div>
+    <div class="kart sonuc" id="s-doz" aria-live="polite"></div>
+    <div class="kart kaynaklar">
+      <h3>Kaynaklar</h3>
+      <ol>
+        <li>İlacın kısa ürün bilgisi (KÜB) ve kullanma talimatı (prospektüs): mg/kg dozu, tavan doz ve süspansiyon derişimi her zaman buradan alınmalıdır. <em>(DOI yok)</em></li>
+        <li>Kurumsal ya da ulusal pediatrik ilaç formüleri. <em>(DOI yok)</em></li>
+      </ol>
+    </div>
+  </section>
+</main>
+
+<script>
+/* =====================================================================
+   Yardımcı fonksiyonlar
+   ===================================================================== */
+
+// Bir form alanının metnini okur; Türkçe ondalık virgülü noktaya çevirir.
+function oku(id) {
+  return document.getElementById(id).value.trim().replace(",", ".");
+}
+
+// Sayıyı Türkçe biçimde (ondalık virgül) yazar.
+function yaz(sayi, basamak = 1) {
+  return sayi.toLocaleString("tr-TR", { minimumFractionDigits: 0, maximumFractionDigits: basamak });
+}
+
+// Sonuç kutusuna hata listesini yazar ve kırmızı gösterir.
+function hataGoster(kutuId, hatalar) {
+  const kutu = document.getElementById(kutuId);
+  kutu.className = "kart sonuc gorunur kotu";
+  kutu.innerHTML = "<div class='sinif'>Girdiyi kontrol edin</div><ul>" +
+    hatalar.map(h => "<li>" + h + "</li>").join("") + "</ul>";
+}
+
+// Sonuç kutusuna değer, sınıf, klinik yorum ve sınırlılık maddelerini yazar.
+function sonucGoster(kutuId, { deger, sinif, renk, ekBloklar = "", yorumlar, sinirliliklar }) {
+  const kutu = document.getElementById(kutuId);
+  kutu.className = "kart sonuc gorunur " + renk;   // renk: "iyi" | "orta" | "kotu"
+  kutu.innerHTML =
+    "<div class='deger'>" + deger + "</div>" +
+    "<div class='sinif'>" + sinif + "</div>" +
+    ekBloklar +
+    "<div class='ara-baslik'>Klinik yorum</div><ul>" + yorumlar.map(y => "<li>" + y + "</li>").join("") + "</ul>" +
+    "<div class='ara-baslik'>Sınırlılık</div><ul>" + sinirliliklar.map(s => "<li>" + s + "</li>").join("") + "</ul>";
+}
+
+// Etiket: kullanıcı mesajında verilmemiş ve doğrulanması gereken bilgileri işaretler.
+const DOGRULANMALI = " <span class='dogrulanmali'>doğrulanmalı</span>";
+
+/* =====================================================================
+   1) VKİ ve bel/boy oranı
+   ===================================================================== */
+
+// VKİ = kilo (kg) / boy (m)²; boy cm olarak alınır ve burada metreye çevrilir.
+function vkiHesapla(kilo, boyCm) {
+  const boyM = boyCm / 100;          // 100 cm = 1 m
+  return kilo / (boyM * boyM);
+}
+
+// VKİ değerini WHO erişkin sınıflamasına göre sınıflar.
+function vkiSinifi(vki) {
+  // "18,5–24,9" gibi aralıkların arasındaki boşluk (örn. 24,95) kalmasın diye "<" ile bir sonraki alt sınır kullanılır.
+  if (vki < 18.5) return { ad: "Zayıf", renk: "orta" };
+  if (vki < 25)   return { ad: "Normal", renk: "iyi" };
+  if (vki < 30)   return { ad: "Fazla kilolu", renk: "orta" };
+  if (vki < 35)   return { ad: "Obez sınıf I", renk: "kotu" };
+  if (vki < 40)   return { ad: "Obez sınıf II", renk: "kotu" };
+  return { ad: "Obez sınıf III", renk: "kotu" };      // ≥40
+}
+
+// Bel/boy oranını sınıflar (bel ve boy aynı birimde, cm).
+function belBoySinifi(oran) {
+  if (oran < 0.40) return "Düşük (<0,40)";
+  if (oran < 0.50) return "Sağlıklı aralık (0,40–0,49)";
+  if (oran < 0.60) return "Artmış risk (0,50–0,59)";
+  return "Yüksek risk (≥0,60)";
+}
+
+// Bel çevresini cinsiyete özgü eşiklere göre sınıflar.
+function belCevresiSinifi(belCm, cinsiyet) {
+  if (cinsiyet === "kadin") {
+    if (belCm >= 88) return "Yüksek risk (kadın ≥88 cm)";
+    if (belCm >= 80) return "Artmış risk (kadın ≥80 cm)";
+    return "Eşiğin altında (kadın <80 cm)";
+  }
+  if (belCm >= 102) return "Yüksek risk (erkek ≥102 cm)";
+  if (belCm >= 94)  return "Artmış risk (erkek ≥94 cm)";
+  return "Eşiğin altında (erkek <94 cm)";
+}
+
+// VKİ sekmesindeki girdileri okur, denetler ve sonucu gösterir.
+function vkiSekmesiniHesapla() {
+  const kilo = Number(oku("vki-kilo"));
+  const boy = Number(oku("vki-boy"));
+  const belMetni = oku("vki-bel");
+  const bel = Number(belMetni);
+  const cinsiyet = document.getElementById("vki-cinsiyet").value;
+
+  const hatalar = [];
+  if (!(kilo >= 2 && kilo <= 350)) hatalar.push("Kilo 2–350 kg arasında bir sayı olmalı.");
+  // 3'ten küçük boy: kullanıcı büyük olasılıkla metre girmiştir (örn. 1,74).
+  if (boy > 0 && boy < 3) {
+    hatalar.push("Boy " + yaz(boy, 2) + " girildi. Metre girmiş olabilirsiniz; boyu santimetre olarak yazın (örn. " + yaz(boy * 100, 0) + ").");
+  } else if (!(boy >= 50 && boy <= 250)) {
+    hatalar.push("Boy 50–250 cm arasında bir sayı olmalı.");
+  }
+  if (belMetni !== "") {
+    if (bel > 0 && bel < 3) hatalar.push("Bel çevresi metre girilmiş olabilir; santimetre olarak yazın.");
+    else if (!(bel >= 40 && bel <= 200)) hatalar.push("Bel çevresi 40–200 cm arasında olmalı.");
+  }
+  if (hatalar.length) return hataGoster("s-vki", hatalar);
+
+  const vki = vkiHesapla(kilo, boy);
+  const sinif = vkiSinifi(vki);
+
+  let ekBloklar = "";
+  if (belMetni !== "") {
+    const oran = bel / boy;
+    ekBloklar = "<ul>" +
+      "<li><b>Bel/boy oranı:</b> " + yaz(oran, 2) + " — " + belBoySinifi(oran) + "</li>" +
+      "<li><b>Bel çevresi:</b> " + yaz(bel, 1) + " cm — " + belCevresiSinifi(bel, cinsiyet) + "</li>" +
+      "</ul>";
+  }
+
+  sonucGoster("s-vki", {
+    deger: yaz(vki, 1) + " kg/m²",
+    sinif: "WHO sınıfı: " + sinif.ad,
+    renk: sinif.renk,
+    ekBloklar,
+    yorumlar: [
+      "VKİ nüfus düzeyinde bir tarama ölçütüdür; kardiyometabolik riski değerlendirirken bel çevresi ve bel/boy oranıyla birlikte yorumlanmalıdır.",
+      "Bel/boy oranı için pratik mesaj: \"belin boyunun yarısından az olsun\" (≥0,50 artmış risk).",
+      belMetni === "" ? "Bel çevresi girilirse karın içi yağlanmaya dair ek bilgi verilir." : "Merkezi obezite, aynı VKİ'de daha yüksek kardiyometabolik riskle ilişkilidir."
+    ],
+    sinirliliklar: [
+      "Kas kütlesini yağdan ayırmaz: sporcuda yüksek, yaşlı ve sarkopenik hastada düşük tahmin edebilir.",
+      "Eşikler erişkinler içindir; çocuk ve ergende yaşa ve cinsiyete göre persentil kullanılır. Gebelikte geçerli değildir.",
+      "Bel çevresi eşikleri etnik kökene göre değişir; burada kullanılanlar Avrupa kökenli toplumlar için önerilen değerlerdir."
+    ]
+  });
+}
+
+/* =====================================================================
+   2) eGFR CKD-EPI 2021
+   ===================================================================== */
+
+// CKD-EPI 2021 kreatinin denklemi (ırk katsayısız); kreatinin mg/dL, sonuç mL/dk/1,73 m².
+function egfrCkdEpi2021(kreatinin, yas, cinsiyet) {
+  const kadin = cinsiyet === "kadin";
+  const kappa = kadin ? 0.7 : 0.9;         // κ: kreatinin eğrisinin kırıldığı nokta (mg/dL)
+  const alfa = kadin ? -0.241 : -0.302;    // α: κ altındaki kreatinin için üs
+  const oran = kreatinin / kappa;
+  return 142                                // denklemin sabit katsayısı
+    * Math.pow(Math.min(oran, 1), alfa)
+    * Math.pow(Math.max(oran, 1), -1.200)   // κ üstündeki kreatinin için üs
+    * Math.pow(0.9938, yas)                 // her yaş yılı için yaklaşık %0,6 düşüş
+    * (kadin ? 1.012 : 1);                  // kadın düzeltme katsayısı
+}
+
+// eGFR değerini KDIGO G evresine çevirir (yuvarlanmamış değerle karşılaştırılır).
+function kdigoEvresi(egfr) {
+  if (egfr >= 90) return { evre: "G1", ad: "Normal veya yüksek", renk: "iyi" };
+  if (egfr >= 60) return { evre: "G2", ad: "Hafif azalmış", renk: "iyi" };
+  if (egfr >= 45) return { evre: "G3a", ad: "Hafif–orta azalmış", renk: "orta" };
+  if (egfr >= 30) return { evre: "G3b", ad: "Orta–ağır azalmış", renk: "orta" };
+  if (egfr >= 15) return { evre: "G4", ad: "Ağır azalmış", renk: "kotu" };
+  return { evre: "G5", ad: "Böbrek yetmezliği", renk: "kotu" };   // <15
+}
+
+// eGFR sekmesindeki girdileri okur, birim hatasını yakalar ve sonucu gösterir.
+function egfrSekmesiniHesapla() {
+  const kreatinin = Number(oku("egfr-kreatinin"));
+  const yas = Number(oku("egfr-yas"));
+  const cinsiyet = document.getElementById("egfr-cinsiyet").value;
+
+  const hatalar = [];
+  const UMOL_DONUSUM = 88.4;   // 1 mg/dL kreatinin = 88,4 µmol/L
+  // mg/dL olarak 20'nin üzerinde kreatinin çok nadirdir; µmol/L değerleri ise genellikle 40–1000 arasındadır.
+  if (kreatinin > 20) {
+    hatalar.push("Kreatinin " + yaz(kreatinin, 1) + " girildi. Bu değer µmol/L olabilir; mg/dL karşılığı yaklaşık " +
+      yaz(kreatinin / UMOL_DONUSUM, 2) + " mg/dL (µmol/L ÷ 88,4). mg/dL olarak girin.");
+  } else if (!(kreatinin >= 0.1)) {
+    hatalar.push("Kreatinin 0,1–20 mg/dL arasında bir sayı olmalı.");
+  }
+  if (!(yas >= 18 && yas <= 120)) hatalar.push("Yaş 18–120 arasında olmalı (CKD-EPI erişkinler içindir; çocukta Schwartz denklemi kullanılır).");
+  if (hatalar.length) return hataGoster("s-egfr", hatalar);
+
+  const egfr = egfrCkdEpi2021(kreatinin, yas, cinsiyet);
+  const evre = kdigoEvresi(egfr);
+
+  sonucGoster("s-egfr", {
+    deger: yaz(egfr, 1) + " mL/dk/1,73 m²",
+    sinif: "KDIGO " + evre.evre + ": " + evre.ad,
+    renk: evre.renk,
+    yorumlar: [
+      "KBH tanısı için eGFR <60 ya da böbrek hasarı belirteçlerinin (örn. albüminüri) 3 aydan uzun sürmesi gerekir; tek ölçüm tanı koydurmaz.",
+      "G1 ve G2 evreleri yalnızca böbrek hasarı kanıtı varsa KBH olarak adlandırılır; tam evreleme için albüminüri (A1–A3) de eklenmelidir.",
+      "İlaç dozu ayarlanırken prospektüsün hangi ölçütü (eGFR ya da Cockcroft-Gault kreatinin klirensi) kullandığına bakılmalıdır."
+    ],
+    sinirliliklar: [
+      "Kararlı durum varsayar; akut böbrek hasarında kreatinin gerçek GFR'yi gecikmeli yansıtır.",
+      "Kas kütlesi çok düşük (kaşeksi, amputasyon) ya da çok yüksek kişilerde, ayrıca gebelikte yanıltıcı olabilir; gerekirse sistatin C ile doğrulanır.",
+      "Sonuç vücut yüzeyine (1,73 m²) göre standartlaştırılmıştır; evre, ekranda yuvarlanmadan önceki değere göre belirlenir."
+    ]
+  });
+}
+
+/* =====================================================================
+   3) CHA2DS2-VASc ve CHA2DS2-VA
+   ===================================================================== */
+
+// Friberg 2012 (İsveç AF kohortu): CHA2DS2-VASc puanına göre yıllık iskemik inme riski (%), dizin = puan.
+const FRIBERG_YILLIK_INME = [0.2, 0.6, 2.2, 3.2, 4.8, 7.2, 9.7, 11.2, 10.8, 12.2];
+
+// Formdaki işaretlemelerden CHA2DS2-VASc ve cinsiyet puanı çıkarılmış CHA2DS2-VA puanlarını hesaplar.
+function chaPuanlari() {
+  const isaretli = id => document.getElementById(id).checked;
+  const yasPuani = Number(document.querySelector("input[name='cha-yas']:checked").value);   // <65: 0, 65–74: 1, ≥75: 2
+  const kadin = document.querySelector("input[name='cha-cinsiyet']:checked").value === "kadin";
+
+  let va = 0;
+  if (isaretli("cha-kky")) va += 1;        // C: konjestif kalp yetersizliği
+  if (isaretli("cha-ht")) va += 1;         // H: hipertansiyon
+  va += yasPuani;                          // A2 (≥75) veya A (65–74)
+  if (isaretli("cha-dm")) va += 1;         // D: diyabet
+  if (isaretli("cha-inme")) va += 2;       // S2: inme / GİA / tromboemboli
+  if (isaretli("cha-vaskuler")) va += 1;   // V: vasküler hastalık
+
+  const vasc = va + (kadin ? 1 : 0);       // Sc: kadın cinsiyet (yalnızca VASc'ta)
+  return { vasc, va };
+}
+
+// ESC 2024'e göre CHA2DS2-VA puanından antikoagülasyon önerisini döndürür.
+function esc2024Onerisi(vaPuani) {
+  if (vaPuani >= 2) return { metin: "Oral antikoagülasyon önerilir (ESC 2024).", renk: "kotu" };
+  if (vaPuani === 1) return { metin: "Oral antikoagülasyon düşünülmelidir (ESC 2024).", renk: "orta" };
+  return { metin: "Puana dayalı antikoagülasyon endikasyonu yok (ESC 2024).", renk: "iyi" };
+}
+
+// CHA2DS2-VASc sekmesinin sonucunu gösterir.
+function chaSekmesiniHesapla() {
+  const { vasc, va } = chaPuanlari();
+  const oneri = esc2024Onerisi(va);
+  const risk = FRIBERG_YILLIK_INME[vasc];
+
+  sonucGoster("s-cha", {
+    deger: "CHA₂DS₂-VASc " + vasc + " · CHA₂DS₂-VA " + va,
+    sinif: oneri.metin,
+    renk: oneri.renk,
+    ekBloklar: "<ul><li><b>Yıllık iskemik inme riski</b> (CHA₂DS₂-VASc = " + vasc + ", Friberg 2012): %" + yaz(risk, 1) + "</li></ul>",
+    yorumlar: [
+      "ESC 2024 kılavuzu karar için cinsiyet puanı çıkarılmış CHA₂DS₂-VA'yı kullanır; kadın cinsiyet tek başına risk değiştirici kabul edilir.",
+      "Antikoagülasyon kararından önce kanama riski ve düzeltilebilir kanama nedenleri ayrıca değerlendirilir; kanama riski yüksek diye antikoagülasyon otomatik olarak kesilmez.",
+      "Puan zamanla değişir (yaş, yeni HT/DM); düzenli aralıklarla yeniden hesaplanmalıdır."
+    ],
+    sinirliliklar: [
+      "Mekanik kalp kapağı ya da orta–ağır mitral darlığı olan hastalarda kullanılmaz; bu hastalarda antikoagülasyon endikasyonu ayrıdır.",
+      "Friberg oranları antikoagülan almayan İsveç kohortundan elde edilmiştir; başka toplumlarda mutlak riskler farklı olabilir. 8 puanın 7 puandan düşük görünmesi, az hasta sayısından kaynaklanan belirsizliktir.",
+      "Burada gösterilen yüzdeler CHA₂DS₂-VASc içindir; CHA₂DS₂-VA puanına karşılık gelen yıllık risk tablosu bu araçta yok."
+    ]
+  });
+}
+
+/* =====================================================================
+   4) Wells DVT
+   ===================================================================== */
+
+// İşaretlenen maddelerin puanlarını (data-wells) toplar.
+function wellsPuani() {
+  let toplam = 0;
+  document.querySelectorAll("#p-wells input[data-wells]:checked").forEach(kutu => {
+    toplam += Number(kutu.dataset.wells);   // +1 ya da alternatif tanı için −2
+  });
+  return toplam;
+}
+
+// İki düzeyli Wells (Wells 2003): ≥2 DVT olası, ≤1 olası değil.
+function wellsIkiDuzey(puan) {
+  if (puan >= 2) return { ad: "DVT olası", renk: "kotu" };
+  return { ad: "DVT olası değil", renk: "iyi" };
+}
+
+// Üç düzeyli Wells (Wells 1997): 0 düşük, 1–2 orta, ≥3 yüksek olasılık (negatif puan da düşük sayılır).
+function wellsUcDuzey(puan) {
+  // Yaklaşık DVT yaygınlıkları Wells 2006 meta-analizinden; kullanıcı mesajında verilmedi.
+  if (puan >= 3) return "Yüksek olasılık (~%53)" + DOGRULANMALI;
+  if (puan >= 1) return "Orta olasılık (~%17)" + DOGRULANMALI;
+  return "Düşük olasılık (~%5)" + DOGRULANMALI;
+}
+
+// Wells sekmesinin sonucunu gösterir.
+function wellsSekmesiniHesapla() {
+  const puan = wellsPuani();
+  const iki = wellsIkiDuzey(puan);
+
+  sonucGoster("s-wells", {
+    deger: "Wells puanı: " + puan,
+    sinif: "İki düzeyli: " + iki.ad,
+    renk: iki.renk,
+    ekBloklar: "<ul><li><b>Üç düzeyli:</b> " + wellsUcDuzey(puan) + "</li></ul>",
+    yorumlar: [
+      puan >= 2
+        ? "DVT olası: proksimal venöz kompresyon ultrasonografisi yapılır; D-dimer negatifliği tek başına DVT'yi dışlamaz."
+        : "DVT olası değil: D-dimer istenir; negatifse DVT büyük olasılıkla dışlanır, pozitifse ultrasonografi yapılır.",
+      "Skor tanı koymaz; görüntüleme ya da D-dimer öncesinde test öncesi olasılığı sınıflar.",
+      "\"Alternatif tanı\" maddesi (−2) öznel bir yargıdır ve skoru en çok değiştiren maddedir."
+    ],
+    sinirliliklar: [
+      "Ayaktan başvuran hastalarda geliştirilmiştir; hastanede yatan hastada, gebelikte ve üst ekstremite DVT'sinde performansı daha düşüktür ya da doğrulanmamıştır.",
+      "Önceden antikoagülan alan hastalarda ve D-dimerin zaten yüksek olduğu durumlarda (yaşlılık, kanser, cerrahi sonrası) algoritmanın yararı azalır."
+    ]
+  });
+}
+
+/* =====================================================================
+   5) mg/kg doz
+   ===================================================================== */
+
+// Kiloya göre günlük ve doz başına miktarı hesaplar; tavan aşılırsa tavanı uygular.
+function dozHesapla(kilo, mgKgGun, dozSayisi, tavanMgGun) {
+  const hesaplananGunluk = kilo * mgKgGun;
+  const tavanAsildi = tavanMgGun !== null && hesaplananGunluk > tavanMgGun;
+  const gunluk = tavanAsildi ? tavanMgGun : hesaplananGunluk;
+  return { hesaplananGunluk, gunluk, dozBasina: gunluk / dozSayisi, tavanAsildi };
+}
+
+// Doz başına mg'ı süspansiyon derişimine (mg / 5 mL) göre mL'ye çevirir.
+function mlHesapla(dozMg, derisimMgPer5mL) {
+  const mgPerMl = derisimMgPer5mL / 5;   // derişim 5 mL için verilir; 1 mL'deki mg
+  return dozMg / mgPerMl;
+}
+
+// Doz sekmesindeki girdileri okur, denetler ve sonucu gösterir.
+function dozSekmesiniHesapla() {
+  const kilo = Number(oku("doz-kilo"));
+  const mgKgGun = Number(oku("doz-mgkg"));
+  const dozSayisi = Number(document.getElementById("doz-sayi").value);
+  const tavanMetni = oku("doz-tavan");
+  const derisimMetni = oku("doz-derisim");
+  const tavan = tavanMetni === "" ? null : Number(tavanMetni);
+  const derisim = derisimMetni === "" ? null : Number(derisimMetni);
+
+  const hatalar = [];
+  // 250'nin üzerindeki "kilo" büyük olasılıkla gram cinsinden girilmiştir (örn. yenidoğanda 3200).
+  if (kilo > 250) hatalar.push("Kilo " + yaz(kilo, 0) + " girildi. Gram olabilir; kilogram olarak yazın (örn. " + yaz(kilo / 1000, 2) + ").");
+  else if (!(kilo >= 0.3)) hatalar.push("Kilo 0,3–250 kg arasında bir sayı olmalı.");
+  if (!(mgKgGun > 0)) hatalar.push("mg/kg/gün değeri sıfırdan büyük bir sayı olmalı.");
+  if (tavan !== null && !(tavan > 0)) hatalar.push("Tavan doz boş bırakılmalı ya da sıfırdan büyük bir sayı olmalı.");
+  if (derisim !== null && !(derisim > 0)) hatalar.push("Süspansiyon derişimi boş bırakılmalı ya da sıfırdan büyük bir sayı olmalı.");
+  if (hatalar.length) return hataGoster("s-doz", hatalar);
+
+  const d = dozHesapla(kilo, mgKgGun, dozSayisi, tavan);
+
+  let ek = "<ul>" +
+    "<li><b>Günlük toplam:</b> " + yaz(d.gunluk, 1) + " mg/gün" +
+      (d.tavanAsildi ? " (hesaplanan " + yaz(d.hesaplananGunluk, 1) + " mg tavanı aştı; tavan uygulandı)" : "") + "</li>" +
+    "<li><b>Doz başına:</b> " + yaz(d.dozBasina, 1) + " mg × günde " + dozSayisi + "</li>";
+  if (derisim !== null) {
+    ek += "<li><b>Doz başına hacim:</b> " + yaz(mlHesapla(d.dozBasina, derisim), 1) + " mL (" + yaz(derisim, 1) + " mg / 5 mL)</li>";
+  }
+  ek += "</ul>";
+
+  sonucGoster("s-doz", {
+    deger: yaz(d.dozBasina, 1) + " mg / doz",
+    sinif: d.tavanAsildi ? "Uyarı: kiloya göre doz tavanı aştı, tavan doz uygulandı" :
+           tavan === null ? "Tavan doz girilmedi; kontrol edin" : "Tavan dozun altında",
+    renk: d.tavanAsildi || tavan === null ? "orta" : "iyi",
+    ekBloklar: ek,
+    yorumlar: [
+      "Sonuç eğitim amaçlıdır; mg/kg dozu, tavan doz ve derişim her ilaç için prospektüsle (KÜB) doğrulanmalıdır.",
+      "Aynı etkin madde farklı derişimlerde satılır (örn. 125 ve 250 mg / 5 mL); mL hesabı şişe etiketine göre yapılmalıdır.",
+      "Obez hastada gerçek, ideal ya da düzeltilmiş kilodan hangisinin kullanılacağı ilaca göre değişir."
+    ],
+    sinirliliklar: [
+      "Böbrek ve karaciğer fonksiyonu, yaş (özellikle yenidoğan) ve etkileşimler hesaba katılmaz.",
+      "Ölçülebilir hacme yuvarlama (örn. 0,5 mL) ve verilebilir tablet gücüne uyarlama klinisyene bırakılmıştır."
+    ]
+  });
+}
+
+/* =====================================================================
+   Sekme geçişi ve düğme bağlantıları
+   ===================================================================== */
+
+// Seçilen sekmeyi açar, diğerlerini gizler.
+function sekmeAc(sekme) {
+  document.querySelectorAll("[role='tab']").forEach(t => {
+    const secili = t === sekme;
+    t.setAttribute("aria-selected", secili);
+    document.getElementById(t.getAttribute("aria-controls")).classList.toggle("acik", secili);
+  });
+}
+
+document.querySelectorAll("[role='tab']").forEach(t => t.addEventListener("click", () => sekmeAc(t)));
+document.getElementById("b-vki").addEventListener("click", vkiSekmesiniHesapla);
+document.getElementById("b-egfr").addEventListener("click", egfrSekmesiniHesapla);
+document.getElementById("b-cha").addEventListener("click", chaSekmesiniHesapla);
+document.getElementById("b-wells").addEventListener("click", wellsSekmesiniHesapla);
+document.getElementById("b-doz").addEventListener("click", dozSekmesiniHesapla);
+
+// Enter tuşu, bulunulan sekmenin "Hesapla" düğmesine basar.
+document.addEventListener("keydown", olay => {
+  if (olay.key !== "Enter" || olay.target.tagName === "BUTTON") return;
+  const panel = olay.target.closest(".panel");
+  if (panel) panel.querySelector("button.hesapla").click();
+});
+</script>
+</body>
+</html>
