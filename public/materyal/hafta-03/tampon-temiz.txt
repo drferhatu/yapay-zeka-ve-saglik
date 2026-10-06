@@ -1,0 +1,30 @@
+BİKARBONAT TAMPON SİSTEMİ VE KAN pH'ININ DÜZENLENMESİ
+(Ders materyali · Yapay Zeka ve Sağlık · Hafta 3 · temiz kaynak)
+
+1. Tampon nedir?
+Bir tampon çözelti, zayıf bir asit ile onun eşlenik bazını birlikte içeren ve ortama asit ya da baz eklendiğinde pH'ın büyük ölçüde değişmesini engelleyen çözeltidir. Eklenen hidrojen iyonlarını eşlenik baz bağlar; eklenen hidroksit iyonlarını zayıf asit nötralize eder. Böylece pH, tamponun pKa değeri civarında kararlı kalır.
+
+2. Vücuttaki en önemli tampon
+Hücre dışı sıvının ve kanın başlıca tamponu bikarbonat sistemidir. Karbonik asit (H2CO3) zayıf asit, bikarbonat iyonu (HCO3-) ise eşlenik bazdır. Karbonik asit, karbonik anhidraz enziminin katalizlediği tepkimeyle karbondioksit ve suyla dengededir:
+CO2 + H2O <-> H2CO3 <-> H+ + HCO3-
+
+3. Henderson-Hasselbalch denklemi
+Bir tamponun pH'ı, pKa değeri ile baz/asit oranına bağlıdır:
+pH = pKa + log10 ( [HCO3-] / [H2CO3] )
+Bikarbonat sistemi için pKa değeri 6,1'dir. Karbonik asit derişimi doğrudan ölçülmez; kandaki çözünmüş karbondioksitle orantılıdır ve 0,03 x pCO2 (mmHg) olarak hesaplanır.
+
+4. Normal değerler
+Normal arteriyel kanda bikarbonat derişimi yaklaşık 24 mmol/L, pCO2 yaklaşık 40 mmHg'dır. Buna göre karbonik asit derişimi 0,03 x 40 = 1,2 mmol/L olur. Bikarbonat/karbonik asit oranı 24/1,2 = 20'dir; yani oran yaklaşık 20:1'dir. Denklemde yerine konursa pH = 6,1 + log10(20) = 6,1 + 1,3 = 7,4 bulunur. Normal arteriyel pH aralığı 7,35-7,45'tir.
+
+5. Neden pKa'sı 6,1 olan bir tampon 7,4'te bu kadar etkilidir?
+Kimyasal olarak bir tampon, pKa değerine yakın pH'larda en güçlüdür; bu açıdan bikarbonat sistemi 7,4 için ideal görünmez. Ancak bikarbonat sistemi "açık" bir sistemdir: karbondioksit akciğerlerden dakikalar içinde atılabilir, bikarbonat ise böbreklerden saatler-günler içinde geri emilir ya da atılır. Asit ve baz bileşenlerinin iki ayrı organ tarafından bağımsız olarak ayarlanabilmesi, bu tamponu vücudun en etkili pH düzenleyicisi yapar.
+
+6. Klinik yorum
+pCO2 yükselirse (örneğin solunum yetmezliğinde) karbonik asit artar, oran 20:1'in altına düşer ve pH azalır: solunumsal asidoz. Bikarbonat azalırsa (örneğin ishal ya da ketoasidozda) yine oran düşer ve pH azalır: metabolik asidoz. pH'ın 7,35'in altına inmesine asidemi, 7,45'in üstüne çıkmasına alkalemi denir. Vücut, bozulan bileşeni diğer organla telafi etmeye çalışır: metabolik asidozda solunum hızlanarak pCO2 düşürülür.
+
+7. Özet
+- Tampon: zayıf asit + eşlenik baz; pH'ı pKa civarında tutar.
+- Bikarbonat sistemi: H2CO3 / HCO3-; pKa = 6,1.
+- Henderson-Hasselbalch: pH = 6,1 + log10([HCO3-]/(0,03 x pCO2)).
+- Normal: HCO3- 24 mmol/L, pCO2 40 mmHg, oran 20:1, pH 7,4.
+- Akciğer pCO2'yi, böbrek HCO3-'ü ayarlar; açık sistem olduğu için güçlüdür.
