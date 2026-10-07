@@ -68,6 +68,7 @@
     <button role="tab" aria-selected="false" data-tab="chads">CHA₂DS₂-VASc</button>
     <button role="tab" aria-selected="false" data-tab="wells">Wells DVT</button>
     <button role="tab" aria-selected="false" data-tab="doz">mg/kg doz</button>
+    <button role="tab" aria-selected="false" data-tab="ph">Kan pH'ı</button>
   </nav>
 
   <!-- ===================== 1) VKİ ve bel/boy oranı ===================== -->
@@ -168,6 +169,29 @@
     <div class="refs">Kaynaklar: Genel farmakoloji ilkesi (doz = ağırlık × mg/kg). Örnek doz aralığı için: BNF for Children, güncel baskı; Türkiye ilaç prospektüsleri (<a href="https://www.titck.gov.tr/" target="_blank" rel="noopener">TİTCK</a>).</div>
   </section>
 </main>
+
+  <!-- ===================== 6) Kan pH'ı: Henderson-Hasselbalch ===================== -->
+  <section class="panel" id="panel-ph">
+    <h2>Kan pH'ı (Henderson-Hasselbalch)</h2>
+    <p class="lede">Kan gazı sonucundaki iki sayıdan, bikarbonat ve pCO2'den, kanın pH'ını hesaplar ve asidemi/alkalemi olup olmadığını söyler. Hafta 3'te kurulda işlenen tampon konusunun hesap makinesi.</p>
+    <div class="note">
+      <strong>Ne yapıyor?</strong> Kanın pH'ı, bikarbonat tamponunun baz tarafı (HCO3-) ile asit tarafının (H2CO3, yani çözünmüş CO2) oranına bağlıdır. Henderson-Hasselbalch denklemi bu oranı pH'a çevirir:
+      <em>pH = pKa + log10 ( HCO3- / (0,03 × pCO2) )</em>. pKa bikarbonat sistemi için 6,1'dir; 0,03 ise mmHg cinsinden pCO2'yi mmol/L cinsinden çözünmüş CO2'ye çeviren sabittir.<br>
+      <strong>Girdiler:</strong> HCO3- (mmol/L, kan gazı raporunda yazar; normal yaklaşık 24), pCO2 (mmHg; normal yaklaşık 40) ve pKa (normalde 6,1; öğrenmek için değiştirilebilir).<br>
+      <strong>Ne işe yarar?</strong> Oran 20:1 ise pH 7,4 çıkar. pCO2 yükselince (solunum yetmezliği) oran düşer ve pH düşer; HCO3- azalınca (ishal, ketoasidoz) yine pH düşer. Hangi tarafın bozulduğunu görmek, solunumsal ile metabolik bozukluğu ayırmanın ilk adımıdır.
+    </div>
+    <form id="form-ph">
+      <label>HCO3- <span class="hint">mmol/L, normal ≈ 24</span><input name="hco3" type="number" step="any" min="1" max="80" required value="24"></label>
+      <label>pCO2 <span class="hint">mmHg, normal ≈ 40</span><input name="pco2" type="number" step="any" min="5" max="200" required value="40"></label>
+      <label>pKa <span class="hint">bikarbonat sistemi için 6,1</span><input name="pka" type="number" step="any" min="5" max="8" required value="6.1"></label>
+      <div class="actions"><button class="primary" type="submit">Hesapla</button><button class="ghost" type="reset">Temizle</button></div>
+    </form>
+    <div class="result" id="sonuc-ph" hidden aria-live="polite"></div>
+    <div class="note">Sınırları: Gerçek kan gazı cihazı pH'ı doğrudan ölçer, bu araç ise denklemle tahmin eder; amaç öğrenmek. Telafi mekanizmaları (akciğerin pCO2'yi, böbreğin HCO3-'ü ayarlaması) ve karışık bozukluklar bu basit hesabın dışındadır.</div>
+    <div class="refs">Kaynaklar: OpenStax, Anatomy and Physiology 2e, <a href="https://openstax.org/books/anatomy-and-physiology-2e/pages/26-4-acid-base-balance" target="_blank" rel="noopener">26.4 Acid-Base Balance</a> (açık erişim). ·
+      Hopkins E, Sanvictores T, Sharma S. Physiology, Acid Base Balance. StatPearls, NCBI Bookshelf. <a href="https://www.ncbi.nlm.nih.gov/books/NBK507807/" target="_blank" rel="noopener">NBK507807</a> (açık erişim). ·
+      OpenStax, Chemistry 2e, <a href="https://openstax.org/books/chemistry-2e/pages/14-6-buffers" target="_blank" rel="noopener">14.6 Buffers</a> (Henderson-Hasselbalch türetimi).</div>
+  </section>
 
 <footer class="wrap">Bu sayfa Yapay Zeka ve Sağlık dersinin 2. haftasında, tek bir istemle üretken yapay zekaya yazdırılmış ve öğretim üyesi tarafından kaynaklarıyla doğrulanmıştır. Hesaplamalar eğitim amaçlıdır; klinik kararlar güncel kılavuz ve hekim değerlendirmesi gerektirir.</footer>
 
@@ -340,6 +364,28 @@ document.getElementById('form-doz').addEventListener('submit', e => {
   if (uyari) html += `<p><strong>Dikkat:</strong> ${uyari}</p>`;
   html += `<ul><li>Hesap eğitim amaçlıdır. İlacın aralığı, tavanı, böbrek/karaciğer ayarı ve yaş kısıtları için prospektüs veya formüleri doğrulayın.</li></ul>`;
   goster('sonuc-doz', uyari ? 'warn' : 'ok', html);
+});
+
+// ---------- 6) Kan pH'ı: Henderson-Hasselbalch ----------
+function hendersonHasselbalch(hco3, pco2, pka) {
+  const h2co3 = 0.03 * pco2;                 // çözünmüş CO2 (mmol/L) = 0,03 × pCO2 (mmHg)
+  const oran = hco3 / h2co3;                 // baz / asit
+  return { ph: pka + Math.log10(oran), oran, h2co3 };
+}
+document.getElementById('form-ph').addEventListener('submit', e => {
+  e.preventDefault();
+  const f = e.target;
+  const hco3 = sayi(f, 'hco3'), pco2 = sayi(f, 'pco2'), pka = sayi(f, 'pka');
+  const { ph, oran, h2co3 } = hendersonHasselbalch(hco3, pco2, pka);
+  let durum, seviye, yorum;
+  if (ph < 7.35)      { durum = 'Asidemi';  seviye = 'bad';  yorum = pco2 > 45 ? 'pCO2 yüksek: solunumsal bileşen öne çıkıyor.' : hco3 < 22 ? 'HCO3- düşük: metabolik bileşen öne çıkıyor.' : 'Her iki bileşene bakın.'; }
+  else if (ph > 7.45) { durum = 'Alkalemi'; seviye = 'warn'; yorum = pco2 < 35 ? 'pCO2 düşük: solunumsal bileşen öne çıkıyor.' : hco3 > 26 ? 'HCO3- yüksek: metabolik bileşen öne çıkıyor.' : 'Her iki bileşene bakın.'; }
+  else                { durum = 'Normal aralık (7,35–7,45)'; seviye = 'ok'; yorum = 'Oran 20:1 civarında; tampon dengede.'; }
+  goster('sonuc-ph', seviye, `<p class="big">pH ${ph.toFixed(2)}</p>
+    <p><strong>${durum}.</strong> ${yorum}</p>
+    <ul><li>Çözünmüş CO2 = 0,03 × ${pco2} = ${h2co3.toFixed(2)} mmol/L · HCO3-/H2CO3 oranı = ${oran.toFixed(1)}:1 (normal ≈ 20:1)</li>
+        <li>Hesap: pH = ${pka} + log10(${oran.toFixed(1)}) = ${pka} + ${Math.log10(oran).toFixed(2)}</li>
+        <li>Eğitim amaçlıdır; kan gazı yorumu klinik tabloyla birlikte yapılır.</li></ul>`);
 });
 </script>
 </body>

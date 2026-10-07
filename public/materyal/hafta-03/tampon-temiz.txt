@@ -28,3 +28,8 @@ pCO2 yükselirse (örneğin solunum yetmezliğinde) karbonik asit artar, oran 20
 - Henderson-Hasselbalch: pH = 6,1 + log10([HCO3-]/(0,03 x pCO2)).
 - Normal: HCO3- 24 mmol/L, pCO2 40 mmHg, oran 20:1, pH 7,4.
 - Akciğer pCO2'yi, böbrek HCO3-'ü ayarlar; açık sistem olduğu için güçlüdür.
+
+Kaynaklar (açık erişim)
+- OpenStax, Anatomy and Physiology 2e, 26.4 Acid-Base Balance. https://openstax.org/books/anatomy-and-physiology-2e/pages/26-4-acid-base-balance
+- Hopkins E, Sanvictores T, Sharma S. Physiology, Acid Base Balance. StatPearls, NCBI Bookshelf. https://www.ncbi.nlm.nih.gov/books/NBK507807/
+- OpenStax, Chemistry 2e, 14.6 Buffers. https://openstax.org/books/chemistry-2e/pages/14-6-buffers

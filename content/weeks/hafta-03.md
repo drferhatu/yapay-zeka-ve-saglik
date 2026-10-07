@@ -23,6 +23,22 @@ objectives:
 tools:
   - "Gemini / Claude"
   - "NotebookLM"
+resources:
+  - title: "OpenStax, Anatomy and Physiology 2e — 26.4 Acid-Base Balance"
+    url: "https://openstax.org/books/anatomy-and-physiology-2e/pages/26-4-acid-base-balance"
+    note: "Bikarbonat tamponu, pKa 6,1, 20:1 oranı, solunumsal ve metabolik telafi. Açık erişim ders kitabı."
+  - title: "Hopkins E, Sanvictores T, Sharma S. Physiology, Acid Base Balance. StatPearls (NCBI Bookshelf)"
+    url: "https://www.ncbi.nlm.nih.gov/books/NBK507807/"
+    note: "Henderson-Hasselbalch denklemi ve klinik yorum; açık erişim, hakemli."
+  - title: "OpenStax, Chemistry 2e — 14.6 Buffers"
+    url: "https://openstax.org/books/chemistry-2e/pages/14-6-buffers"
+    note: "Tampon kimyası ve Henderson-Hasselbalch denkleminin türetimi."
+  - title: "OpenStax, Biology 2e — 14.2 DNA Structure and Sequencing"
+    url: "https://openstax.org/books/biology-2e/pages/14-2-dna-structure-and-sequencing"
+    note: "DNA'nın yapısı; beş soru üretme bölümündeki cevapları doğrulamak için."
+  - title: "Ghannam JY, Wang J, Jan A. Biochemistry, DNA Structure. StatPearls (NCBI Bookshelf)"
+    url: "https://www.ncbi.nlm.nih.gov/books/NBK538241/"
+    note: "DNA ve RNA yapısının özeti; açık erişim."
 ---
 
 ## Bu hafta kurulda ne var?
@@ -93,13 +109,30 @@ Temiz defterde her cümlenin yanında kaynak numarası görürsünüz, tıklayı
 > [!tanim] Kaynağa bağlı araç
 > NotebookLM, yalnızca sizin yüklediğiniz belgelerden cevap verir ve her cümlesine hangi kaynaktan aldığını iliştirir. Genel sohbet botu ise hafızasından konuşur. Birincisi ders çalışmak için, ikincisi fikir almak için.
 
+### Henderson-Hasselbalch'ı neden seçtim ve ne diyor?
+
+Bu haftanın konusu tamponlar; tamponların klinikteki karşılığı ise kan gazı raporu. O raporda iki sayı görürsünüz: bikarbonat (HCO3-) ve pCO2. Henderson-Hasselbalch denklemi, bu iki sayıdan kanın pH'ını çıkaran kısa bir formül. Sade hâli şu:
+
+pH = 6,1 + log10 ( HCO3- / (0,03 × pCO2) )
+
+Buradaki 6,1 bikarbonat tamponunun pKa'sı, yani tamponun "kendi" pH'ı. 0,03 ise mmHg cinsinden pCO2'yi kandaki çözünmüş karbondioksit miktarına (mmol/L) çeviren bir sabit. Parantezin içi baz/asit oranı. Normal kanda bikarbonat 24, pCO2 40'tır; 0,03 × 40 = 1,2 eder, 24/1,2 = 20 çıkar ve log10(20) yaklaşık 1,3 olduğundan pH 6,1 + 1,3 = 7,4 bulunur. Kitabınızdaki "20'ye 1 oranı" tam olarak bu.
+
+Denklemi seçmemin nedeni basit: tek satır, iki girdi, ezberlenebilir bir sonuç ve klinikte gerçekten kullanılan bir akıl yürütme. pCO2 yükselirse (akciğer karbondioksiti atamıyor) oran küçülür, pH düşer; bikarbonat azalırsa (ishal, ketoasidoz) yine pH düşer. Hangisinin bozulduğuna bakmak, solunumsal bozukluğu metabolik olandan ayırmanın ilk adımı. Bir aracın bunu beş dakikada hesaplar hâle gelmesi, formülün nasıl çalıştığını görmenizi de sağlıyor.
+
 ### Küçük bir sürpriz
 
-Zaman kalırsa geçen haftaki hesaplayıcıya bu haftanın konusunu ekletiyorum: Henderson-Hasselbalch için bir pH sekmesi. Beş dakika sürüyor; pCO2'yi 60'a çekince "asidemi" demesini birlikte izliyoruz. Siz yazmadınız, ben de yazmadım; ne istediğimizi biliyorduk.
+Zaman kalırsa geçen haftaki hesaplayıcıya bu sekmeyi perdede ekletiyorum. İstemi, aracın yalnızca hesap yapmasını değil, ne yaptığını da açıklamasını isteyecek biçimde yazdım; çünkü bir hesaplayıcı girdilerinin ne olduğunu ve sonucun ne anlama geldiğini söylemiyorsa öğrenmeye değil ezbere hizmet eder. Hazır sürüm sitede zaten var ([Klinik Hesaplayıcı → Kan pH'ı](/araclar/klinik-hesaplayici)); canlıda üretilenle karşılaştırırız.
 
 ```text
-public/araclar/klinik-hesaplayici.html dosyasına altıncı bir sekme ekle: "pH (Henderson-Hasselbalch)". Girdiler: pKa (varsayılan 6,1), HCO3- (mmol/L, varsayılan 24), pCO2 (mmHg, varsayılan 40). Hesap: H2CO3 = 0,03 × pCO2; pH = pKa + log10(HCO3-/H2CO3). Sonuç: pH iki ondalıkla; 7,35'in altı "asidemi", 7,45'in üstü "alkalemi", arası "normal"; ayrıca HCO3-/H2CO3 oranını göster (normalde yaklaşık 20:1). Mevcut tasarımı ve kod üslubunu koru; kaynak olarak Henderson-Hasselbalch denklemini ve standart bir fizyoloji metnini yaz.
+public/araclar/klinik-hesaplayici.html dosyasına "Kan pH'ı (Henderson-Hasselbalch)" adlı altıncı bir sekme ekle.
+Girdiler: HCO3- (mmol/L, varsayılan 24), pCO2 (mmHg, varsayılan 40), pKa (varsayılan 6,1).
+Hesap: H2CO3 = 0,03 × pCO2; pH = pKa + log10(HCO3-/H2CO3).
+Sonuç: pH iki ondalıkla; 7,35'in altı "asidemi", 7,45'in üstü "alkalemi", arası "normal"; HCO3-/H2CO3 oranını göster (normal ≈ 20:1) ve pCO2 ya da HCO3-'ün hangisinin bozulduğunu tek cümleyle söyle.
+Formun üstüne kısa bir açıklama kutusu koy: denklem ne yapar, girdiler nedir ve nerede yazar, sonuç ne işe yarar; tıp 1. sınıf öğrencisinin anlayacağı dilde, 5-6 cümle. Altına sınırlılıkları (gerçek cihaz pH'ı ölçer, bu tahmindir; telafi ve karışık bozukluklar dışarıda) ve açık erişimli kaynakları (OpenStax A&P 26.4, StatPearls Acid Base Balance) ekle.
+Mevcut tasarımı ve kod üslubunu koru.
 ```
+
+Çalışınca pCO2'yi 60'a çekiyoruz ve "asidemi, pCO2 yüksek, solunumsal bileşen" demesini izliyoruz. Siz yazmadınız, ben de yazmadım; ne istediğimizi biliyorduk.
 
 ## Haftanın iki sorusu
 
