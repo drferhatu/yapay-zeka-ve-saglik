@@ -50,7 +50,7 @@ Bir klinik soru için LLM'den 5 kaynak isteyin; her birini PubMed'de arayıp ger
 
 ## Tartışma Soruları
 
-1. YZ araçları sistematik derlemede hangi adımları hızlandırır, hangilerinde risk yaratır?
+1. YZ araçları sistematik derlemede hangi adımları hızlandırır, hangilerinde risk oluşturur?
 
 ## Haftanın Özeti
 

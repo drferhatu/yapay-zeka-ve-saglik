@@ -2,7 +2,7 @@
 week: 4
 title: "Ajan İş Başında: Hücre Zarı Simülatörü ve Doğru Soru Sormanın Dört Parçası"
 topic: "Fonksiyonlar ve okunabilir kod; basit bir klinik hesaplayıcı geliştirme (ör. eGFR/risk skoru)"
-description: "Bu hafta bir yapay zeka ajanının perdede, tek istemle, hücre zarında taşınımı oynatan bir simülatör yazmasını izliyoruz; sonra aynı konuyu dört parçalı istemle, kendi hocanızı yaratarak ve sizi sınayan bir sorgulama simülasyonuyla çalışmanın yolunu görüyoruz. Bilgisayar gerekmiyor, ödev yok."
+description: "Bu hafta bir yapay zeka ajanının perdede, tek istemle, hücre zarında taşınımı oynatan bir simülatör yazmasını izliyoruz; sonra aynı konuyu dört parçalı istemle, kendi hocanızı oluşturarak ve sizi sınayan bir sorgulama simülasyonuyla çalışmanın yolunu görüyoruz. Bilgisayar gerekmiyor, ödev yok."
 module: m1
 semester: 1
 exam: false
@@ -86,9 +86,9 @@ Hücre biyolojisi dersi veren, benzetmelerle anlatmayı seven bir hoca gibi davr
 
 İki cevabı yan yana görünce fark kendini anlatıyor. İlkinde ansiklopedi maddesi, ikincisinde size yazılmış bir ders alırsınız. Dört parçadan en çok atlanan bağlam; oysa "neyi karıştırıyorum" cümlesi cevabı en çok değiştiren cümle.
 
-### Kendi hocanızı bir kez kurun
+### Kendi hocanızı bir kez şekillendirin
 
-Videoda bir asistanın kendine "ortopedi hocası" karakteri yarattığını gördüm; aynı fikri birinci sınıfa uyarlıyorum. Bir sohbetin başına şu metni bir kez yazıyorsunuz, sonra o sohbette ne sorarsanız sorun o karakter cevap veriyor. ChatGPT'de buna özel GPT, Claude'da proje, Gemini'de "gem" deniyor; ama düz sohbette bile ilk mesaj olarak çalışır.
+Videoda bir asistanın kendine "ortopedi hocası" karakteri oluşturduğunu gördüm; aynı fikri birinci sınıfa uyarlıyorum. Bir sohbetin başına şu metni bir kez yazıyorsunuz, sonra o sohbette ne sorarsanız sorun o karakter cevap veriyor. ChatGPT'de buna özel GPT, Claude'da proje, Gemini'de "gem" deniyor; ama düz sohbette bile ilk mesaj olarak çalışır.
 
 ```text
 Bundan sonra bu sohbette "Hücre Hocam" ol: hücre biyolojisi ve biyokimya öğreten, sabırlı, benzetmeleri seven, yanlış öğrenmeme asla izin vermeyen bir öğretim üyesi. Ben Fırat Üniversitesi Tıp Fakültesi 1. sınıf öğrencisiyim; şu an Hücre ders kurulundayım, sınav 20 Kasım. Her cevabında: önce bir cümlelik öz, sonra açıklama, sonunda "kendini sına" diye bir soru. Emin olmadığın bir bilgi varsa "bunu kitaptan doğrula" diye işaretle. Türkçe konuş.
