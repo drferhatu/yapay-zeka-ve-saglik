@@ -1,0 +1,26 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { href, weekHref } from '@/lib/site';
+const app = href('/araclar/hucre-zari-simulatoru.html');
+const source = 'https://github.com/drferhatu/yapay-zeka-ve-saglik/blob/main/public/araclar/hucre-zari-simulatoru.html';
+---
+<BaseLayout title="Hücre Zarı Simülatörü" description="Ozmoz, difüzyon ve sodyum-potasyum pompasını telefonda oynayarak öğrenin; tek dosya, kaynaklarıyla.">
+  <div class="wrap py-10 md:py-12">
+    <nav aria-label="Konum" class="text-sm text-ink-3"><a href={href('/araclar')} class="hover:text-ink">Araçlar</a> <span aria-hidden="true">/</span> Hücre Zarı Simülatörü</nav>
+    <div class="mt-4 flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <h1 class="display text-3xl md:text-4xl">Hücre Zarı Simülatörü</h1>
+        <p class="mt-2 max-w-2xl text-ink-2">Bir eritrositi üç ortama koyun, derişim farkıyla difüzyonun hızlanıp yavaşlamasını izleyin, sodyum-potasyum pompasını adım adım çalıştırıp ATP'yi kesince ne olduğuna bakın. 4. haftada tek bir istemle bir yapay zeka ajanına yazdırdık; fizyolojisini kaynaklarıyla doğruladım.</p>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <a href={app} target="_blank" rel="noopener" class="btn-primary">Tam ekran aç</a>
+        <a href={source} target="_blank" rel="noopener" class="btn-ghost">Kodu oku</a>
+        <a href={weekHref(4)} class="btn-ghost">Nasıl yazdırıldı?</a>
+      </div>
+    </div>
+  </div>
+  <div class="wrap pb-20">
+    <iframe src={app} title="Hücre Zarı Simülatörü" class="h-[82vh] min-h-[640px] w-full rounded-2xl border border-line bg-white shadow-soft" loading="lazy"></iframe>
+    <p class="mt-4 text-xs text-ink-3">Basitleştirilmiş bir modeldir; sayılar ve hızlar öğretici ölçeklidir, sınav için kitabınıza bakın. Hata ya da eksik bulursanız derse getirin.</p>
+  </div>
+</BaseLayout>

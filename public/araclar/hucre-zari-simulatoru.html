@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hücre Zarı Simülatörü · Yapay Zeka ve Sağlık</title>
+<meta name="description" content="Ozmoz, difüzyon ve sodyum-potasyum pompasını telefonda oynayarak öğrenin. Tek dosya, dış bağımlılık yok.">
+<style>
+  :root{--paper:#faf8f4;--paper2:#f2eee6;--ink:#10262e;--ink2:#34515b;--ink3:#6a838b;--line:#e3ddd2;--line2:#cfc6b8;--brand:#0f4c5c;--brand-soft:#dcecef;--accent:#e4572e;--ok:#1f7a4d;--warn:#b7791f;--bad:#be3a5a;--na:#e4572e;--k:#3b4cc0;--water:#1b6f83}
+  *{box-sizing:border-box} body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  header{border-bottom:1px solid var(--line);background:#fff} .wrap{max-width:900px;margin:0 auto;padding:0 16px}
+  header .wrap{display:flex;align-items:center;justify-content:space-between;height:58px;gap:12px} header h1{font-size:18px;margin:0} header small{color:var(--ink3);font-size:12px}
+  nav.tabs{display:flex;gap:6px;flex-wrap:wrap;padding:14px 0}
+  nav.tabs button{border:1px solid var(--line2);background:#fff;color:var(--ink2);border-radius:999px;padding:8px 14px;font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+  nav.tabs button[aria-selected="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+  section.panel{display:none;background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:20px} section.panel[data-active]{display:block}
+  .panel h2{margin:0 0 4px;font-size:21px} .lede{margin:0 0 14px;color:var(--ink2);font-size:15px}
+  canvas{display:block;width:100%;height:auto;background:#fff;border:1px solid var(--line);border-radius:12px;touch-action:none}
+  .controls{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin:12px 0}
+  .controls label{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:600;min-width:160px} .controls input[type=range]{width:100%}
+  .seg{display:flex;gap:6px;flex-wrap:wrap} .seg button{border:1px solid var(--line2);background:#fff;border-radius:10px;padding:8px 12px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;color:var(--ink2)}
+  .seg button[aria-pressed="true"]{background:var(--brand);color:#fff;border-color:var(--brand)}
+  button.primary{background:var(--brand);color:#fff;border:0;border-radius:999px;padding:10px 18px;font:inherit;font-weight:700;cursor:pointer} button.ghost{background:#fff;border:1px solid var(--line2);border-radius:999px;padding:10px 16px;font:inherit;font-weight:600;cursor:pointer;color:var(--ink2)}
+  .status{border-left:5px solid var(--brand);background:var(--brand-soft);border-radius:12px;padding:12px 14px;margin-top:12px;font-size:15px} .status[data-level=bad]{border-color:var(--bad);background:#fbe4ea} .status[data-level=warn]{border-color:var(--warn);background:#fdf3e1} .status[data-level=ok]{border-color:var(--ok);background:#e3f2ea}
+  .note{background:var(--paper2);border-radius:10px;padding:10px 12px;font-size:13.5px;color:var(--ink2);margin-top:12px} .note b{color:var(--ink)}
+  .refs{margin-top:12px;font-size:12.5px;color:var(--ink3);border-top:1px solid var(--line);padding-top:8px} .refs a{color:var(--brand)}
+  footer{padding:20px 0 40px;font-size:12.5px;color:var(--ink3)}
+  @media (prefers-reduced-motion: reduce){ .anim{animation:none} }
+</style>
+</head>
+<body>
+<header><div class="wrap"><h1>Hücre Zarı Simülatörü</h1><small>Yapay Zeka ve Sağlık · Hafta 4 · Oynayarak öğrenmek için; sınav için kitap</small></div></header>
+<main class="wrap">
+  <nav class="tabs" role="tablist">
+    <button role="tab" aria-selected="true" data-tab="ozmoz">Ozmoz</button>
+    <button role="tab" aria-selected="false" data-tab="difuzyon">Difüzyon</button>
+    <button role="tab" aria-selected="false" data-tab="pompa">Na⁺/K⁺ pompası</button>
+  </nav>
+
+  <!-- ================= OZMOZ ================= -->
+  <section class="panel" id="panel-ozmoz" data-active>
+    <h2>Ozmoz: bir eritrosit üç ortamda</h2>
+    <p class="lede">Su, yarı geçirgen zardan çözünen maddenin az olduğu yerden çok olduğu yere geçer. Ortamı seçin, hücrenin ne yaptığını izleyin.</p>
+    <div class="seg" id="ortam">
+      <button aria-pressed="false" data-ortam="hipo">Hipotonik (%0,45 NaCl)</button>
+      <button aria-pressed="true" data-ortam="izo">İzotonik (%0,9 NaCl)</button>
+      <button aria-pressed="false" data-ortam="hiper">Hipertonik (%3 NaCl)</button>
+    </div>
+    <canvas id="c-ozmoz" width="880" height="360"></canvas>
+    <div class="status" id="s-ozmoz"></div>
+    <div class="note"><b>Neden böyle?</b> Hücre içi çözünen derişimi yaklaşık %0,9 NaCl'ye eşdeğerdir. Dışarısı daha seyreltikse (hipotonik) su içeri girer, hücre şişer, aşırı olursa patlar (hemoliz). Dışarısı daha derişikse (hipertonik) su dışarı çıkar, hücre büzüşür (krenasyon). İzotonikte giriş ve çıkış eşittir. Klinikte serum fizyolojik %0,9 olmasının sebebi budur.</div>
+    <div class="refs">Kaynaklar: OpenStax Biology 2e, <a href="https://openstax.org/books/biology-2e/pages/5-2-passive-transport" target="_blank" rel="noopener">5.2 Passive Transport</a> · OpenStax Anatomy and Physiology 2e, <a href="https://openstax.org/books/anatomy-and-physiology-2e/pages/3-1-the-cell-membrane" target="_blank" rel="noopener">3.1 The Cell Membrane</a> (açık erişim).</div>
+  </section>
+
+  <!-- ================= DİFÜZYON ================= -->
+  <section class="panel" id="panel-difuzyon">
+    <h2>Difüzyon: derişim farkı hızı belirler</h2>
+    <p class="lede">Zarın iki yanındaki tanecik sayısını ayarlayın. Tanecikler rastgele hareket eder; net akış her zaman çoktan aza doğrudur ve fark kapandıkça yavaşlar.</p>
+    <div class="controls">
+      <label>Sol taraf (tanecik) <span id="v-sol">80</span><input id="r-sol" type="range" min="0" max="120" value="80"></label>
+      <label>Sağ taraf (tanecik) <span id="v-sag">20</span><input id="r-sag" type="range" min="0" max="120" value="20"></label>
+      <label>Zar geçirgenliği <span id="v-gec">orta</span><input id="r-gec" type="range" min="1" max="3" value="2"></label>
+      <button class="primary" id="b-basla">Başlat</button><button class="ghost" id="b-sifirla">Sıfırla</button>
+    </div>
+    <canvas id="c-dif" width="880" height="320"></canvas>
+    <div class="status" id="s-dif">Tanecikleri yerleştirip Başlat'a basın.</div>
+    <div class="note"><b>Okunacak şey:</b> Net akış hızı derişim farkıyla orantılıdır (Fick yasasının sezgisi). Fark sıfırlandığında tanecikler hareket etmeye devam eder ama <em>net</em> akış durur: dinamik denge. Oksijenin alveolden kana, karbondioksitin kandan alveole geçişi tam olarak budur. Geçirgenlik zarın özelliğidir; yağda çözünen küçük moleküller kolay geçer, yüklü iyonlar kanal ister.</div>
+    <div class="refs">Kaynak: OpenStax Biology 2e, <a href="https://openstax.org/books/biology-2e/pages/5-2-passive-transport" target="_blank" rel="noopener">5.2 Passive Transport</a>.</div>
+  </section>
+
+  <!-- ================= POMPA ================= -->
+  <section class="panel" id="panel-pompa">
+    <h2>Sodyum-potasyum pompası: derişime karşı, ATP ile</h2>
+    <p class="lede">Her döngüde 3 Na⁺ dışarı, 2 K⁺ içeri; bedeli bir ATP. Adım adım ilerleyin; ATP'yi kapatınca ne olduğuna bakın.</p>
+    <div class="controls">
+      <button class="primary" id="b-adim">Sonraki adım →</button>
+      <button class="ghost" id="b-oto">Otomatik oynat</button>
+      <label style="flex-direction:row;align-items:center;gap:8px;min-width:0"><input id="t-atp" type="checkbox" checked> ATP var</label>
+      <span style="font-size:13px;color:var(--ink3)">Dışarı atılan Na⁺: <b id="n-na">0</b> · İçeri alınan K⁺: <b id="n-k">0</b> · Harcanan ATP: <b id="n-atp">0</b></span>
+    </div>
+    <canvas id="c-pompa" width="880" height="340"></canvas>
+    <div class="status" id="s-pompa"></div>
+    <div class="note"><b>Neden önemli?</b> Hücre içinde K⁺ yüksek, Na⁺ düşük tutulur; bu fark sinir ve kas hücrelerinin uyarılabilirliğinin, hücre hacminin ve ikincil aktif taşınımın (glukozun Na⁺ ile birlikte emilmesi gibi) temelidir. Pompa, vücudun dinlenme enerjisinin önemli bir kısmını harcar. Dijital glikozitler (digoksin) tam bu pompayı inhibe ederek etki eder.</div>
+    <div class="refs">Kaynaklar: OpenStax Biology 2e, <a href="https://openstax.org/books/biology-2e/pages/5-3-active-transport" target="_blank" rel="noopener">5.3 Active Transport</a> · OpenStax Anatomy and Physiology 2e, <a href="https://openstax.org/books/anatomy-and-physiology-2e/pages/3-1-the-cell-membrane" target="_blank" rel="noopener">3.1 The Cell Membrane</a>.</div>
+  </section>
+</main>
+<footer class="wrap">Bu simülatör 4. haftada tek bir istemle, bir yapay zeka ajanına yazdırıldı ve öğretim üyesi tarafından kaynaklarıyla doğrulandı. Basitleştirilmiş bir modeldir; sayılar ve hızlar gerçek değil, öğretici ölçeklidir.</footer>
+
+<script>
+/* Okuma rehberi: her sekme ayrı bir bölüm. "function" fonksiyon tanımı, "let/const" değişken, "if" koşul. Çizimler <canvas> üzerinde; requestAnimationFrame her karede yeniden çizer. */
+
+// ---------- Sekmeler ----------
+document.querySelectorAll('nav.tabs button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('nav.tabs button').forEach(x => x.setAttribute('aria-selected', 'false'));
+  document.querySelectorAll('section.panel').forEach(p => p.removeAttribute('data-active'));
+  b.setAttribute('aria-selected', 'true'); document.getElementById('panel-' + b.dataset.tab).setAttribute('data-active', '');
+}));
+
+// ================= 1) OZMOZ =================
+const oz = { ctx: document.getElementById('c-ozmoz').getContext('2d'), ortam: 'izo', r: 70, hedef: 70, t: 0 };
+const ORTAM = {                       // hedef yarıçap ve açıklama; sayılar öğretici ölçekte
+  hipo:  { r: 100, metin: 'Dışarısı seyreltik: su içeri giriyor, hücre şişiyor; %0,45 ve altında hemoliz riski.', seviye: 'bad',  su: 'içeri' },
+  izo:   { r: 70,  metin: 'Giren ve çıkan su eşit: hücre hacmi sabit. Serum fizyolojik (%0,9) bu yüzden güvenli.', seviye: 'ok',   su: 'denge' },
+  hiper: { r: 48,  metin: 'Dışarısı derişik: su dışarı çıkıyor, hücre büzüşüyor (krenasyon).', seviye: 'warn', su: 'dışarı' },
+};
+document.querySelectorAll('#ortam button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('#ortam button').forEach(x => x.setAttribute('aria-pressed', 'false')); b.setAttribute('aria-pressed', 'true');
+  oz.ortam = b.dataset.ortam; oz.hedef = ORTAM[oz.ortam].r; oz.patladi = false;
+}));
+function cizOzmoz() {
+  const c = oz.ctx, W = 880, H = 360; oz.t += 0.02;
+  oz.r += (oz.hedef - oz.r) * 0.03;                       // yarıçap hedefe yavaşça yaklaşır
+  if (oz.ortam === 'hipo' && oz.r > 97) oz.patladi = true; // aşırı şişme → hemoliz
+  c.clearRect(0, 0, W, H);
+  // ortam sıvısı: tanecik yoğunluğu ortamın derişimini temsil eder
+  const yogunluk = { hipo: 25, izo: 60, hiper: 140 }[oz.ortam];
+  c.fillStyle = '#eaf2f4'; c.fillRect(0, 0, W, H);
+  c.fillStyle = '#9fb7bf';
+  for (let i = 0; i < yogunluk; i++) { const x = (i * 97) % W, y = (i * 61 + Math.sin(oz.t + i) * 6) % H; c.beginPath(); c.arc(x, y, 2.2, 0, 7); c.fill(); }
+  // hücre
+  const cx = W / 2, cy = H / 2;
+  if (oz.patladi) {
+    c.strokeStyle = '#be3a5a'; c.lineWidth = 3; c.setLineDash([8, 8]); c.beginPath(); c.arc(cx, cy, 102, 0, 7); c.stroke(); c.setLineDash([]);
+    c.fillStyle = '#be3a5a'; c.font = 'bold 18px system-ui'; c.textAlign = 'center'; c.fillText('Hemoliz: zar yırtıldı', cx, cy + 6);
+  } else {
+    c.fillStyle = '#e8a1a1'; c.strokeStyle = '#b84a4a'; c.lineWidth = 3;
+    c.beginPath(); c.ellipse(cx, cy, oz.r * 1.15, oz.r, 0, 0, 7); c.fill(); c.stroke();
+    if (oz.r > 60) { c.fillStyle = 'rgba(184,74,74,.25)'; c.beginPath(); c.ellipse(cx, cy, oz.r * 0.45, oz.r * 0.35, 0, 0, 7); c.fill(); } // bikonkav çukur izlenimi
+  }
+  // su okları
+  const yon = ORTAM[oz.ortam].su; c.strokeStyle = '#1b6f83'; c.fillStyle = '#1b6f83'; c.lineWidth = 3;
+  const ok = (x1, y1, x2, y2) => { c.beginPath(); c.moveTo(x1, y1); c.lineTo(x2, y2); c.stroke(); const a = Math.atan2(y2 - y1, x2 - x1); c.beginPath(); c.moveTo(x2, y2); c.lineTo(x2 - 10 * Math.cos(a - .5), y2 - 10 * Math.sin(a - .5)); c.lineTo(x2 - 10 * Math.cos(a + .5), y2 - 10 * Math.sin(a + .5)); c.fill(); };
+  const R = oz.r * 1.15 + 20, p = (Math.sin(oz.t * 3) + 1) * 6;
+  for (const ang of [0, Math.PI / 2, Math.PI, 3 * Math.PI / 2]) {
+    const ax = cx + Math.cos(ang) * (R + 40), ay = cy + Math.sin(ang) * (R + 40), bx = cx + Math.cos(ang) * (R + 4), by = cy + Math.sin(ang) * (R + 4);
+    if (yon === 'içeri') ok(ax + Math.cos(ang) * p, ay + Math.sin(ang) * p, bx, by);
+    else if (yon === 'dışarı') ok(bx, by, ax + Math.cos(ang) * p, ay + Math.sin(ang) * p);
+    else { ok(ax, ay, bx + Math.cos(ang) * 14, by + Math.sin(ang) * 14); ok(bx, by, ax - Math.cos(ang) * 14, ay - Math.sin(ang) * 14); }
+  }
+  c.fillStyle = '#34515b'; c.font = '13px system-ui'; c.textAlign = 'left'; c.fillText('mavi ok = su hareketi · gri noktalar = dış ortamdaki çözünen', 12, H - 12);
+  const s = document.getElementById('s-ozmoz'); s.dataset.level = ORTAM[oz.ortam].seviye; s.textContent = (oz.patladi ? 'Hemoliz! ' : '') + ORTAM[oz.ortam].metin;
+  requestAnimationFrame(cizOzmoz);
+}
+cizOzmoz();
+
+// ================= 2) DİFÜZYON =================
+const dif = { ctx: document.getElementById('c-dif').getContext('2d'), tan: [], calis: false, t0: 0 };
+function kurDif() {
+  const sol = +document.getElementById('r-sol').value, sag = +document.getElementById('r-sag').value;
+  dif.tan = [];
+  for (let i = 0; i < sol; i++) dif.tan.push({ x: Math.random() * 420 + 10, y: Math.random() * 300 + 10, vx: 0, vy: 0 });
+  for (let i = 0; i < sag; i++) dif.tan.push({ x: Math.random() * 420 + 450, y: Math.random() * 300 + 10, vx: 0, vy: 0 });
+  dif.calis = false; document.getElementById('s-dif').textContent = 'Tanecikler yerleşti. Başlat\'a basın.'; document.getElementById('s-dif').dataset.level = '';
+}
+['r-sol', 'r-sag', 'r-gec'].forEach(id => document.getElementById(id).addEventListener('input', e => {
+  document.getElementById('v-sol').textContent = document.getElementById('r-sol').value;
+  document.getElementById('v-sag').textContent = document.getElementById('r-sag').value;
+  document.getElementById('v-gec').textContent = ['', 'düşük', 'orta', 'yüksek'][document.getElementById('r-gec').value];
+  if (id !== 'r-gec') kurDif();
+}));
+document.getElementById('b-basla').addEventListener('click', () => { dif.calis = true; });
+document.getElementById('b-sifirla').addEventListener('click', kurDif);
+function cizDif() {
+  const c = dif.ctx, W = 880, H = 320, gec = +document.getElementById('r-gec').value * 0.004; // geçirgenlik: zarı geçme olasılığı
+  c.clearRect(0, 0, W, H); c.fillStyle = '#f6f3ec'; c.fillRect(0, 0, W, H);
+  c.fillStyle = '#cfc6b8'; c.fillRect(435, 0, 10, H);                                    // zar
+  let sol = 0, sag = 0;
+  for (const p of dif.tan) {
+    if (dif.calis) {
+      p.vx += (Math.random() - .5) * 0.6; p.vy += (Math.random() - .5) * 0.6; p.vx *= .95; p.vy *= .95; // rastgele yürüyüş
+      const nx = p.x + p.vx;
+      const zariGecer = (p.x < 435 && nx >= 435) || (p.x > 445 && nx <= 445);
+      if (zariGecer && Math.random() > gec * 25) p.vx = -p.vx; else p.x = nx;            // çoğu çarpışma geri döner, bir kısmı geçer
+      p.y += p.vy; if (p.y < 6 || p.y > H - 6) p.vy = -p.vy; if (p.x < 6 || p.x > W - 6) p.vx = -p.vx;
+      if (p.x > 435 && p.x < 445) p.x = p.vx > 0 ? 446 : 434;
+    }
+    (p.x < 440 ? sol++ : sag++);
+    c.fillStyle = p.x < 440 ? '#e4572e' : '#3b4cc0'; c.beginPath(); c.arc(p.x, p.y, 4, 0, 7); c.fill();
+  }
+  const fark = sol - sag, s = document.getElementById('s-dif');
+  if (dif.calis) {
+    const hiz = Math.abs(fark) > 40 ? 'hızlı' : Math.abs(fark) > 12 ? 'yavaşlıyor' : 'neredeyse durdu';
+    s.textContent = `Sol ${sol} · Sağ ${sag} · Fark ${fark} → net akış ${fark > 0 ? 'sağa' : fark < 0 ? 'sola' : 'yok'}, ${hiz}. ${Math.abs(fark) <= 12 ? 'Dinamik denge: tanecikler hareket ediyor, net akış yok.' : ''}`;
+    s.dataset.level = Math.abs(fark) <= 12 ? 'ok' : '';
+  }
+  c.fillStyle = '#34515b'; c.font = '13px system-ui'; c.fillText('zar (gri) · net akış her zaman çoktan aza', 12, H - 10);
+  requestAnimationFrame(cizDif);
+}
+kurDif(); cizDif();
+
+// ================= 3) Na/K POMPASI =================
+const ADIMLAR = [
+  { b: 'Pompa içe açık; hücre içinden 3 Na⁺ bağlanır.', y: 'Na⁺ iyonlarının yüksek afiniteyle bağlanması pompayı ATP\'ye hazırlar.' },
+  { b: 'ATP bağlanır, fosfat pompaya aktarılır (fosforilasyon).', y: 'Enerji burada harcanır: ATP → ADP + P. Konsantrasyon gradyanına karşı taşımanın bedeli.' },
+  { b: 'Pompa şekil değiştirir, dışa açılır; 3 Na⁺ dışarı bırakılır.', y: 'Dışarıda Na⁺ zaten yüksek; pompa buna rağmen itiyor.' },
+  { b: 'Dış ortamdan 2 K⁺ bağlanır.', y: 'Dışarıda K⁺ düşük olduğu hâlde yüksek afinite sayesinde yakalanır.' },
+  { b: 'Fosfat ayrılır; pompa tekrar içe döner.', y: 'Defosforilasyon şekli geri çevirir.' },
+  { b: '2 K⁺ içeri bırakılır; döngü başa döner.', y: 'Net: 3 pozitif yük dışarı, 2 içeri → içerisi bir miktar daha negatif (elektrojenik pompa).' },
+];
+const pm = { ctx: document.getElementById('c-pompa').getContext('2d'), adim: 0, na: 0, k: 0, atp: 0, oto: null };
+function cizPompa() {
+  const c = pm.ctx, W = 880, H = 340; c.clearRect(0, 0, W, H);
+  c.fillStyle = '#eaf2f4'; c.fillRect(0, 0, W, 150); c.fillStyle = '#fbeeda'; c.fillRect(0, 190, W, 150);
+  c.fillStyle = '#cfc6b8'; c.fillRect(0, 150, W, 40);                                  // zar
+  c.fillStyle = '#34515b'; c.font = 'bold 13px system-ui'; c.fillText('HÜCRE DIŞI · Na⁺ yüksek, K⁺ düşük', 12, 20); c.fillText('HÜCRE İÇİ · K⁺ yüksek, Na⁺ düşük', 12, 330);
+  // pompa gövdesi
+  const disaAcik = pm.adim >= 2 && pm.adim <= 4;
+  c.fillStyle = disaAcik ? '#9fc5cf' : '#b7d3a9'; c.strokeStyle = '#0f4c5c'; c.lineWidth = 3;
+  c.beginPath(); c.roundRect(380, 120, 120, 100, 18); c.fill(); c.stroke();
+  c.fillStyle = '#10262e'; c.font = 'bold 14px system-ui'; c.textAlign = 'center'; c.fillText(disaAcik ? 'dışa açık' : 'içe açık', 440, 175); c.textAlign = 'left';
+  // iyonlar: adımlara göre konum
+  const iyon = (x, y, tur) => { c.fillStyle = tur === 'Na' ? '#e4572e' : '#3b4cc0'; c.beginPath(); c.arc(x, y, 11, 0, 7); c.fill(); c.fillStyle = '#fff'; c.font = 'bold 11px system-ui'; c.textAlign = 'center'; c.fillText(tur === 'Na' ? 'Na⁺' : 'K⁺', x, y + 4); c.textAlign = 'left'; };
+  const a = pm.adim;
+  if (a === 0) [410, 440, 470].forEach(x => iyon(x, 250, 'Na'));
+  if (a === 1) [410, 440, 470].forEach(x => iyon(x, 170, 'Na'));
+  if (a === 2) [410, 440, 470].forEach(x => iyon(x, 90, 'Na'));
+  if (a === 3) [425, 455].forEach(x => iyon(x, 170, 'K'));
+  if (a === 4) [425, 455].forEach(x => iyon(x, 170, 'K'));
+  if (a === 5) [425, 455].forEach(x => iyon(x, 250, 'K'));
+  if (a === 1) { c.fillStyle = '#b7791f'; c.font = 'bold 14px system-ui'; c.fillText('ATP → ADP + P', 520, 215); }
+  if (a === 4) { c.fillStyle = '#b7791f'; c.font = 'bold 14px system-ui'; c.fillText('P ayrılır', 520, 215); }
+  // arka plan iyon kalabalığı: gradyanı göstermek için
+  for (let i = 0; i < 26; i++) { const x = (i * 131) % 860 + 10; if (x > 360 && x < 520) continue; iyon(x, 40 + (i % 3) * 30, i % 5 === 0 ? 'K' : 'Na'); }
+  for (let i = 0; i < 26; i++) { const x = (i * 97) % 860 + 10; if (x > 360 && x < 520) continue; iyon(x, 230 + (i % 3) * 30, i % 5 === 0 ? 'Na' : 'K'); }
+  const s = document.getElementById('s-pompa'); s.innerHTML = `<b>Adım ${a + 1}/6 — ${ADIMLAR[a].b}</b><br>${ADIMLAR[a].y}`; s.dataset.level = a === 1 ? 'warn' : '';
+}
+function sonrakiAdim() {
+  const atp = document.getElementById('t-atp').checked;
+  if (pm.adim === 0 && !atp) { const s = document.getElementById('s-pompa'); s.dataset.level = 'bad'; s.innerHTML = '<b>ATP yok: pompa Na⁺ bağladı ama şekil değiştiremiyor.</b><br>Gradyan zamanla söner; hücre su çekip şişer, sinir ve kas uyarılabilirliği bozulur. Siyanür ya da iskemi tam bunu yapar.'; return; }
+  pm.adim = (pm.adim + 1) % 6;
+  if (pm.adim === 2) { pm.atp++; document.getElementById('n-atp').textContent = pm.atp; }
+  if (pm.adim === 3) { pm.na += 3; document.getElementById('n-na').textContent = pm.na; }
+  if (pm.adim === 0) { pm.k += 2; document.getElementById('n-k').textContent = pm.k; }
+  cizPompa();
+}
+document.getElementById('b-adim').addEventListener('click', sonrakiAdim);
+document.getElementById('b-oto').addEventListener('click', e => {
+  if (pm.oto) { clearInterval(pm.oto); pm.oto = null; e.target.textContent = 'Otomatik oynat'; }
+  else { pm.oto = setInterval(sonrakiAdim, 900); e.target.textContent = 'Durdur'; }
+});
+document.getElementById('t-atp').addEventListener('change', cizPompa);
+cizPompa();
+</script>
+</body>
+</html>

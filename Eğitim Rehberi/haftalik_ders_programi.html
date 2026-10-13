@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>F.Ü. Tıp Fakültesi - Haftalık Ders Programı (3. Hafta)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: rgba(30, 41, 59, 0.7);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #38bdf8;
+      --primary-glow: rgba(56, 189, 248, 0.15);
+      --bio-color: #34d399;
+      --biochem-color: #fb923c;
+      --biophys-color: #a78bfa;
+      --ethics-color: #f472b6;
+      --social-color: #facc15;
+      --psych-color: #60a5fa;
+      --general-color: #cbd5e1;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(167, 139, 250, 0.1) 0px, transparent 50%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2.5rem 1.5rem;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    header {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 1.75rem 2rem;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+      box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+    }
+
+    .header-info h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #fff 30%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.35rem;
+    }
+
+    .header-info p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .badge-today {
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: var(--primary);
+      padding: 0.4rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .badge-today::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 10px var(--primary);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    /* Grid layout */
+    .schedule-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 1100px) {
+      .schedule-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Day Column */
+    .day-column {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .day-column:hover {
+      border-color: rgba(255, 255, 255, 0.18);
+      transform: translateY(-2px);
+    }
+
+    .day-column.today {
+      border-color: rgba(56, 189, 248, 0.5);
+      box-shadow: 0 0 25px -5px rgba(56, 189, 248, 0.2);
+    }
+
+    .day-header {
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .day-title {
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: #fff;
+    }
+
+    .day-date {
+      font-size: 0.825rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Lesson Card */
+    .lesson-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 0.9rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+
+    .lesson-card:hover {
+      background: rgba(30, 41, 59, 0.9);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .lesson-card::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      border-radius: 2px;
+    }
+
+    .lesson-card.biology::before { background: var(--bio-color); }
+    .lesson-card.biochemistry::before { background: var(--biochem-color); }
+    .lesson-card.biophysics::before { background: var(--biophys-color); }
+    .lesson-card.ethics::before { background: var(--ethics-color); }
+    .lesson-card.tdp::before { background: #eab308; }
+    .lesson-card.psych::before { background: var(--psych-color); }
+    .lesson-card.general::before { background: var(--general-color); }
+    .lesson-card.free::before { background: rgba(148, 163, 184, 0.3); }
+
+    .lesson-time {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .lesson-tag {
+      font-size: 0.68rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .tag-bio { background: rgba(52, 211, 153, 0.15); color: var(--bio-color); }
+    .tag-biochem { background: rgba(251, 146, 60, 0.15); color: var(--biochem-color); }
+    .tag-biophys { background: rgba(167, 139, 250, 0.15); color: var(--biophys-color); }
+    .tag-ethics { background: rgba(244, 114, 182, 0.15); color: var(--ethics-color); }
+    .tag-tdp { background: rgba(234, 179, 8, 0.15); color: #facc15; }
+    .tag-psych { background: rgba(96, 165, 250, 0.15); color: var(--psych-color); }
+    .tag-general { background: rgba(203, 213, 225, 0.12); color: #cbd5e1; }
+    .tag-free { background: rgba(148, 163, 184, 0.1); color: #94a3b8; }
+
+    .lesson-name {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #f1f5f9;
+      line-height: 1.35;
+    }
+
+    .lesson-instructor {
+      font-size: 0.775rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      margin-top: 0.2rem;
+    }
+
+    .badge-sub {
+      font-size: 0.72rem;
+      color: #94a3b8;
+      background: rgba(255,255,255,0.05);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      margin-top: 0.2rem;
+      line-height: 1.3;
+    }
+
+    /* Legend */
+    .legend {
+      margin-top: 2rem;
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      align-items: center;
+    }
+
+    .legend-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #cbd5e1;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .legend-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-info">
+        <h1>Fırat Üniversitesi Tıp Fakültesi</h1>
+        <p>1. Sınıf (Dönem 1) &bull; I. Hücre Ders Kurulu &bull; <strong>3. Hafta Ders Programı</strong></p>
+      </div>
+      <div class="badge-today">
+        <span>Bugün: 07 Ekim Çarşamba (Dönem 1 / 3. Hafta)</span>
+      </div>
+    </header>
+
+    <main class="schedule-grid">
+      <!-- PAZARTESİ -->
+      <section class="day-column">
+        <div class="day-header">
+          <span class="day-title">Pazartesi</span>
+          <span class="day-date">05 Ekim 2026</span>
+        </div>
+
+        <div class="lesson-card free">
+          <div class="lesson-time"><span>08.15 - 10.00</span><span class="lesson-tag tag-free">Bireysel</span></div>
+          <div class="lesson-name">Serbest Çalışma</div>
+        </div>
+
+        <div class="lesson-card biochemistry">
+          <div class="lesson-time"><span>10.15 - 11.00</span><span class="lesson-tag tag-biochem">T. Biyokimya</span></div>
+          <div class="lesson-name">Su, Çözünürlük, Asitler ve Bazlar</div>
+          <div class="lesson-instructor">👨‍🏫 D. KAMAN</div>
+        </div>
+
+        <div class="lesson-card biochemistry">
+          <div class="lesson-time"><span>11.15 - 12.00</span><span class="lesson-tag tag-biochem">T. Biyokimya</span></div>
+          <div class="lesson-name">Zayıf Asitler, Zayıf Bazlar, pH ve Tamponlar</div>
+          <div class="lesson-instructor">👨‍🏫 D. KAMAN</div>
+        </div>
+
+        <div class="lesson-card biology">
+          <div class="lesson-time"><span>13.15 - 14.00</span><span class="lesson-tag tag-bio">T. Biyoloji</span></div>
+          <div class="lesson-name">Hücrenin Yan Yüzey Farklılaşmaları</div>
+          <div class="lesson-instructor">👩‍🏫 E. ÖNALAN</div>
+        </div>
+
+        <div class="lesson-card biology">
+          <div class="lesson-time"><span>14.15 - 15.00</span><span class="lesson-tag tag-bio">T. Biyoloji</span></div>
+          <div class="lesson-name">Hücrenin Bazal Yüzey Farklılaşmaları</div>
+          <div class="lesson-instructor">👩‍🏫 E. ÖNALAN</div>
+        </div>
+
+        <div class="lesson-card biophysics">
+          <div class="lesson-time"><span>15.15 - 16.00</span><span class="lesson-tag tag-biophys">Biyofizik</span></div>
+          <div class="lesson-name">Otodalgalar</div>
+          <div class="lesson-instructor">👨‍🏫 İ. SERHATLIOĞLU</div>
+        </div>
+
+        <div class="lesson-card biophysics">
+          <div class="lesson-time"><span>16.15 - 17.00</span><span class="lesson-tag tag-biophys">Biyofizik</span></div>
+          <div class="lesson-name">Canlıların Atomik ve Moleküler İçeriği</div>
+          <div class="lesson-instructor">👨‍🏫 İ. SERHATLIOĞLU</div>
+        </div>
+      </section>
+
+      <!-- SALI -->
+      <section class="day-column">
+        <div class="day-header">
+          <span class="day-title">Salı</span>
+          <span class="day-date">06 Ekim 2026</span>
+        </div>
+
+        <div class="lesson-card general">
+          <div class="lesson-time"><span>08.15 - 10.00</span><span class="lesson-tag tag-general">Genel</span></div>
+          <div class="lesson-name">Türkçe (2 Saat)</div>
+        </div>
+
+        <div class="lesson-card biology">
+          <div class="lesson-time"><span>10.15 - 11.00</span><span class="lesson-tag tag-bio">T. Biyoloji</span></div>
+          <div class="lesson-name">Biyomoleküller</div>
+          <div class="lesson-instructor">👩‍🏫 E. ÖNALAN</div>
+        </div>
+
+        <div class="lesson-card biology">
+          <div class="lesson-time"><span>11.15 - 12.00</span><span class="lesson-tag tag-bio">T. Biyoloji</span></div>
+          <div class="lesson-name">DNA’nın Moleküler Yapısı</div>
+          <div class="lesson-instructor">👩‍🏫 E. ÖNALAN</div>
+        </div>
+
+        <div class="lesson-card tdp">
+          <div class="lesson-time"><span>13.15 - 17.00</span><span class="lesson-tag tag-tdp">TDP / AFAD</span></div>
+          <div class="lesson-name">Toplumsal Destek Projesi (TDP-C)</div>
+          <div class="lesson-instructor">👨‍🏫 B.Y. AKSAKAL</div>
+          <div class="badge-sub">📍 Elazığ AFAD Müdahale Merkezi Müd. İşbirliği ile</div>
+        </div>
+      </section>
+
+      <!-- ÇARŞAMBA (BUGÜN) -->
+      <section class="day-column today">
+        <div class="day-header">
+          <span class="day-title">Çarşamba (Bugün)</span>
+          <span class="day-date">07 Ekim 2026</span>
+        </div>
+
+        <div class="lesson-card free">
+          <div class="lesson-time"><span>08.15 - 10.00</span><span class="lesson-tag tag-free">Bireysel</span></div>
+          <div class="lesson-name">Serbest Çalışma</div>
+        </div>
+
+        <div class="lesson-card general">
+          <div class="lesson-time"><span>10.15 - 12.00</span><span class="lesson-tag tag-general">Seçmeli</span></div>
+          <div class="lesson-name">Sosyal Seçmeli Ders Grubu - 1</div>
+          <div class="lesson-instructor">📚 2 Saat Blok Ders</div>
+        </div>
+
+        <div class="lesson-card tdp">
+          <div class="lesson-time"><span>13.15 - 17.00</span><span class="lesson-tag tag-tdp">TDP / AFAD</span></div>
+          <div class="lesson-name">Toplumsal Destek Projesi (TDP-B)</div>
+          <div class="lesson-instructor">👨‍🏫 B.Y. AKSAKAL</div>
+          <div class="badge-sub">📍 Elazığ AFAD Müdahale Merkezi Müd. İşbirliği ile</div>
+        </div>
+      </section>
+
+      <!-- PERŞEMBE -->
+      <section class="day-column">
+        <div class="day-header">
+          <span class="day-title">Perşembe</span>
+          <span class="day-date">08 Ekim 2026</span>
+        </div>
+
+        <div class="lesson-card general">
+          <div class="lesson-time"><span>08.15 - 10.00</span><span class="lesson-tag tag-general">Genel</span></div>
+          <div class="lesson-name">Yabancı Dil (2 Saat)</div>
+        </div>
+
+        <div class="lesson-card ethics">
+          <div class="lesson-time"><span>10.15 - 12.00</span><span class="lesson-tag tag-ethics">Tıp Etiği</span></div>
+          <div class="lesson-name">Tıp Etiğine Giriş (2 Saat)</div>
+          <div class="lesson-instructor">👨‍🏫 M. HAYIRLIDAĞ</div>
+        </div>
+
+        <div class="lesson-card biophysics">
+          <div class="lesson-time"><span>13.15 - 14.00</span><span class="lesson-tag tag-biophys">Biyofizik</span></div>
+          <div class="lesson-name">Birer Açık Sistem Olarak Canlılar</div>
+          <div class="lesson-instructor">👨‍🏫 İ. SERHATLIOĞLU</div>
+        </div>
+
+        <div class="lesson-card biophysics">
+          <div class="lesson-time"><span>14.15 - 15.00</span><span class="lesson-tag tag-biophys">Biyofizik</span></div>
+          <div class="lesson-name">Madde ve Enerji Taşınım Yolları ve Yasaları</div>
+          <div class="lesson-instructor">👨‍🏫 İ. SERHATLIOĞLU</div>
+        </div>
+
+        <div class="lesson-card tdp">
+          <div class="lesson-time"><span>15.15 - 17.00</span><span class="lesson-tag tag-tdp">Etkinlik</span></div>
+          <div class="lesson-name">Ağaç Dikme ve Sosyal Etkinlik</div>
+          <div class="lesson-instructor">🌱 2 Saat Açık Alan Etkinliği</div>
+        </div>
+      </section>
+
+      <!-- CUMA -->
+      <section class="day-column">
+        <div class="day-header">
+          <span class="day-title">Cuma</span>
+          <span class="day-date">09 Ekim 2026</span>
+        </div>
+
+        <div class="lesson-card biology">
+          <div class="lesson-time"><span>08.15 - 09.00</span><span class="lesson-tag tag-bio">T. Biyoloji</span></div>
+          <div class="lesson-name">RNA’nın Moleküler Yapısı ve Çeşitleri</div>
+          <div class="lesson-instructor">👩‍🏫 E. ÖNALAN</div>
+        </div>
+
+        <div class="lesson-card biology">
+          <div class="lesson-time"><span>09.15 - 10.00</span><span class="lesson-tag tag-bio">T. Biyoloji</span></div>
+          <div class="lesson-name">Hücrenin Apikal Yüzey Farklılaşmaları</div>
+          <div class="lesson-instructor">👩‍🏫 E. ÖNALAN</div>
+        </div>
+
+        <div class="lesson-card general">
+          <div class="lesson-time"><span>10.15 - 12.00</span><span class="lesson-tag tag-general">Rehberlik</span></div>
+          <div class="lesson-name">Kariyer Saati (2 Saat)</div>
+          <div class="lesson-instructor">👨‍🏫 H. KORKMAZ</div>
+        </div>
+
+        <div class="lesson-card psych">
+          <div class="lesson-time"><span>13.15 - 15.00</span><span class="lesson-tag tag-psych">Davranış Bil.</span></div>
+          <div class="lesson-name">Dünya Ruh Sağlığı Günü (2 Saat)</div>
+          <div class="lesson-instructor">👨‍🏫 M. ATMACA</div>
+        </div>
+
+        <div class="lesson-card free">
+          <div class="lesson-time"><span>15.15 - 17.00</span><span class="lesson-tag tag-free">Bireysel</span></div>
+          <div class="lesson-name">Serbest Çalışma (2 Saat)</div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Legend -->
+    <div class="legend">
+      <span class="legend-title">Disiplinler / Dersler:</span>
+      <div class="legend-items">
+        <div class="legend-item"><span class="legend-dot" style="background:var(--bio-color)"></span> Tıbbi Biyoloji</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--biochem-color)"></span> Tıbbi Biyokimya</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--biophys-color)"></span> Biyofizik</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--ethics-color)"></span> Tıp Tarihi ve Etik</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--psych-color)"></span> Davranış Bilimleri</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#eab308"></span> Toplumsal Destek / AFAD</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--general-color)"></span> Ortak / Seçmeli Dersler</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
