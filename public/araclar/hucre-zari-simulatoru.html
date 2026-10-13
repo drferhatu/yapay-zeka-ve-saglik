@@ -42,6 +42,7 @@
     <h2>Ozmoz: bir eritrosit üç ortamda</h2>
     <p class="lede">Su, yarı geçirgen zardan çözünen maddenin az olduğu yerden çok olduğu yere geçer. Ortamı seçin, hücrenin ne yaptığını izleyin.</p>
     <div class="seg" id="ortam">
+      <button aria-pressed="false" data-ortam="su">Saf su (%0)</button>
       <button aria-pressed="false" data-ortam="hipo">Hipotonik (%0,45 NaCl)</button>
       <button aria-pressed="true" data-ortam="izo">İzotonik (%0,9 NaCl)</button>
       <button aria-pressed="false" data-ortam="hiper">Hipertonik (%3 NaCl)</button>
@@ -99,7 +100,8 @@ document.querySelectorAll('nav.tabs button').forEach(b => b.addEventListener('cl
 // ================= 1) OZMOZ =================
 const oz = { ctx: document.getElementById('c-ozmoz').getContext('2d'), ortam: 'izo', r: 70, hedef: 70, t: 0 };
 const ORTAM = {                       // hedef yarıçap ve açıklama; sayılar öğretici ölçekte
-  hipo:  { r: 100, metin: 'Dışarısı seyreltik: su içeri giriyor, hücre şişiyor; %0,45 ve altında hemoliz riski.', seviye: 'bad',  su: 'içeri' },
+  su:    { r: 104, metin: 'Saf su: dışarıda çözünen yok, su durmadan içeri giriyor; hücre şişer ve patlar (hemoliz). Damar içine asla saf su verilmez.', seviye: 'bad', su: 'içeri' },
+  hipo:  { r: 90,  metin: 'Dışarısı seyreltik (%0,45): su içeri giriyor, hücre şişiyor. Bu derişimde genellikle patlamaz ama kırılganlaşır; daha seyreltikte hemoliz başlar.', seviye: 'warn', su: 'içeri' },
   izo:   { r: 70,  metin: 'Giren ve çıkan su eşit: hücre hacmi sabit. Serum fizyolojik (%0,9) bu yüzden güvenli.', seviye: 'ok',   su: 'denge' },
   hiper: { r: 48,  metin: 'Dışarısı derişik: su dışarı çıkıyor, hücre büzüşüyor (krenasyon).', seviye: 'warn', su: 'dışarı' },
 };
@@ -110,10 +112,10 @@ document.querySelectorAll('#ortam button').forEach(b => b.addEventListener('clic
 function cizOzmoz() {
   const c = oz.ctx, W = 880, H = 360; oz.t += 0.02;
   oz.r += (oz.hedef - oz.r) * 0.03;                       // yarıçap hedefe yavaşça yaklaşır
-  if (oz.ortam === 'hipo' && oz.r > 97) oz.patladi = true; // aşırı şişme → hemoliz
+  if (oz.ortam === 'su' && oz.r > 100) oz.patladi = true;   // aşırı şişme → hemoliz (yalnızca saf suda)
   c.clearRect(0, 0, W, H);
   // ortam sıvısı: tanecik yoğunluğu ortamın derişimini temsil eder
-  const yogunluk = { hipo: 25, izo: 60, hiper: 140 }[oz.ortam];
+  const yogunluk = { su: 0, hipo: 28, izo: 60, hiper: 140 }[oz.ortam];
   c.fillStyle = '#eaf2f4'; c.fillRect(0, 0, W, H);
   c.fillStyle = '#9fb7bf';
   for (let i = 0; i < yogunluk; i++) { const x = (i * 97) % W, y = (i * 61 + Math.sin(oz.t + i) * 6) % H; c.beginPath(); c.arc(x, y, 2.2, 0, 7); c.fill(); }
@@ -167,10 +169,10 @@ function cizDif() {
   let sol = 0, sag = 0;
   for (const p of dif.tan) {
     if (dif.calis) {
-      p.vx += (Math.random() - .5) * 0.6; p.vy += (Math.random() - .5) * 0.6; p.vx *= .95; p.vy *= .95; // rastgele yürüyüş
+      p.vx += (Math.random() - .5) * 1.6; p.vy += (Math.random() - .5) * 1.6; p.vx *= .96; p.vy *= .96; // rastgele yürüyüş (sınıfta görünür hızda)
       const nx = p.x + p.vx;
       const zariGecer = (p.x < 435 && nx >= 435) || (p.x > 445 && nx <= 445);
-      if (zariGecer && Math.random() > gec * 25) p.vx = -p.vx; else p.x = nx;            // çoğu çarpışma geri döner, bir kısmı geçer
+      if (zariGecer && Math.random() > gec * 60) p.vx = -p.vx; else p.x = nx;            // çarpışmaların bir kısmı geri döner, bir kısmı geçer (geçirgenlikle artar)
       p.y += p.vy; if (p.y < 6 || p.y > H - 6) p.vy = -p.vy; if (p.x < 6 || p.x > W - 6) p.vx = -p.vx;
       if (p.x > 435 && p.x < 445) p.x = p.vx > 0 ? 446 : 434;
     }
