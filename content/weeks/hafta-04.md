@@ -69,6 +69,9 @@ Her sekmede "Neden böyle?" açıklama kutusu ve klinik bağlantı (serum fizyol
 
 Hazır sürüm: [Hücre Zarı Simülatörü](/araclar/hucre-zari-simulatoru). Ozmoz sekmesinde eritrositi hipotonik ortama koyup hemolizi görün; pompa sekmesinde ATP'yi kapatıp ne olduğunu okuyun. Serum fizyolojiğin neden %0,9 olduğu sorusunun cevabı ilk sekmede.
 
+> [!uyari] Her çıktı için aynı adım
+> Bu sayfadaki istemlerden çıkan hiçbir bilgi doğrulanmadan kullanılmaz. Çıkan metni kurul notunuzla ya da aşağıdaki açık erişimli kaynaklarla karşılaştırın; uymayan yerde kazanan kitaptır. Bunu derste her istemden sonra tekrarlayacağım.
+
 > [!tanim] Sohbet botu ile ajan
 > Sohbet botu bir soruya bir cevap verir. Ajan bir hedefi alır, adımlara böler, araç kullanır (dosya, kod, arama), sonucu kontrol eder ve bitirene kadar devam eder. Güçlü olduğu kadar dikkat ister: ajan sizin yetkinizle iş yapar, bu yüzden ona ne yapabileceğini siz belirlersiniz ve her adımını okursunuz.
 
@@ -85,6 +88,8 @@ Hücre biyolojisi dersi veren, benzetmelerle anlatmayı seven bir hoca gibi davr
 ```
 
 İki cevabı yan yana görünce fark kendini anlatıyor. İlkinde ansiklopedi maddesi, ikincisinde size yazılmış bir ders alırsınız. Dört parçadan en çok atlanan bağlam; oysa "neyi karıştırıyorum" cümlesi cevabı en çok değiştiren cümle.
+
+Burada bir şeyi her istemden sonra tekrarlayacağım, bıkana kadar: güzel bir cevap doğru bir cevap değildir. Araç size taşınım türlerini tablo hâlinde verdiğinde o tabloyu kurul notunuzun ya da kitabınızın yanına koyup satır satır bakıyorsunuz. Uymayan bir satır varsa kazanan kitaptır. Bugün göreceğiniz her istemin sonunda aynı adım var: dön, ders notundan teyit et.
 
 ### Kendi hocanızı bir kez şekillendirin
 
@@ -128,7 +133,7 @@ Sorudaki iddia bilerek ters: karbonil aldehitte uçtadır (en az bir hidrojene b
 
 ## Haftanın cep kartı
 
-Beş istem, hepsi dört parçalı, hepsi bu haftanın konularına yazılmış. Telefonunuza kopyalayın; sınava kadar işinize yarar.
+Beş istem, hepsi dört parçalı, hepsi bu haftanın konularına yazılmış. Telefonunuza kopyalayın; sınava kadar işinize yarar. Ama kullanma kuralı tek ve değişmez: aracın verdiği ezber cümlesi, tablo, plan ya da çözüm, kurul notunuzla karşılaştırılmadan sınav malzemesi sayılmaz. Araç bir çalışma arkadaşı; notu veren kitap ve hocanız.
 
 ```text
 Biyokimya hocası gibi davran. Fonksiyonel grupları (hidroksil, karbonil, karboksil, amino, fosfat, sülfhidril) ezberlemem için Türkçe bir ezber cümlesi ve her grup için tek cümlelik "hangi biyomolekülde görürsün" notu yaz. Tıp 1. sınıf öğrencisiyim; biçim: madde listesi.
