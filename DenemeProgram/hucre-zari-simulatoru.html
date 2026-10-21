@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Hücre Zarı Simülatörü - Tıp Fakültesi Dönem 1</title>
+  <style>
+    /* ==========================================================================
+       1. GENEL DEĞİŞKENLER VE TEMA (CSS VARIABLES & RESET)
+       Mobil öncelikli, modern tıbbi ve akademik tasarım
+       ========================================================================== */
+    :root {
+      --bg-main: #0f172a;
+      --bg-card: #1e293b;
+      --bg-card-soft: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #38bdf8;
+      --primary-dark: #0284c7;
+      --accent-red: #ef4444;
+      --accent-green: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-purple: #a855f7;
+      --border-color: rgba(255, 255, 255, 0.1);
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 24px;
+    }
+
+    /* Üst Başlık */
+    header {
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      border-bottom: 1px solid var(--border-color);
+      padding: 14px 16px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    header h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    header p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Sekme Çubuğu (Tabs) */
+    .tab-bar {
+      display: flex;
+      background: #1e293b;
+      padding: 6px;
+      gap: 6px;
+      margin: 12px 16px 8px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .tab-btn {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 10px 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .tab-btn.active {
+      background: var(--primary-dark);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.4);
+    }
+
+    /* Ana İçerik Konteyneri */
+    main {
+      flex: 1;
+      padding: 0 16px;
+      max-width: 680px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.25s ease-in-out;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Kart Yapıları */
+    .sim-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    }
+
+    .sim-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .sim-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .sim-badge {
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* Canvas ve Görselleştirme Alanı */
+    .canvas-container {
+      position: relative;
+      width: 100%;
+      background: #090d16;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      touch-action: none;
+    }
+
+    /* Kontrol Paneli */
+    .controls {
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 8px;
+    }
+
+    .ctrl-btn {
+      flex: 1;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-card-soft);
+      color: var(--text-main);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+    }
+
+    .ctrl-btn small {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      font-weight: normal;
+    }
+
+    .ctrl-btn:active {
+      transform: scale(0.97);
+    }
+
+    .ctrl-btn.active-hypo {
+      background: #1e3a8a;
+      border-color: #3b82f6;
+      color: #93c5fd;
+    }
+
+    .ctrl-btn.active-iso {
+      background: #064e3b;
+      border-color: #10b981;
+      color: #a7f3d0;
+    }
+
+    .ctrl-btn.active-hyper {
+      background: #78350f;
+      border-color: #f59e0b;
+      color: #fde68a;
+    }
+
+    /* Slider / Sürgü Kontrolleri */
+    .slider-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .slider-header span strong {
+      color: var(--primary);
+    }
+
+    input[type=range] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 8px;
+      border-radius: 4px;
+      background: var(--bg-card-soft);
+      outline: none;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--primary);
+      cursor: pointer;
+      border: 2px solid #ffffff;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.5);
+    }
+
+    /* Canlı İstatistik Çubuğu */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      background: rgba(0,0,0,0.25);
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      text-align: center;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .stat-label {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    /* Uyarı ve Banner Kutuları */
+    .alert-banner {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid var(--accent-red);
+      color: #fca5a5;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: pulse 1.5s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.65; }
+    }
+
+    /* Açıklama & Klinik Bağlantı Kutuları */
+    .info-card {
+      background: var(--bg-card);
+      border-radius: 14px;
+      border: 1px solid var(--border-color);
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .info-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .info-header.why { color: #38bdf8; }
+    .info-header.clinic { color: #f43f5e; }
+    .info-header.source { color: #94a3b8; font-size: 0.78rem; margin-bottom: 4px; }
+
+    .info-body {
+      font-size: 0.8rem;
+      color: #cbd5e1;
+      line-height: 1.55;
+    }
+
+    .info-body strong {
+      color: #ffffff;
+    }
+
+    .source-box {
+      background: rgba(0, 0, 0, 0.2);
+      border-left: 3px solid var(--primary-dark);
+      padding: 8px 12px;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      border-radius: 0 8px 8px 0;
+      margin-top: 6px;
+    }
+
+    .source-box a {
+      color: var(--primary);
+      text-decoration: underline;
+    }
+
+    .disclaimer-badge {
+      display: inline-block;
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    /* Adım Butonları ve Pompa Kontrolleri */
+    .step-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .action-btn-primary {
+      background: linear-gradient(135deg, var(--primary-dark), #0369a1);
+      color: #ffffff;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+    }
+
+    .action-btn-primary:active {
+      transform: scale(0.98);
+    }
+
+    .action-btn-primary:disabled {
+      background: var(--bg-card-soft);
+      color: var(--text-muted);
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-card-soft);
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .checkbox-container input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent-green);
+      cursor: pointer;
+    }
+
+    .pump-step-desc {
+      background: #0f172a;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 0.82rem;
+      color: #e2e8f0;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================================
+       ÜST BAŞLIK BÖLÜMÜ
+       ======================================================================== -->
+  <header>
+    <h1>🔬 Hücre Zarı Simülatörü</h1>
+    <p>Tıp Fakültesi Dönem 1 • Tıbbi Biyoloji ve Fizyoloji Laboratuvarı</p>
+  </header>
+
+  <!-- ========================================================================
+       SEKME SEÇİCİ
+       ======================================================================== -->
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('osmosis')">1. Ozmoz</button>
+    <button class="tab-btn" onclick="switchTab('diffusion')">2. Difüzyon</button>
+    <button class="tab-btn" onclick="switchTab('pump')">3. Na⁺/K⁺ Pompası</button>
+  </div>
+
+  <main>
+    <!-- ======================================================================
+         SEKME 1: OZMOZ VE ERİTROSİT HACİM DİNAMİĞİ
+         ====================================================================== -->
+    <div id="tab-osmosis" class="tab-content active">
+      <div class="sim-card">
+        <div class="sim-header">
+          <span class="sim-title">Eritrosit Ozmotik Yanıtı</span>
+          <span class="sim-badge" id="osmo-status-badge">İzotonik Ortam</span>
+        </div>
+
+        <div class="canvas-container">
+          <canvas id="osmoCanvas" width="400" height="260"></canvas>
+        </div>
+
+        <div class="controls">
+          <div class="btn-group">
+            <button class="ctrl-btn" id="btnHypo" onclick="setOsmosis('hypo')">
+              Hipotonik
+              <small>%0,45 NaCl</small>
+            </button>
+            <button class="ctrl-btn active-iso" id="btnIso" onclick="setOsmosis('iso')">
+              İzotonik
+              <small>%0,9 NaCl (SF)</small>
+            </button>
+            <button class="ctrl-btn" id="btnHyper" onclick="setOsmosis('hyper')">
+              Hipertonik
+              <small>%3,0 NaCl</small>
+            </button>
+          </div>
+
+          <div id="hemolysisAlert" class="alert-banner" style="display: none;">
+            ⚠️ <strong>KRİTİK UYARI: HEMOLİZ GERÇEKLEŞTİ!</strong><br>
+            Aşırı su girişi sonucu hücre zarı gerilime dayanamayarak parçalandı (Hücre lizisi). Hemoglobin çevreye yayıldı.
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-item">
+              <span class="stat-value" id="osmoExtOsm">308 mOsm/L</span>
+              <span class="stat-label">Dış Ozmolarite</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value" id="osmoIntOsm">308 mOsm/L</span>
+              <span class="stat-label">Hücre İçi Ozmolarite</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value" id="osmoRbcVol">100 %</span>
+              <span class="stat-label">Hücre Hacmi</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bilimsel Açıklama Kutuları -->
+      <div class="info-card">
+        <div class="info-header why">💡 Neden Böyle? (Biyofiziksel Mekanizma)</div>
+        <div class="info-body">
+          Ozmoz, su moleküllerinin yarı geçirgen bir zardan <strong>düşük çözünen madde (yüksek serbest su)</strong> konsantrasyonundan <strong>yüksek çözünen madde (düşük serbest su)</strong> konsantrasyonuna doğru net difüzyonudur.<br><br>
+          • <strong>İzotonik (%0,9 NaCl - ~308 mOsm/L):</strong> Hücre içi ve dışı ozmotik basınç eşittir. Su giriş ve çıkış hızları dengededir; eritrosit bikonkav disk şeklini korur.<br>
+          • <strong>Hipotonik (%0,45 NaCl - ~154 mOsm/L):</strong> Hücre dışı çözünen derişimi düşüktür. Su akuporinler aracılığıyla hücre içine hücum eder; hücre şişer ve gerilme direncini aşarsa <strong>hemoliz</strong> gerçekleşir.<br>
+          • <strong>Hipertonik (%3 NaCl - ~1026 mOsm/L):</strong> Dış sıvının ozmolaritesi yüksektir. Hücreden dışarıya net su çıkışı olur; eritrosit büzüşür (krenasyon).
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-header clinic">🩺 Klinik Bağlantı: Serum Fizyolojik Neden %0,9 NaCl?</div>
+        <div class="info-body">
+          İnsan kan plazmasının normal ozmolaritesi yaklaşık <strong>285–295 mOsm/L</strong>'dir. %0,9'luk sodyum klorür çözeltisi (Serum Fizyolojik / Salin), plazma ile neredeyse izoosmotiktir (308 mOsm/L).<br><br>
+          Damar yoluyla saf su (hipotonik) verilirse eritrositler hızla şişip patlar (akut intravasküler hemoliz, hemoglobinüri ve akut böbrek yetmezliği). Hipertonik sıvılar ise kontrolsüz verilirse hücre içi sıvıyı damar yatağına çekerek hücresel dehidratasyona yol açar.
+        </div>
+        <div class="disclaimer-badge">ℹ️ Basitleştirilmiş 2B Biyofiziksel Model</div>
+        <div class="source-box">
+          📖 <strong>Açık Erişimli Kaynak:</strong> OpenStax Biology 2e, Bölüm 5.2: 
+          <a href="https://openstax.org/books/biology-2e/pages/5-2-passive-transport" target="_blank" rel="noopener">Passive Transport (Osmosis and Tonicity)</a>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ======================================================================
+         SEKME 2: BASİT DİFÜZYON VE FICK YASASI
+         ====================================================================== -->
+    <div id="tab-diffusion" class="tab-content">
+      <div class="sim-card">
+        <div class="sim-header">
+          <span class="sim-title">Fick Difüzyon Dinamiği</span>
+          <span class="sim-badge" id="diff-status-badge">Akış Devam Ediyor</span>
+        </div>
+
+        <div class="canvas-container">
+          <canvas id="diffCanvas" width="400" height="260"></canvas>
+        </div>
+
+        <div class="controls">
+          <div class="slider-row">
+            <div class="slider-header">
+              <span>Sol Bölme (Ekstraselüler / Alveol):</span>
+              <span><strong id="valLeftCount">120</strong> Tanecik</span>
+            </div>
+            <input type="range" id="sliderLeft" min="0" max="250" value="120" oninput="updateDiffParticles()">
+          </div>
+
+          <div class="slider-row">
+            <div class="slider-header">
+              <span>Sağ Bölme (İntraselüler / Kapiller):</span>
+              <span><strong id="valRightCount">20</strong> Tanecik</span>
+            </div>
+            <input type="range" id="sliderRight" min="0" max="250" value="20" oninput="updateDiffParticles()">
+          </div>
+
+          <div class="slider-row">
+            <div class="slider-header">
+              <span>Zar Geçirgenliği (Permeabilite - P):</span>
+              <span><strong id="valPerm">40%</strong></span>
+            </div>
+            <input type="range" id="sliderPerm" min="5" max="100" value="40" oninput="updateDiffPerm()">
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-item">
+              <span class="stat-value" id="diffLeftLive">120</span>
+              <span class="stat-label">Sol Sayı (C₁)</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value" id="diffRightLive">20</span>
+              <span class="stat-label">Sağ Sayı (C₂)</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value" id="diffNetFlux" style="color: var(--accent-green);">+0 /sn</span>
+              <span class="stat-label">Net Akı (J)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bilimsel Açıklama Kutuları -->
+      <div class="info-card">
+        <div class="info-header why">💡 Neden Böyle? (Fick'in Difüzyon Yasası)</div>
+        <div class="info-body">
+          Tanecikler termal kinetik enerji nedeniyle rastgele (Brownian) hareket eder. Bir bölgedeki tanecik sayısı fazlaysa, zarı geçme ihtimali olan tanecik sayısı da o kadar fazladır.<br><br>
+          <strong>Fick Yasası:</strong> <code>J = -P • A • (C₁ - C₂)</code><br>
+          • <strong>J (Net Akı):</strong> Çok yoğun taraftan az yoğun tarafa doğrudur.<br>
+          • <strong>Gradyan Kapandıkça:</strong> Konsantrasyon farkı (ΔC = C₁ - C₂) sıfıra yaklaştıkça her iki yöne geçen tanecik sayısı eşitlenir ve <strong>Dinamik Denge</strong>ye ulaşılır (Net akı = 0).
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-header clinic">🩺 Klinik Bağlantı: Alveol-Kapiller Gaz Değişimi ve Pulmoner Ödem</div>
+        <div class="info-body">
+          Akciğer alveollerinde O₂ parsiyel basıncı (~100 mmHg), pulmoner kapiller kandaki deoksijene kandan (~40 mmHg) yüksektir. O₂ zardan pasif difüzyonla kana geçer. Tam tersine CO₂ kandan alveole difüze olur.<br><br>
+          • <strong>Pulmoner Ödem / İnterstisyel Fibrozis:</strong> Sıvı birikimi veya bağ doku artışı membran kalınlığını (Δx) artırır; permeabiliteyi (P) düşürür. Fick yasasına göre difüzyon hızı kritik düzeyde yavaşlar ve hipoksi tablosu gelişir.
+        </div>
+        <div class="disclaimer-badge">ℹ️ Basitleştirilmiş 2B Kinetik Model</div>
+        <div class="source-box">
+          📖 <strong>Açık Erişimli Kaynak:</strong> OpenStax Biology 2e, Bölüm 5.2: 
+          <a href="https://openstax.org/books/biology-2e/pages/5-2-passive-transport" target="_blank" rel="noopener">Passive Transport (Diffusion)</a>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ======================================================================
+         SEKME 3: SODYUM-POTASYUM POMPASI (Na+/K+-ATPaz)
+         ====================================================================== -->
+    <div id="tab-pump" class="tab-content">
+      <div class="sim-card">
+        <div class="sim-header">
+          <span class="sim-title">Na⁺/K⁺-ATPaz Döngüsü</span>
+          <span class="sim-badge" id="pump-step-badge">Adım 1/6</span>
+        </div>
+
+        <div class="canvas-container">
+          <canvas id="pumpCanvas" width="400" height="260"></canvas>
+        </div>
+
+        <div class="controls">
+          <div class="pump-step-desc" id="pumpStepText">
+            1. Adım: Pompa hücre içine (sitoplazmaya) açık konformasyonda (E1). 3 Na⁺ iyonu yüksek afiniteyle bağlanır.
+          </div>
+
+          <label class="checkbox-container">
+            <input type="checkbox" id="atpAvailableCheck" checked onchange="toggleATP()">
+            <span><strong>ATP Enerjisi Mevcut</strong> (Hücresel Solunum Aktif)</span>
+          </label>
+
+          <div id="atpDepletedAlert" class="alert-banner" style="display: none;">
+            🛑 <strong>ATP TÜKENDİ / POMPA DURDU:</strong> Pompanın konformasyon değiştirmesi için terminal fosfat bağı hidrolizi (fosforilasyon) şarttır. ATP yokluğunda döngü ilerleyemez!
+          </div>
+
+          <div class="step-controls">
+            <button class="action-btn-primary" id="btnNextStep" onclick="advancePumpStep()">
+              <span>Sonraki Adıma İlerle (▶)</span>
+            </button>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-item">
+              <span class="stat-value" id="cntNaOut" style="color: #38bdf8;">0</span>
+              <span class="stat-label">Atılan 3 Na⁺</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value" id="cntKIn" style="color: #a855f7;">0</span>
+              <span class="stat-label">Alınan 2 K⁺</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value" id="cntAtpUsed" style="color: #f59e0b;">0</span>
+              <span class="stat-label">Harcanan ATP</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bilimsel Açıklama Kutuları -->
+      <div class="info-card">
+        <div class="info-header why">💡 Neden Böyle? (Primer Aktif Transport Mekanizması)</div>
+        <div class="info-body">
+          Hücre içi Na⁺ derişimi düşük (~12 mM), K⁺ derişimi yüksektir (~140 mM). Na⁺/K⁺-ATPaz, iyonları <strong>elektrokimyasal gradyanlarına karşı (yokuş yukarı)</strong> pompalar.<br><br>
+          • <strong>Stokiyometri:</strong> Her döngüde <strong>3 Na⁺ dışarı</strong> atılır, <strong>2 K⁺ içeri</strong> alınır ve <strong>1 ATP</strong> hidroliz edilir.<br>
+          • <strong>Elektrojenik Doğa:</strong> 3 pozitif yük dışarı çıkıp 2 pozitif yük girdiği için her döngüde net +1 yük dışarı verilerek membran potansiyelinin (-70 mV) ve istirahat hücre hacminin korunmasına doğrudan katkı sağlanır.
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-header clinic">🩺 Klinik Bağlantı: Digoksin (Kardiyak Glikozidler) ve Kalp Yetmezliği</div>
+        <div class="info-body">
+          Digoksin, Na⁺/K⁺-ATPaz enziminin ekstraselüler potasyum bağlama bölgesine bağlanarak pompayı inhibe eder.<br><br>
+          1. Pompa durunca intraselüler [Na⁺] artar.<br>
+          2. Na⁺/Ca²⁺ değiştirici (NCX) mekanizmasının itici gücü azalır.<br>
+          3. Hücre içinden kalsiyum atılamaz; sarkoplazmik retikulumda [Ca²⁺] birikir.<br>
+          4. Artan serbest Ca²⁺, miyokardiyal aktin-miyozin çapraz köprülerini artırarak <strong>pozitif inotropik etki</strong> (kalp kasında kasılma gücü artışı) oluşturur.
+        </div>
+        <div class="disclaimer-badge">ℹ️ Basitleştirilmiş 6 Aşamalı Biyokimyasal Döngü</div>
+        <div class="source-box">
+          📖 <strong>Açık Erişimli Kaynak:</strong> OpenStax Biology 2e, Bölüm 5.3: 
+          <a href="https://openstax.org/books/biology-2e/pages/5-3-active-transport" target="_blank" rel="noopener">Active Transport (Electrogenic Pumps & Na⁺/K⁺ Pump)</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+
+  <!-- ========================================================================
+       JAVASCRIPT MOTORU
+       Temiz, modüler, Türkçe açıklamalı kod yapısı
+       ======================================================================== -->
+  <script>
+    /* ========================================================================
+       A. SEKME YÖNETİMİ (TAB SWITCHING)
+       ======================================================================== */
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+      if (tabId === 'osmosis') {
+        document.querySelectorAll('.tab-btn')[0].classList.add('active');
+        document.getElementById('tab-osmosis').classList.add('active');
+      } else if (tabId === 'diffusion') {
+        document.querySelectorAll('.tab-btn')[1].classList.add('active');
+        document.getElementById('tab-diffusion').classList.add('active');
+      } else if (tabId === 'pump') {
+        document.querySelectorAll('.tab-btn')[2].classList.add('active');
+        document.getElementById('tab-pump').classList.add('active');
+      }
+    }
+
+
+    /* ========================================================================
+       B. BÖLÜM 1: OZMOZ VE ERİTROSİT SİMÜLASYONU
+       ======================================================================== */
+    const osmoCanvas = document.getElementById('osmoCanvas');
+    const osmoCtx = osmoCanvas.getContext('2d');
+
+    let osmoMode = 'iso'; // 'hypo', 'iso', 'hyper'
+    let rbcCurrentScale = 1.0;
+    let rbcTargetScale = 1.0;
+    let rbcIsHemolyzed = false;
+    let osmoAnimProgress = 0;
+
+    function setOsmosis(mode) {
+      osmoMode = mode;
+      rbcIsHemolyzed = false;
+
+      // Buton aktiflik sınıflarını güncelle
+      document.getElementById('btnHypo').className = 'ctrl-btn' + (mode === 'hypo' ? ' active-hypo' : '');
+      document.getElementById('btnIso').className = 'ctrl-btn' + (mode === 'iso' ? ' active-iso' : '');
+      document.getElementById('btnHyper').className = 'ctrl-btn' + (mode === 'hyper' ? ' active-hyper' : '');
+
+      const badge = document.getElementById('osmo-status-badge');
+      const extOsm = document.getElementById('osmoExtOsm');
+      const intOsm = document.getElementById('osmoIntOsm');
+      const volEl = document.getElementById('osmoRbcVol');
+      const alertEl = document.getElementById('hemolysisAlert');
+
+      alertEl.style.display = 'none';
+
+      if (mode === 'hypo') {
+        badge.textContent = 'Hipotonik Ortam (%0,45 NaCl)';
+        badge.style.color = '#93c5fd';
+        extOsm.textContent = '154 mOsm/L';
+        intOsm.textContent = '175 mOsm/L';
+        rbcTargetScale = 1.65; // Hemoliz eşiğine kadar şişme
+      } else if (mode === 'iso') {
+        badge.textContent = 'İzotonik Ortam (%0,9 NaCl)';
+        badge.style.color = '#10b981';
+        extOsm.textContent = '308 mOsm/L';
+        intOsm.textContent = '308 mOsm/L';
+        rbcTargetScale = 1.0;
+        volEl.textContent = '100 %';
+      } else if (mode === 'hyper') {
+        badge.textContent = 'Hipertonik Ortam (%3,0 NaCl)';
+        badge.style.color = '#f59e0b';
+        extOsm.textContent = '1026 mOsm/L';
+        intOsm.textContent = '650 mOsm/L';
+        rbcTargetScale = 0.65; // Büzüşme
+      }
+    }
+
+    // Ozmoz Çizim Döngüsü
+    function drawOsmosis(timestamp) {
+      const w = osmoCanvas.width;
+      const h = osmoCanvas.height;
+      const cx = w / 2;
+      const cy = h / 2;
+
+      osmoCtx.clearRect(0, 0, w, h);
+
+      // 1. Arka Plan Ortam Rengi ve Çözünen Tanecikler
+      let bgColor = '#09152a'; // İzotonik mavi ton
+      if (osmoMode === 'hypo') bgColor = '#0a1e36'; // Hipotonik seyreltik
+      if (osmoMode === 'hyper') bgColor = '#1c1508'; // Hipertonik yoğun
+      osmoCtx.fillStyle = bgColor;
+      osmoCtx.fillRect(0, 0, w, h);
+
+      // Ortam etiketi
+      osmoCtx.fillStyle = 'rgba(255,255,255,0.4)';
+      osmoCtx.font = '11px sans-serif';
+      osmoCtx.fillText('Hücre Dışı Çözelti (Ekstraselüler Sıvı)', 14, 22);
+
+      // Hacim interpole geçişi
+      rbcCurrentScale += (rbcTargetScale - rbcCurrentScale) * 0.04;
+      const volPercent = Math.round(rbcCurrentScale * 100);
+      document.getElementById('osmoRbcVol').textContent = volPercent + ' %';
+
+      // Hipotonikte aşırı şişme durumunda hemoliz tetiklenmesi
+      if (osmoMode === 'hypo' && rbcCurrentScale > 1.55) {
+        rbcIsHemolyzed = true;
+        document.getElementById('hemolysisAlert').style.display = 'flex';
+      }
+
+      // 2. Eritrosit Çizimi
+      if (rbcIsHemolyzed) {
+        // Parçalanmış Hücre Zarı ve Dağılan Hemoglobin
+        osmoCtx.save();
+        osmoCtx.translate(cx, cy);
+
+        // Dağılan sitoplazma / hemoglobin bulutu
+        const grad = osmoCtx.createRadialGradient(0, 0, 10, 0, 0, 95);
+        grad.addColorStop(0, 'rgba(239, 68, 68, 0.7)');
+        grad.addColorStop(0.7, 'rgba(220, 38, 38, 0.3)');
+        grad.addColorStop(1, 'rgba(220, 38, 38, 0)');
+        osmoCtx.fillStyle = grad;
+        osmoCtx.beginPath();
+        osmoCtx.arc(0, 0, 95, 0, Math.PI * 2);
+        osmoCtx.fill();
+
+        // Parçalanmış zar parçaları (Ghost Cell / Yırtıklar)
+        osmoCtx.strokeStyle = '#f87171';
+        osmoCtx.lineWidth = 3;
+        osmoCtx.setLineDash([8, 8]);
+        osmoCtx.beginPath();
+        osmoCtx.arc(0, 0, 80, 0, Math.PI * 1.8);
+        osmoCtx.stroke();
+        osmoCtx.setLineDash([]);
+
+        osmoCtx.fillStyle = '#fca5a5';
+        osmoCtx.font = 'bold 12px sans-serif';
+        osmoCtx.textAlign = 'center';
+        osmoCtx.fillText('💥 HEMOLİZ (LİZİS)', 0, 4);
+        osmoCtx.restore();
+
+      } else {
+        // Normal, Şişmiş veya Büzüşmüş Eritrosit
+        osmoCtx.save();
+        osmoCtx.translate(cx, cy);
+        osmoCtx.scale(rbcCurrentScale, rbcCurrentScale);
+
+        if (osmoMode === 'hyper') {
+          // Krenasyon (Tırtıklı / Büzüşmüş Eritrosit Şekli)
+          osmoCtx.fillStyle = '#b91c1c';
+          osmoCtx.strokeStyle = '#ef4444';
+          osmoCtx.lineWidth = 2.5;
+
+          osmoCtx.beginPath();
+          const spikes = 14;
+          const outerR = 52;
+          const innerR = 40;
+          for (let i = 0; i < spikes; i++) {
+            const angle1 = (i / spikes) * Math.PI * 2;
+            const angle2 = ((i + 0.5) / spikes) * Math.PI * 2;
+            osmoCtx.lineTo(Math.cos(angle1) * outerR, Math.sin(angle1) * outerR);
+            osmoCtx.lineTo(Math.cos(angle2) * innerR, Math.sin(angle2) * innerR);
+          }
+          osmoCtx.closePath();
+          osmoCtx.fill();
+          osmoCtx.stroke();
+
+          osmoCtx.fillStyle = '#ffffff';
+          osmoCtx.font = 'bold 10px sans-serif';
+          osmoCtx.textAlign = 'center';
+          osmoCtx.fillText('Krenasyon', 0, 3);
+
+        } else {
+          // Bikonkav Disk (İzotonik veya Hipotonik Küreye Doğru Şişme)
+          const r = 58;
+          const grad = osmoCtx.createRadialGradient(-15, -15, 10, 0, 0, r);
+          grad.addColorStop(0, '#ef4444');
+          grad.addColorStop(0.65, '#dc2626');
+          grad.addColorStop(1, '#991b1b');
+
+          osmoCtx.fillStyle = grad;
+          osmoCtx.strokeStyle = '#f87171';
+          osmoCtx.lineWidth = 3;
+
+          osmoCtx.beginPath();
+          osmoCtx.arc(0, 0, r, 0, Math.PI * 2);
+          osmoCtx.fill();
+          osmoCtx.stroke();
+
+          // Bikonkav Çukurluk (Şiştikçe bu çukurluk kaybolup gerilir)
+          if (osmoMode === 'iso') {
+            const dimpleGrad = osmoCtx.createRadialGradient(0, 0, 5, 0, 0, 26);
+            dimpleGrad.addColorStop(0, 'rgba(127, 29, 29, 0.7)');
+            dimpleGrad.addColorStop(1, 'rgba(220, 38, 38, 0)');
+            osmoCtx.fillStyle = dimpleGrad;
+            osmoCtx.beginPath();
+            osmoCtx.arc(0, 0, 26, 0, Math.PI * 2);
+            osmoCtx.fill();
+
+            osmoCtx.fillStyle = '#ffffff';
+            osmoCtx.font = '10px sans-serif';
+            osmoCtx.textAlign = 'center';
+            osmoCtx.fillText('Bikonkav Disk', 0, 3);
+          } else {
+            osmoCtx.fillStyle = '#ffffff';
+            osmoCtx.font = 'bold 10px sans-serif';
+            osmoCtx.textAlign = 'center';
+            osmoCtx.fillText('Turgor / Şişkin', 0, 3);
+          }
+        }
+        osmoCtx.restore();
+      }
+
+      // 3. Su Molekülü Akış Yönü Okları (H₂O Akışı)
+      osmoAnimProgress = (osmoAnimProgress + 0.04) % 1;
+      const arrowCount = 8;
+
+      if (!rbcIsHemolyzed) {
+        for (let i = 0; i < arrowCount; i++) {
+          const angle = (i / arrowCount) * Math.PI * 2;
+          const cos = Math.cos(angle);
+          const sin = Math.sin(angle);
+
+          if (osmoMode === 'hypo') {
+            // Dışarıdan içeriye doğru hücum eden su okları
+            const startDist = 115 - osmoAnimProgress * 30;
+            const endDist = startDist - 16;
+            drawFlowArrow(osmoCtx, cx + cos * startDist, cy + sin * startDist, cx + cos * endDist, cy + sin * endDist, '#38bdf8');
+          } else if (osmoMode === 'hyper') {
+            // Hücreden dışarıya kaçan su okları
+            const startDist = 55 + osmoAnimProgress * 35;
+            const endDist = startDist + 16;
+            drawFlowArrow(osmoCtx, cx + cos * startDist, cy + sin * startDist, cx + cos * endDist, cy + sin * endDist, '#38bdf8');
+          } else if (osmoMode === 'iso') {
+            // Dengede: Her iki yönde zayıf, eşit su geçişi (dinamik denge)
+            if (i % 2 === 0) {
+              const startDist = 80 - osmoAnimProgress * 15;
+              const endDist = startDist - 10;
+              drawFlowArrow(osmoCtx, cx + cos * startDist, cy + sin * startDist, cx + cos * endDist, cy + sin * endDist, 'rgba(56, 189, 248, 0.45)');
+            } else {
+              const startDist = 65 + osmoAnimProgress * 15;
+              const endDist = startDist + 10;
+              drawFlowArrow(osmoCtx, cx + cos * startDist, cy + sin * startDist, cx + cos * endDist, cy + sin * endDist, 'rgba(56, 189, 248, 0.45)');
+            }
+          }
+        }
+      }
+
+      requestAnimationFrame(drawOsmosis);
+    }
+
+    function drawFlowArrow(ctx, fromX, fromY, toX, toY, color) {
+      const headlen = 6;
+      const angle = Math.atan2(toY - fromY, toX - fromX);
+      ctx.strokeStyle = color;
+      ctx.fillStyle = color;
+      ctx.lineWidth = 2.5;
+
+      ctx.beginPath();
+      ctx.moveTo(fromX, fromY);
+      ctx.lineTo(toX, toY);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(toX, toY);
+      ctx.lineTo(toX - headlen * Math.cos(angle - Math.PI / 6), toY - headlen * Math.sin(angle - Math.PI / 6));
+      ctx.lineTo(toX - headlen * Math.cos(angle + Math.PI / 6), toY - headlen * Math.sin(angle + Math.PI / 6));
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    requestAnimationFrame(drawOsmosis);
+
+
+    /* ========================================================================
+       C. BÖLÜM 2: DİFÜZYON VE FICK MODELİ SİMÜLASYONU
+       ======================================================================== */
+    const diffCanvas = document.getElementById('diffCanvas');
+    const diffCtx = diffCanvas.getContext('2d');
+
+    let particles = [];
+    let membranePermeability = 0.4;
+    let netFluxWindow = [];
+    let lastFluxTime = performance.now();
+
+    // Tanecik Sınıfı
+    class Particle {
+      constructor(x, y, side) {
+        this.x = x;
+        this.y = y;
+        this.vx = (Math.random() - 0.5) * 2.2;
+        this.vy = (Math.random() - 0.5) * 2.2;
+        this.radius = 4;
+        this.side = side; // 'left' veya 'right'
+        this.color = side === 'left' ? '#38bdf8' : '#f59e0b';
+      }
+
+      update(width, height, midX, perm) {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // Üst ve alt sınırlardan elastik çarpışma
+        if (this.y - this.radius < 0) {
+          this.y = this.radius;
+          this.vy = -this.vy;
+        } else if (this.y + this.radius > height) {
+          this.y = height - this.radius;
+          this.vy = -this.vy;
+        }
+
+        // Sol ve sağ dış çeperlerden geri sekme
+        if (this.x - this.radius < 0) {
+          this.x = this.radius;
+          this.vx = -this.vx;
+        } else if (this.x + this.radius > width) {
+          this.x = width - this.radius;
+          this.vx = -this.vx;
+        }
+
+        // Orta Zardan Geçiş / Sekme Mekanizması
+        const margin = 5;
+        // Soldan zara gelen tanecik
+        if (this.side === 'left' && this.x + this.radius >= midX - margin) {
+          if (Math.random() < perm) {
+            // Zardan geçti!
+            this.side = 'right';
+            this.x = midX + margin + 1;
+            this.color = '#38bdf8';
+            netFluxWindow.push({ time: performance.now(), dir: +1 }); // Soldan sağa (+1)
+          } else {
+            // Zardan geri sekti
+            this.x = midX - margin - this.radius;
+            this.vx = -Math.abs(this.vx);
+          }
+        }
+        // Sağdan zara gelen tanecik
+        else if (this.side === 'right' && this.x - this.radius <= midX + margin) {
+          if (Math.random() < perm) {
+            // Zardan geçti!
+            this.side = 'left';
+            this.x = midX - margin - 1;
+            this.color = '#f59e0b';
+            netFluxWindow.push({ time: performance.now(), dir: -1 }); // Sağdan sola (-1)
+          } else {
+            // Zardan geri sekti
+            this.x = midX + margin + this.radius;
+            this.vx = Math.abs(this.vx);
+          }
+        }
+      }
+
+      draw(ctx) {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      }
+    }
+
+    function initDiffusion() {
+      const leftTarget = parseInt(document.getElementById('sliderLeft').value);
+      const rightTarget = parseInt(document.getElementById('sliderRight').value);
+      particles = [];
+
+      const w = diffCanvas.width;
+      const h = diffCanvas.height;
+      const midX = w / 2;
+
+      for (let i = 0; i < leftTarget; i++) {
+        particles.push(new Particle(Math.random() * (midX - 25) + 10, Math.random() * (h - 20) + 10, 'left'));
+      }
+      for (let i = 0; i < rightTarget; i++) {
+        particles.push(new Particle(Math.random() * (midX - 25) + midX + 15, Math.random() * (h - 20) + 10, 'right'));
+      }
+    }
+
+    function updateDiffParticles() {
+      const leftTarget = parseInt(document.getElementById('sliderLeft').value);
+      const rightTarget = parseInt(document.getElementById('sliderRight').value);
+      document.getElementById('valLeftCount').textContent = leftTarget;
+      document.getElementById('valRightCount').textContent = rightTarget;
+      initDiffusion();
+    }
+
+    function updateDiffPerm() {
+      const val = parseInt(document.getElementById('sliderPerm').value);
+      membranePermeability = val / 100;
+      document.getElementById('valPerm').textContent = val + '%';
+    }
+
+    initDiffusion();
+
+    // Difüzyon Çizim ve Fizik Simülasyon Döngüsü
+    function drawDiffusion(timestamp) {
+      const w = diffCanvas.width;
+      const h = diffCanvas.height;
+      const midX = w / 2;
+
+      diffCtx.clearRect(0, 0, w, h);
+
+      // İki Bölmenin Zemin Gölgelendirmesi
+      diffCtx.fillStyle = 'rgba(56, 189, 248, 0.04)';
+      diffCtx.fillRect(0, 0, midX, h);
+      diffCtx.fillStyle = 'rgba(245, 158, 11, 0.04)';
+      diffCtx.fillRect(midX, 0, midX, h);
+
+      // Yarı Geçirgen Zar Çizimi (Gözenekli Lipid Çift Tabaka Modeli)
+      diffCtx.strokeStyle = '#64748b';
+      diffCtx.lineWidth = 6;
+      diffCtx.setLineDash([12, 8]); // Gözenekler
+      diffCtx.beginPath();
+      diffCtx.moveTo(midX, 0);
+      diffCtx.lineTo(midX, h);
+      diffCtx.stroke();
+      diffCtx.setLineDash([]);
+
+      // Bölme Etiketleri
+      diffCtx.font = '11px sans-serif';
+      diffCtx.fillStyle = '#38bdf8';
+      diffCtx.fillText('Sol Bölme (Ekstraselüler)', 12, 18);
+      diffCtx.fillStyle = '#f59e0b';
+      diffCtx.fillText('Sağ Bölme (İntraselüler)', midX + 12, 18);
+
+      let countLeft = 0;
+      let countRight = 0;
+
+      // Tanecikleri güncelle ve çiz
+      for (let p of particles) {
+        p.update(w, h, midX, membranePermeability);
+        p.draw(diffCtx);
+        if (p.x < midX) countLeft++;
+        else countRight++;
+      }
+
+      // Canlı Sayıların Arayüze Aktarılması
+      document.getElementById('diffLeftLive').textContent = countLeft;
+      document.getElementById('diffRightLive').textContent = countRight;
+
+      // Net Akı Hesabı (Son 1.5 saniyedeki net yön)
+      const now = performance.now();
+      netFluxWindow = netFluxWindow.filter(item => now - item.time < 1500);
+      let netSum = 0;
+      for (let item of netFluxWindow) netSum += item.dir;
+
+      const fluxPerSec = (netSum / 1.5).toFixed(1);
+      const fluxEl = document.getElementById('diffNetFlux');
+      const badgeEl = document.getElementById('diff-status-badge');
+
+      if (Math.abs(countLeft - countRight) <= 5) {
+        badgeEl.textContent = 'Dinamik Dengede (ΔC ≈ 0)';
+        badgeEl.style.color = '#10b981';
+      } else {
+        badgeEl.textContent = 'Konsantrasyon Gradyanı Aktif';
+        badgeEl.style.color = '#38bdf8';
+      }
+
+      if (fluxPerSec > 0) {
+        fluxEl.textContent = `→ +${fluxPerSec} /sn`;
+        fluxEl.style.color = '#10b981';
+      } else if (fluxPerSec < 0) {
+        fluxEl.textContent = `← ${fluxPerSec} /sn`;
+        fluxEl.style.color = '#f59e0b';
+      } else {
+        fluxEl.textContent = `0 /sn (Denge)`;
+        fluxEl.style.color = '#94a3b8';
+      }
+
+      requestAnimationFrame(drawDiffusion);
+    }
+
+    requestAnimationFrame(drawDiffusion);
+
+
+    /* ========================================================================
+       D. BÖLÜM 3: SODYUM-POTASYUM POMPASI (Na+/K+-ATPaz) SİMÜLASYONU
+       ======================================================================== */
+    const pumpCanvas = document.getElementById('pumpCanvas');
+    const pumpCtx = pumpCanvas.getContext('2d');
+
+    let pumpStep = 0; // 0..5 (Toplam 6 adım)
+    let isAtpAvailable = true;
+
+    let totalNaExtruded = 0;
+    let totalKImported = 0;
+    let totalAtpConsumed = 0;
+
+    const pumpStepsData = [
+      {
+        badge: "Adım 1/6: Sitoplazmaya Açık (E1 Konformasyonu)",
+        text: "1. Adım: Pompa sitoplazmaya açık konformasyonda (E1). İç yüzeydeki yüksek afiniteli 3 bölgeye 3 Na⁺ iyonu bağlanır.",
+        state: "E1_Na_BOUND"
+      },
+      {
+        badge: "Adım 2/6: ATP Hidrolizi ve Fosforilasyon",
+        text: "2. Adım: 1 molekül ATP hidroliz edilir (ADP + Pi). Terminal fosfat pompanın aspartat kalıntısına bağlanır (Fosforilasyon: E1-P).",
+        state: "PHOSPHORYLATION"
+      },
+      {
+        badge: "Adım 3/6: Dışa Açılma (E2-P) & 3 Na⁺ Salınımı",
+        text: "3. Adım: Fosforilasyon konformasyonel değişimi tetikler (E2-P). Pompa ekstraselüler tarafa açılır; Na⁺ afinitesi düşer ve 3 Na⁺ dışarı salınır.",
+        state: "E2_Na_RELEASE"
+      },
+      {
+        badge: "Adım 4/6: Dış Yüzeyde 2 K⁺ Bağlanması",
+        text: "4. Adım: E2-P formundaki pompanın dış yüzeyi K⁺ için yüksek afiniteye sahiptir. 2 K⁺ iyonu bağlanır.",
+        state: "E2_K_BOUND"
+      },
+      {
+        badge: "Adım 5/6: Defosforilasyon",
+        text: "5. Adım: K⁺ bağlanması bağlı fosfat grubunun (Pi) enzimatik hidrolizini ve kopmasını tetikler (Defosforilasyon).",
+        state: "DEPHOSPHORYLATION"
+      },
+      {
+        badge: "Adım 6/6: İçe Dönüş (E1) & 2 K⁺ Sitoplazmaya Salınımı",
+        text: "6. Adım: Pompa orijinal içe açık konformasyonuna (E1) döner. K⁺ afinitesi düşer; 2 K⁺ sitoplazmaya salınır. Pompa yeni döngüye hazırdır!",
+        state: "E1_K_RELEASE"
+      }
+    ];
+
+    function toggleATP() {
+      isAtpAvailable = document.getElementById('atpAvailableCheck').checked;
+      const alertEl = document.getElementById('atpDepletedAlert');
+      const btnEl = document.getElementById('btnNextStep');
+
+      if (!isAtpAvailable) {
+        alertEl.style.display = 'flex';
+        btnEl.disabled = true;
+      } else {
+        alertEl.style.display = 'none';
+        btnEl.disabled = false;
+      }
+    }
+
+    function advancePumpStep() {
+      if (!isAtpAvailable) return;
+
+      pumpStep = (pumpStep + 1) % 6;
+
+      // Sayaç Güncellemeleri
+      if (pumpStep === 2) {
+        // Adım 2: 1 ATP harcandı
+        totalAtpConsumed++;
+        document.getElementById('cntAtpUsed').textContent = totalAtpConsumed;
+      } else if (pumpStep === 3) {
+        // Adım 3: 3 Na+ dışarı atıldı
+        totalNaExtruded += 3;
+        document.getElementById('cntNaOut').textContent = totalNaExtruded;
+      } else if (pumpStep === 0) {
+        // Adım 6 tamamlanıp döngü başa döndüğünde: 2 K+ içeri alındı
+        totalKImported += 2;
+        document.getElementById('cntKIn').textContent = totalKImported;
+      }
+
+      // Metinleri ve rozetleri güncelle
+      document.getElementById('pump-step-badge').textContent = pumpStepsData[pumpStep].badge;
+      document.getElementById('pumpStepText').textContent = pumpStepsData[pumpStep].text;
+    }
+
+    // Pompa Çizim Döngüsü
+    function drawPump(timestamp) {
+      const w = pumpCanvas.width;
+      const h = pumpCanvas.height;
+      const cx = w / 2;
+      const cy = h / 2;
+
+      pumpCtx.clearRect(0, 0, w, h);
+
+      // 1. Hücre Zarı (Lipid Çift Tabaka)
+      const memTop = cy - 25;
+      const memBottom = cy + 25;
+
+      // Ekstraselüler alan (Üst)
+      pumpCtx.fillStyle = 'rgba(56, 189, 248, 0.08)';
+      pumpCtx.fillRect(0, 0, w, memTop);
+      pumpCtx.fillStyle = '#38bdf8';
+      pumpCtx.font = '11px sans-serif';
+      pumpCtx.fillText('Hücre Dışı (Ekstraselüler - Yüksek [Na⁺], Düşük [K⁺])', 14, 20);
+
+      // İntraselüler alan (Alt)
+      pumpCtx.fillStyle = 'rgba(168, 85, 247, 0.08)';
+      pumpCtx.fillRect(0, memBottom, w, h - memBottom);
+      pumpCtx.fillStyle = '#c084fc';
+      pumpCtx.fillText('Hücre İçi (Sitoplazma - Düşük [Na⁺], Yüksek [K⁺])', 14, h - 14);
+
+      // Lipid Zarı Gövdesi
+      pumpCtx.fillStyle = '#334155';
+      pumpCtx.fillRect(0, memTop, w, 50);
+
+      // Fosfolipid başları ve kuyrukları
+      pumpCtx.fillStyle = '#64748b';
+      for (let x = 8; x < w; x += 16) {
+        if (x > cx - 65 && x < cx + 65) continue; // Pompa bölgesini boş bırak
+        // Üst lipid başları
+        pumpCtx.beginPath();
+        pumpCtx.arc(x, memTop + 5, 4, 0, Math.PI * 2);
+        pumpCtx.fill();
+        // Alt lipid başları
+        pumpCtx.beginPath();
+        pumpCtx.arc(x, memBottom - 5, 4, 0, Math.PI * 2);
+        pumpCtx.fill();
+      }
+
+      // 2. Pompa Proteini (Konformasyon Çizimi)
+      const currentData = pumpStepsData[pumpStep];
+      const isFacingIn = (pumpStep === 0 || pumpStep === 1 || pumpStep === 5); // E1 formu alta (içe) açık
+      const isFacingOut = (pumpStep === 2 || pumpStep === 3 || pumpStep === 4); // E2 formu üste (dışa) açık
+
+      pumpCtx.save();
+      pumpCtx.translate(cx, cy);
+
+      // Pompa Gövdesi (V-Kanal Formu)
+      pumpCtx.fillStyle = '#0284c7';
+      pumpCtx.strokeStyle = '#38bdf8';
+      pumpCtx.lineWidth = 3;
+
+      pumpCtx.beginPath();
+      if (isFacingIn) {
+        // Aşağıya (Sitoplazmaya) V şeklinde açılan ağız
+        pumpCtx.moveTo(-50, -32);
+        pumpCtx.lineTo(50, -32);
+        pumpCtx.lineTo(46, -6);
+        pumpCtx.lineTo(16, 26);
+        pumpCtx.lineTo(-16, 26);
+        pumpCtx.lineTo(-46, -6);
+      } else {
+        // Yukarıya (Dışarıya) V şeklinde açılan ağız
+        pumpCtx.moveTo(-50, 32);
+        pumpCtx.lineTo(50, 32);
+        pumpCtx.lineTo(46, 6);
+        pumpCtx.lineTo(16, -26);
+        pumpCtx.lineTo(-16, -26);
+        pumpCtx.lineTo(-46, 6);
+      }
+      pumpCtx.closePath();
+      pumpCtx.fill();
+      pumpCtx.stroke();
+
+      // Fosfat Grubu (P) Varlığı (Adım 1, 2, 3'te fosforile)
+      const hasPhosphate = (pumpStep >= 1 && pumpStep <= 3);
+      if (hasPhosphate) {
+        pumpCtx.beginPath();
+        pumpCtx.arc(38, 16, 11, 0, Math.PI * 2);
+        pumpCtx.fillStyle = '#f59e0b'; // Fosfor sarısı
+        pumpCtx.fill();
+        pumpCtx.strokeStyle = '#ffffff';
+        pumpCtx.lineWidth = 1.5;
+        pumpCtx.stroke();
+
+        pumpCtx.fillStyle = '#000000';
+        pumpCtx.font = 'bold 10px sans-serif';
+        pumpCtx.textAlign = 'center';
+        pumpCtx.fillText('P~', 38, 20);
+      }
+
+      // İyonların Çizimi
+      if (pumpStep === 0) {
+        // 3 Na+ iç cebe bağlanıyor
+        drawIon(pumpCtx, -18, 6, 'Na⁺', '#38bdf8');
+        drawIon(pumpCtx, 0, 10, 'Na⁺', '#38bdf8');
+        drawIon(pumpCtx, 18, 6, 'Na⁺', '#38bdf8');
+      } else if (pumpStep === 1) {
+        // 3 Na+ bağlı, ATP yaklaşmış
+        drawIon(pumpCtx, -16, 0, 'Na⁺', '#38bdf8');
+        drawIon(pumpCtx, 0, 4, 'Na⁺', '#38bdf8');
+        drawIon(pumpCtx, 16, 0, 'Na⁺', '#38bdf8');
+
+        // ATP göstergesi
+        pumpCtx.fillStyle = '#fbbf24';
+        pumpCtx.font = 'bold 11px sans-serif';
+        pumpCtx.fillText('ATP ➔ ADP + Pi', -2, 54);
+      } else if (pumpStep === 2) {
+        // Pompa dışa açıldı, 3 Na+ dışarı fırlatılıyor
+        drawIon(pumpCtx, -24, -45, 'Na⁺', '#38bdf8');
+        drawIon(pumpCtx, 0, -56, 'Na⁺', '#38bdf8');
+        drawIon(pumpCtx, 24, -45, 'Na⁺', '#38bdf8');
+      } else if (pumpStep === 3) {
+        // 2 K+ dışarıdan yaklaşıp bağlanıyor
+        drawIon(pumpCtx, -14, -12, 'K⁺', '#a855f7');
+        drawIon(pumpCtx, 14, -12, 'K⁺', '#a855f7');
+      } else if (pumpStep === 4) {
+        // 2 K+ bağlı, Pi serbest kalıyor
+        drawIon(pumpCtx, -12, -8, 'K⁺', '#a855f7');
+        drawIon(pumpCtx, 12, -8, 'K⁺', '#a855f7');
+
+        pumpCtx.fillStyle = '#94a3b8';
+        pumpCtx.font = 'bold 11px sans-serif';
+        pumpCtx.fillText('Pi Ayrıldı (Defosforilasyon)', 0, 52);
+      } else if (pumpStep === 5) {
+        // Pompa içeri açıldı, 2 K+ sitoplazmaya salınıyor
+        drawIon(pumpCtx, -18, 48, 'K⁺', '#a855f7');
+        drawIon(pumpCtx, 18, 48, 'K⁺', '#a855f7');
+      }
+
+      pumpCtx.restore();
+
+      requestAnimationFrame(drawPump);
+    }
+
+    function drawIon(ctx, x, y, label, color) {
+      ctx.beginPath();
+      ctx.arc(x, y, 10, 0, Math.PI * 2);
+      ctx.fillStyle = color;
+      ctx.fill();
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 9px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(label, x, y + 3);
+    }
+
+    requestAnimationFrame(drawPump);
+  </script>
+</body>
+</html>
