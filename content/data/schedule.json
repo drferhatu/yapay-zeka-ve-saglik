@@ -33,21 +33,21 @@
     },
     {
       "week": 6,
-      "date": "",
-      "status": "normal",
-      "note": ""
+      "date": "2026-10-28",
+      "status": "tatil",
+      "note": "Cumhuriyet Bayramı arası; ders yok"
     },
     {
       "week": 7,
-      "date": "",
+      "date": "2026-11-04",
       "status": "normal",
-      "note": ""
+      "note": "İki haftanın içeriği birlikte"
     },
     {
       "week": 8,
-      "date": "",
-      "status": "sinav",
-      "note": "Ara değerlendirme"
+      "date": "2026-11-11",
+      "status": "normal",
+      "note": "Kurul sınavına 9 gün"
     },
     {
       "week": 9,

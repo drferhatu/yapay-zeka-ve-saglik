@@ -21,7 +21,8 @@ const m = moduleOf(week.data.module);
 const s = scheduleOf(week.data.week);
 const dateLong = formatDate(s?.date, true);
 const statusLabel = s && s.status !== 'normal' ? STATUS_LABEL[s.status] : '';
-const tocExtra = [{ slug: 'ogrenme-hedefleri', text: 'Öğrenme hedefleri' }, ...(week.data.notebook ? [{ slug: 'defter', text: 'Colab defteri' }] : [])];
+const dersYok = s?.status === 'tatil';
+const tocExtra = [...(!dersYok && week.data.objectives.length ? [{ slug: 'ogrenme-hedefleri', text: 'Öğrenme hedefleri' }] : []), ...(week.data.notebook ? [{ slug: 'defter', text: 'Colab defteri' }] : [])];
 const tocAfter = [
   ...((week.data.article || week.data.discussion) ? [{ slug: 'okumalar', text: 'Bu haftanın okumaları' }] : []),
   ...(week.data.links.length ? [{ slug: 'faydali-baglantilar', text: 'Faydalı bağlantılar' }] : []),
@@ -46,7 +47,7 @@ const pageTitle = `Hafta ${week.data.week} — ${week.data.title}`;
       </div>
       <h1 class="display mt-5 max-w-4xl text-3xl leading-[1.1] text-ink sm:text-4xl md:text-5xl">{week.data.title}</h1>
       <p class="mt-4 max-w-2xl text-lg text-ink-2">{week.data.description}</p>
-      <p class="mt-5 text-sm text-ink-3"><span class="font-semibold text-ink-2">Ders planındaki başlık:</span> {week.data.topic}</p>
+      {!dersYok && week.data.topic !== week.data.title && <p class="mt-5 text-sm text-ink-3"><span class="font-semibold text-ink-2">Ders planındaki başlık:</span> {week.data.topic}</p>}
     </div>
   </header>
 
@@ -55,11 +56,11 @@ const pageTitle = `Hafta ${week.data.week} — ${week.data.title}`;
       {(week.data.changeNote || (s?.note && s.status !== 'normal')) && (
         <aside class="callout callout-warn"><p class="callout-title">Program değişikliği</p><p>{week.data.changeNote || s?.note}</p></aside>
       )}
-      {week.data.status === 'taslak' && (
+      {!dersYok && week.data.status === 'taslak' && (
         <aside class="callout callout-note"><p class="callout-title">Hazırlık aşamasında</p><p>Bu haftanın ayrıntılı ders notları henüz yayımlanmadı. Hedefler, temel kavramlar ve etkinlikler ders planına göre hazırdır; notlar ders yaklaştıkça eklenecektir.</p></aside>
       )}
 
-      <section aria-labelledby="ogrenme-hedefleri">
+      {!dersYok && week.data.objectives.length > 0 && <section aria-labelledby="ogrenme-hedefleri">
         <h2 id="ogrenme-hedefleri" class="!mt-10 !border-0 !pt-0">Öğrenme hedefleri</h2>
         <p>Bu haftanın sonunda:</p>
         <ul class="!list-none !pl-0 !space-y-3">
@@ -70,7 +71,7 @@ const pageTitle = `Hafta ${week.data.week} — ${week.data.title}`;
             </li>
           ))}
         </ul>
-      </section>
+      </section>}
 
       <Content components={{ NotebookEmbed }} />
 
