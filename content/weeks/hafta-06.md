@@ -3,7 +3,7 @@ week: 6
 title: "Ders yok: Cumhuriyet Bayramı arası"
 topic: "Ders yok"
 description: "28 Ekim Çarşamba sabahı Cumhuriyet Bayramı arifesi nedeniyle ders yapılmayacak. İçerik 4 Kasım dersine taşındı."
-module: m1
+module: m2
 semester: 1
 exam: false
 status: hazir

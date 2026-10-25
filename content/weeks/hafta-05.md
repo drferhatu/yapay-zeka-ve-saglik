@@ -3,7 +3,7 @@ week: 5
 title: "Ders yok: Önlük Giyme Töreni"
 topic: "Ders yok"
 description: "21 Ekim'de ders yapılmadı; gün önlük giyme törenine ayrıldı. Bu haftanın planlanan içeriği 4 Kasım dersine taşındı."
-module: m1
+module: m2
 semester: 1
 exam: false
 status: hazir
