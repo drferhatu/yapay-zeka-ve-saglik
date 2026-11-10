@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gerçek mi, Uydurma mı? · Yapay Zeka ve Sağlık</title>
+<meta name="robots" content="noindex">
+<style>
+  :root{--paper:#faf8f4;--ink:#10262e;--ink2:#34515b;--ink3:#6a838b;--line:#e3ddd2;--brand:#0f4c5c;--ok:#1f7a4d;--bad:#be3a5a;--warn:#b7791f;--accent:#e4572e}
+  *{box-sizing:border-box} html,body{height:100%} body{margin:0;background:var(--ink);color:#fff;font:20px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;display:flex;flex-direction:column}
+  header{display:flex;justify-content:space-between;align-items:center;padding:14px 28px;font-size:15px;color:#9fb7bf}
+  header b{color:#fff} main{flex:1;display:flex;align-items:center;justify-content:center;padding:0 28px 28px}
+  .card{width:min(1100px,100%);background:var(--paper);color:var(--ink);border-radius:28px;padding:48px 56px;min-height:60vh;display:flex;flex-direction:column;gap:18px;box-shadow:0 30px 80px rgba(0,0,0,.4);position:relative}
+  .num{font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);font-weight:700}
+  .claim{font-size:clamp(26px,3.6vw,42px);line-height:1.25;font-weight:700;letter-spacing:-.01em;flex:1}
+  .hint{font-size:17px;color:var(--ink2)}
+  .verdict{display:none;border-radius:16px;padding:18px 22px;font-size:20px;line-height:1.5}
+  .card[data-open] .verdict{display:block} .card[data-open] .hint{display:none}
+  .verdict b.tag{display:inline-block;padding:4px 12px;border-radius:999px;color:#fff;font-size:14px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+  .v-true{background:#e3f2ea;border-left:6px solid var(--ok)} .v-true .tag{background:var(--ok)}
+  .v-false{background:#fbe4ea;border-left:6px solid var(--bad)} .v-false .tag{background:var(--bad)}
+  .v-half{background:#fdf3e1;border-left:6px solid var(--warn)} .v-half .tag{background:var(--warn)}
+  .src{font-size:14px;color:var(--ink3);margin-top:8px} .src a{color:var(--brand)}
+  footer{display:flex;justify-content:center;gap:12px;padding:0 28px 22px}
+  button{font:inherit;font-size:16px;font-weight:700;border-radius:999px;padding:12px 22px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;cursor:pointer}
+  button.primary{background:var(--accent);border-color:var(--accent)}
+  .future{display:grid;gap:14px;grid-template-columns:repeat(3,1fr);margin-top:6px}
+  .future div{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;font-size:17px;line-height:1.45}
+  .future b{display:block;font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--brand);margin-bottom:6px}
+  @media (max-width:800px){.card{padding:28px 24px}.future{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><span><b>Gerçek mi, Uydurma mı?</b> · Yapay Zeka ve Sağlık · Hafta 8</span><span id="progress"></span></header>
+<main><div class="card" id="card"></div></main>
+<footer>
+  <button id="prev">← Önceki</button>
+  <button class="primary" id="flip">Kartı çevir</button>
+  <button id="next">Sonraki →</button>
+</footer>
+<script>
+/* Her kart: iddia, hüküm (true/false/half), açıklama, kaynak. Sıra bilerek karışık. Klavye: boşluk = çevir, ok tuşları = ileri/geri. */
+const KARTLAR = [
+ {iddia:"2018'de Amerikan ilaç ve cihaz kurumu FDA, bir yapay zekaya hekim görüntüye bakmadan tek başına \"göz hekimine sevk et\" deme yetkisi verdi.",
+  hukum:"true", tag:"Gerçek", aciklama:"Diyabetik retinopati taraması için IDx-DR adlı sistem, 900 hastalık çalışmada tek başına karar verdi ve FDA'dan \"otonom\" tanı onayı alan ilk yapay zeka oldu. Birinci basamakta, göz hekimi olmayan bir odada çalışıyor.",
+  kaynak:"Abràmoff MD ve ark. npj Digital Medicine 2018", url:"https://doi.org/10.1038/s41746-018-0040-6"},
+ {iddia:"Türkiye'de bir devlet hastanesinde yapay zeka destekli bir robot, cerrah olmadan tek başına apandisit ameliyatı yaptı.",
+  hukum:"false", tag:"Uydurma", aciklama:"Böyle bir ameliyat dünyada da yok. Cerrahi robotlar cerrahın elini uzatır, kararı vermez; otonom ameliyat deneyleri laboratuvarda, hayvan dokusunda yapılıyor. Haber gibi görünen cümlelerde \"tek başına\" kelimesini duyduğunuzda durun.",
+  kaynak:"Kaynak yok; uydurma.", url:""},
+ {iddia:"Protein yapısını amino asit diziliminden tahmin eden bir yapay zeka, 2024 Nobel Kimya Ödülü'nün yarısını aldı.",
+  hukum:"true", tag:"Gerçek", aciklama:"AlphaFold'u geliştiren Demis Hassabis ve John Jumper ödülün yarısını, hesaplamalı protein tasarımı için David Baker diğer yarısını aldı. İkinci haftada protein görüntüleyicisini konuştuğumuz program bu.",
+  kaynak:"Nobel Vakfı basın bülteni, 9 Ekim 2024", url:"https://www.nobelprize.org/prizes/chemistry/2024/press-release/"},
+ {iddia:"Bir yapay zeka, göğüs röntgenine bakarak hastanın kendi beyan ettiği ırkını yüksek doğrulukla tahmin edebiliyor; radyologlar aynı görüntüde bunu yapamıyor ve modelin nasıl yaptığı tam bilinmiyor.",
+  hukum:"true", tag:"Gerçek", aciklama:"Röntgen, BT ve mamografide test edildi; görüntü bozulduğunda, düşük çözünürlükte bile tahmin sürdü. Ürkütücü kısmı şu: model ırkı görebiliyorsa, tanı modelleri de farkında olmadan ırka göre farklı davranabilir. Yanlılık tartışmasının çıkış noktası.",
+  kaynak:"Gichoya JW ve ark. Lancet Digital Health 2022", url:"https://doi.org/10.1016/S2589-7500(22)00063-2"},
+ {iddia:"FDA, hekim onayı olmadan antibiyotik reçete edebilen bir yapay zekaya onay verdi.",
+  hukum:"false", tag:"Uydurma", aciklama:"Onaylı yapay zeka cihazlarının hiçbiri tedavi kararını tek başına vermiyor; en ileri örnek bile \"sevk et\" diyen tarama sistemi. Reçete, tanı ve tedavi kararı hekimde. \"Onay aldı\" cümlesini duyunca neye onay aldığını sorun.",
+  kaynak:"Kaynak yok; uydurma.", url:""},
+ {iddia:"MIT'de bir yapay zeka yüz milyondan fazla molekülü tarayıp dirençli bakterilere etkili yeni bir antibiyotik buldu; adını bir bilimkurgu bilgisayarından aldı.",
+  hukum:"true", tag:"Gerçek", aciklama:"Halicin, 2001 Uzay Yolu Macerası'ndaki HAL'den. Model önce bilinen moleküllerden \"bakteriyi öldürür mü\" örüntüsünü öğrendi, sonra devasa kütüphanelerde aradı; farelerde dirençli enfeksiyonları tedavi etti. İlaç keşfinin yeni yüzü.",
+  kaynak:"Stokes JM ve ark. Cell 2020", url:"https://doi.org/10.1016/j.cell.2020.01.021"},
+ {iddia:"Bir derin öğrenme modeli, kontrastsız rutin karın tomografisinde pankreas kanserini radyologların normal dediği görüntülerde yakaladı ve yüz binlerce taramada test edildi.",
+  hukum:"true", tag:"Gerçek", aciklama:"PANDA adlı model Çin'de geliştirildi; yaklaşık 20 bin hastada çok merkezli doğrulama, ardından 20 binden fazla gerçek dünya taramasında yanlış alarmı binde birin altında tuttu ve radyologların kaçırdığı vakaları buldu. Pankreas kanseri geç tanı aldığı için öldürücüdür; erken yakalamak her şeyi değiştirir.",
+  kaynak:"Cao K ve ark. Nature Medicine 2023", url:"https://doi.org/10.1038/s41591-023-02640-w"},
+ {iddia:"ChatGPT, hiç tıp eğitimi almadan Amerikan tıp lisans sınavı USMLE'nin üç basamağında da geçer nota yaklaştı ya da geçti.",
+  hukum:"true", tag:"Gerçek", aciklama:"2023'te yayımlanan çalışmada model, üç basamakta da yaklaşık yüzde 60 geçer sınır civarında puan aldı ve cevaplarının çoğu tutarlı gerekçeler içeriyordu. Sınavı geçmek hekim olmak değil; ama sınavların ne ölçtüğü sorusunu da açtı.",
+  kaynak:"Kung TH ve ark. PLOS Digital Health 2023", url:"https://doi.org/10.1371/journal.pdig.0000198"},
+ {iddia:"Hekim ile hasta konuşurken dinleyip muayene notunu kendisi yazan yapay zeka sistemleri Amerika'da binlerce hekim tarafından günlük pratikte kullanılıyor.",
+  hukum:"true", tag:"Gerçek", aciklama:"\"Ambient scribe\" denen sistemler. Kaiser Permanente'nin on haftalık pilotunda yaklaşık 3.400 hekim 300 binden fazla görüşmede kullandı; hekimler notu kontrol edip imzalıyor. Mahremiyet ve doğruluk sorularını 24. ve 25. haftada konuşacağız.",
+  kaynak:"Tierney AA ve ark. NEJM Catalyst 2024", url:"https://doi.org/10.1056/CAT.23.0404"},
+ {iddia:"Bir yapay zeka, kısa bir konuşma kaydından depresyonu tespit edebiliyor; bu sistem onay aldı ve kliniklerde tarama için kullanılıyor.",
+  hukum:"half", tag:"Yarısı gerçek", aciklama:"Konuşmadan psikiyatrik bozuklukları saptama araştırmaları gerçek ve umut verici; sistematik derlemeler onlarca çalışma sayıyor. Ama \"onay aldı, klinikte tarama için kullanılıyor\" kısmı uydurma: rutin klinik kullanımda onaylı böyle bir tarama aracı yok. Doğru bir araştırmanın üstüne uydurma bir sonuç eklemek, yanlış haberin en yaygın biçimi.",
+  kaynak:"Low DM ve ark. Laryngoscope Investig Otolaryngol 2020 (derleme)", url:"https://doi.org/10.1002/lio2.354"},
+];
+const GELECEK = {iddia:"2032'de bir poliklinik: üç sahne", future:true};
+const deste = [...KARTLAR, GELECEK];
+let i = 0;
+const el = document.getElementById('card');
+function ciz(){
+  const k = deste[i]; el.removeAttribute('data-open');
+  document.getElementById('progress').textContent = k.future ? 'Kapanış' : `Kart ${i+1} / ${KARTLAR.length}`;
+  if (k.future) {
+    el.innerHTML = `<div class="num">Kapanış · Gelecek vizyonu</div><div class="claim" style="flex:0">${k.iddia}</div>
+    <div class="future">
+      <div><b>Sahne 1</b>Hekim hastayla konuşuyor; görüşme biterken not yazılmış, hekim okuyup imzalıyor.</div>
+      <div><b>Sahne 2</b>Röntgen çekilirken sistem görüntüyü çoktan okumuş; şüpheli bulguyu işaretleyip radyoloğa sıraya koymuş.</div>
+      <div><b>Sahne 3</b>Hasta gece ikide ilacının yan etkisini sorduğunda cevabı bir bot vermiş; sabah hekime özet düşmüş.</div>
+    </div>
+    <div class="hint" style="margin-top:14px">Soru: Bu üç sahneden hangisi sizce 2032'ye kalmaz, daha önce gelir? Hangisinin gelmesini istemezsiniz?</div>
+    <div class="verdict v-half"><b class="tag">Not</b>Üç sahnenin de bugün çalışan erken sürümleri var; sorun ne zaman geleceği değil, geldiğinde çıktısını kimin kontrol edeceği. Kurul sınavına dokuz gün: aracı kullanın, çıkanı notla karşılaştırın, uyuyun.</div>`;
+    return;
+  }
+  const cls = {true:'v-true', false:'v-false', half:'v-half'}[k.hukum];
+  el.innerHTML = `<div class="num">Kart ${i+1}</div><div class="claim">${k.iddia}</div>
+    <div class="hint">Gerçek mi, uydurma mı? Telefonunuzu kaldırın.</div>
+    <div class="verdict ${cls}"><b class="tag">${k.tag}</b><div>${k.aciklama}</div>
+    <div class="src">${k.url ? `Kaynak: <a href="${k.url}" target="_blank" rel="noopener">${k.kaynak}</a>` : k.kaynak}</div></div>`;
+}
+function cevir(){ el.toggleAttribute('data-open'); }
+function ileri(){ if (i < deste.length-1) { i++; ciz(); } }
+function geri(){ if (i > 0) { i--; ciz(); } }
+document.getElementById('flip').onclick = cevir; document.getElementById('next').onclick = ileri; document.getElementById('prev').onclick = geri;
+el.addEventListener('click', cevir);
+addEventListener('keydown', e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); cevir(); } if (e.key === 'ArrowRight') ileri(); if (e.key === 'ArrowLeft') geri(); });
+ciz();
+</script>
+</body>
+</html>

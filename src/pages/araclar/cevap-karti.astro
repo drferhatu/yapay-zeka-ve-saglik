@@ -1,0 +1,26 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { href } from '@/lib/site';
+const app = href('/araclar/cevap-karti.html');
+---
+<BaseLayout title="Cevap Kartı" description="Derste telefonu kaldırarak cevap vermek için tek sayfalık kart: Gerçek/Uydurma ya da A–E.">
+  <div class="wrap py-10 md:py-12">
+    <nav aria-label="Konum" class="text-sm text-ink-3"><a href={href('/araclar')} class="hover:text-ink">Araçlar</a> <span aria-hidden="true">/</span> Cevap Kartı</nav>
+    <div class="mt-4 flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <h1 class="display text-3xl md:text-4xl">Cevap Kartı</h1>
+        <p class="mt-2 max-w-2xl text-ink-2">Amfide cevap vermenin en basit yolu: bir seçeneğe dokunun, ekran o renge ve harfe dönüşür, telefonu kaldırın. Hesap yok, kayıt yok, kimse ne seçtiğinizi kaydetmiyor; sadece perdeden görünür. Derste "Gerçek / Uydurma" ya da "A–E" modunu kullanırız.</p>
+      </div>
+      <a href={app} target="_blank" rel="noopener" class="btn-primary">Kartı aç</a>
+    </div>
+  </div>
+  <div class="wrap pb-20">
+    <div class="grid gap-6 md:grid-cols-[320px_1fr] md:items-start">
+      <iframe src={app} title="Cevap Kartı" class="h-[560px] w-full max-w-[320px] rounded-[2rem] border-8 border-ink bg-white shadow-lift" loading="lazy"></iframe>
+      <div class="prose-lesson">
+        <p>Telefonunuzda açın, ana ekrana ekleyin; her derste aynı kart. Oy gizli değildir, zaten amaç perdeden görünmesi; ama kimin ne dediği hiçbir yere yazılmaz.</p>
+        <p>Bu sayfa da derste birlikte yazdırdığımız araçlar gibi tek bir dosya; kodunu <a href="https://github.com/drferhatu/yapay-zeka-ve-saglik/blob/main/public/araclar/cevap-karti.html" target="_blank" rel="noopener">GitHub'da</a> okuyabilirsiniz, elli satır bile değil.</p>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
