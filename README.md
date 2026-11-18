@@ -228,7 +228,7 @@ Kanallar `course.json → channels` dizisinde. Bağlantı değişirse karekodu y
 
 ### Okuma köşesine hikâye eklemek
 
-`content/okuma/<tarih>-<ad>.md`: `title`, `date`, `summary`, isteğe bağlı `readingTime` ve `sources` (başlık + url). Sayfa `/okuma/<ad>` adresinde açılır, listede en yeni üstte.
+`content/okuma/<tarih>-<ad>.md`: `title`, `date`, `summary`, isteğe bağlı `readingTime` ve `sources` (başlık + url). Sayfa `/okuma/<ad>` adresinde açılır, listede en yeni üstte. Bir haftaya bağlamak için o haftanın frontmatter'ına `reading: <dosya-adı-uzantısız>` yazın; sayfada "Bu haftanın okuması" kutusu çıkar.
 
 ### Kurulum rehberi eklemek
 

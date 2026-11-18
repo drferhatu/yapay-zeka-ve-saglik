@@ -6,6 +6,7 @@ import ModuleChip from '@/components/ModuleChip.astro';
 import NotebookEmbed from '@/components/NotebookEmbed.astro';
 import WeekReadings from '@/components/WeekReadings.astro';
 import { render } from 'astro:content';
+import { getCollection } from 'astro:content';
 import { getWeeksSorted, moduleOf, moduleColorVar, scheduleOf, formatDate, STATUS_LABEL, href, weekSlug } from '@/lib/site';
 
 export async function getStaticPaths() {
@@ -28,6 +29,7 @@ const tocAfter = [
   ...(week.data.links.length ? [{ slug: 'faydali-baglantilar', text: 'Faydalı bağlantılar' }] : []),
 ];
 const pageTitle = `Hafta ${week.data.week} — ${week.data.title}`;
+const reading = week.data.reading ? (await getCollection('okuma')).find((o) => o.id === week.data.reading) : undefined;
 ---
 <BaseLayout title={pageTitle} description={week.data.description} ogType="article">
   <!-- Hafta başlığı -->
@@ -74,6 +76,20 @@ const pageTitle = `Hafta ${week.data.week} — ${week.data.title}`;
       </section>}
 
       <Content components={{ NotebookEmbed }} />
+
+      {reading && (
+        <a href={href(`/okuma/${reading.id}`)} class="not-prose group my-10 flex items-start gap-4 rounded-2xl border border-line bg-paper-2/60 p-5 !no-underline transition-colors hover:border-ink">
+          <span class="grid size-11 shrink-0 place-items-center rounded-xl bg-ink text-paper" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h6a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H4z"/><path d="M20 5h-6a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h7z"/></svg>
+          </span>
+          <span class="min-w-0">
+            <span class="block text-xs font-bold uppercase tracking-[0.12em] !text-ink-3">Bu haftanın okuması · Okuma Köşesi</span>
+            <span class="mt-1 block font-display text-xl font-semibold !text-ink group-hover:!text-brand">{reading.data.title}</span>
+            <span class="mt-1 block text-sm leading-relaxed !text-ink-2">{reading.data.summary}</span>
+            <span class="mt-2 block text-sm font-semibold !text-brand">Oku →{reading.data.readingTime && <span class="font-normal !text-ink-3"> · {reading.data.readingTime}</span>}</span>
+          </span>
+        </a>
+      )}
 
       {week.data.notebook && week.data.notebook.placement === 'auto' && <NotebookEmbed {...week.data.notebook} />}
 
