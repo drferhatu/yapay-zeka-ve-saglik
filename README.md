@@ -226,6 +226,10 @@ Kanallar `course.json → channels` dizisinde. Bağlantı değişirse karekodu y
 2. `src/pages/araclar/<ad>.astro` sarmalayıcısını `klinik-hesaplayici.astro` örneğinden kopyalayın; `src/pages/araclar/index.astro` içindeki `tools` listesine ekleyin.
 3. Haftanın Markdown'ından `/araclar/<ad>` bağlantısı verin.
 
+### Okuma köşesine hikâye eklemek
+
+`content/okuma/<tarih>-<ad>.md`: `title`, `date`, `summary`, isteğe bağlı `readingTime` ve `sources` (başlık + url). Sayfa `/okuma/<ad>` adresinde açılır, listede en yeni üstte.
+
 ### Kurulum rehberi eklemek
 
 `content/guides/<ad>.md` dosyası oluşturun (`title`, `description`, `order`). Sayfa `/rehber/<ad>` adresinde açılır ve Kaynaklar sayfasında listelenir.

@@ -1,0 +1,26 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import { getCollection } from 'astro:content';
+import { href, formatDateObj } from '@/lib/site';
+const list = (await getCollection('okuma')).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+<BaseLayout title="Okuma Köşesi" description="Yapay zeka ve hekimlik üzerine kısa, hafif hikâyeler; ders notu değil, çay yanı okuması.">
+  <div class="wrap py-14 md:py-20">
+    <SectionHeading eyebrow="Okuma Köşesi" title="Çay yanı hikâyeleri" lede="Ders notu değil, sınavda çıkmaz. Yapay zeka ve hekimlik üzerine, beş dakikada biten, bir çalışmanın arkasındaki insan hikâyesini anlatan kısa yazılar. Arada bir eklenir." />
+  </div>
+  <div class="wrap-narrow pb-24">
+    <ol class="space-y-6">
+      {list.map((o) => (
+        <li>
+          <a href={href(`/okuma/${o.id}`)} class="group block rounded-2xl border border-line bg-white p-6 shadow-soft transition-all hover:-translate-y-0.5 hover:shadow-lift">
+            <p class="text-xs text-ink-3">{formatDateObj(o.data.date)}{o.data.readingTime && <span> · {o.data.readingTime}</span>}</p>
+            <h2 class="mt-2 font-display text-2xl font-semibold text-ink group-hover:text-brand">{o.data.title}</h2>
+            <p class="mt-2 text-[15px] leading-relaxed text-ink-2">{o.data.summary}</p>
+            <span class="mt-4 inline-block text-sm font-semibold text-brand">Oku →</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </div>
+</BaseLayout>

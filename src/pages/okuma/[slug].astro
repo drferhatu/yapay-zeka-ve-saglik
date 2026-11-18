@@ -1,0 +1,31 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+import { href, formatDateObj } from '@/lib/site';
+export async function getStaticPaths() {
+  const list = await getCollection('okuma');
+  return list.map((o) => ({ params: { slug: o.id }, props: { o } }));
+}
+const { o } = Astro.props;
+const { Content } = await render(o);
+---
+<BaseLayout title={o.data.title} description={o.data.summary} ogType="article">
+  <header class="border-b border-line">
+    <div class="wrap-narrow py-12 md:py-16">
+      <nav aria-label="Konum" class="text-sm text-ink-3"><a href={href('/okuma')} class="hover:text-ink">Okuma Köşesi</a></nav>
+      <p class="mt-6 text-xs text-ink-3">{formatDateObj(o.data.date)}{o.data.readingTime && <span> · {o.data.readingTime}</span>}</p>
+      <h1 class="display mt-2 text-3xl sm:text-4xl md:text-5xl">{o.data.title}</h1>
+      <p class="mt-4 text-lg text-ink-2">{o.data.summary}</p>
+    </div>
+  </header>
+  <div class="wrap-narrow py-12">
+    <article class="prose-lesson" data-reading-progress><Content /></article>
+    {o.data.sources.length > 0 && (
+      <aside class="mt-12 rounded-2xl border border-line bg-paper-2/60 p-5 text-sm">
+        <p class="eyebrow mb-2">Hikâyenin kaynağı</p>
+        <ul class="space-y-1.5">{o.data.sources.map((s) => <li><a class="link" href={s.url} target="_blank" rel="noopener">{s.title}</a></li>)}</ul>
+      </aside>
+    )}
+    <p class="mt-8 text-sm text-ink-3">Bu bir ders notu değil; sınavda çıkmaz. Ama ders boyunca konuştuğumuz alışkanlık burada da geçerli: "ama"ları saymadan hiçbir sonuca inanmayın.</p>
+  </div>
+</BaseLayout>

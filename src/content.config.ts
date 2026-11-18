@@ -78,4 +78,15 @@ const guides = defineCollection({
   }),
 });
 
-export const collections = { weeks, announcements, guides };
+const okuma = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './content/okuma' }),
+  schema: z.object({
+    title: z.string(),
+    date: z.coerce.date(),
+    summary: z.string(),
+    readingTime: z.string().optional(),
+    sources: z.array(z.object({ title: z.string(), url: z.string().url() })).default([]),
+  }),
+});
+
+export const collections = { weeks, announcements, guides, okuma };

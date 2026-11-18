@@ -8,6 +8,7 @@ const nav = [
   { label: 'Araçlar', path: '/araclar' },
   { label: 'Kaynaklar', path: '/kaynaklar' },
   { label: 'Duyurular', path: '/duyurular' },
+  { label: 'Okuma', path: '/okuma' },
 ];
 const current = Astro.url.pathname.replace(/\/$/, '');
 const isActive = (p: string) => current === href(p).replace(/\/$/, '') || current.startsWith(href(p) + '/');
