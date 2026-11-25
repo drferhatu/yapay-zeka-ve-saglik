@@ -26,6 +26,10 @@ Hikâyenin tam metni ve kaynakları sitede, Hafta 10 sayfasında; burada yalnız
 ## Üçüncü perde: 11 Nisan 2018 ve sorumluluk (6 dk)
 - Deneme: Ocak–Temmuz 2017, 10 birinci basamak merkezi, 900 hasta (819'u tam değerlendirilebildi).
 - Sonuç: duyarlılık %87,2, özgüllük %90,7, görüntü alınabilirlik %96,1. Bütün sınırlar aşıldı.
+- Burada dur, iki kelimeyi açıkla (2 dk). İki soru: Hasta olanı kaçırıyor mu (duyarlılık)? Sağlam olanı boşuna telaşa veriyor mu (özgüllük)?
+  - Duman dedektörü: Yangında ötmezse işe yaramaz (duyarlılık); her ekmek kızartmada öterse pilini çıkarırsınız (özgüllük).
+  - Retinopati: Hastalığı olan 100 kişiden yaklaşık 87'sine "sevk" der, 13'ünü kaçırır. Sağlam 100 kişiden yaklaşık 91'ine "temiz" der, 9'unu boşuna yollar.
+  - Tuzak: Herkese "hastasın" diyen testin duyarlılığı %100'dür. "Yüzde 95 başarılı" denince sor: Hangisi 95, öteki kaç?
 - 11 Nisan 2018, FDA duyurusu: "bir klinisyenin görüntüyü ya da sonucu ayrıca yorumlamasına gerek kalmadan tarama kararı veren" ilk cihaz.
 - Sistemin iki cümlesi: "sevk edin" ya da "12 ay sonra tekrar tarayın".
 - Sorumluluk: "Şirket olarak bu otonom yapay zekanın tıbbi sorumluluğunu üstleniyoruz, tıpkı bir hekimin üstlendiği gibi." (2020 söyleşisi; aynı görüş Am J Ophthalmol 2020 makalesinde.)

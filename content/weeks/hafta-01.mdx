@@ -55,7 +55,7 @@ import AiTools from '@/components/AiTools.astro';
 
 Derse gelmeden önce yapmanız gereken tek şey bir Google hesabınızın olduğundan emin olmak; Gmail adresiniz yeterli. Tarayıcınızda [colab.research.google.com](https://colab.research.google.com) adresini bir kez açıp giriş yaparsanız derste zaman kazanırız. Bilgisayar getirebilirseniz iyi olur, ama tablet ya da telefonla da takip edebilirsiniz; hiçbir şey kurmayacağız.
 
-Bir de şu soruyu düşünerek gelin: son bir yılda yapay zeka içeren bir sağlık haberi okudunuz mu? Neydi, size ne düşündürdü?
+Bir de şu soruyu düşünerek gelin: Son bir yılda yapay zeka içeren bir sağlık haberi okudunuz mu? Neydi, size ne düşündürdü?
 
 > [!not] Dersin akışı
 > Çarşamba 10.15'te başlıyoruz. İlk saat kesintisiz anlatım ve birlikte kodlama; kalan süreyi denemek isteyenler ve soruları olanlar için ayırıyorum.
@@ -71,11 +71,11 @@ Bu ders sizi yazılımcı yapmayı hedeflemiyor. Hedefim, bu araçların ne yapt
 > [!neden] Neden önemli?
 > Yapay zeka destekli bir sistem hata yaptığında hastanın karşısında yazılım değil, hekim vardır. Çıktıyı sorgulayabilen hekim, hasta güvenliğinin son halkasıdır ve bu ders o halkayı güçlendirmek için var.
 
-### Kodlayan hekim: yazan değil, okuyan ve yöneten
+### Kodlayan hekim: Yazan değil, okuyan ve yöneten
 
-Baştan bir itirafla başlayalım: bu derste kodun büyük bölümünü yapay zeka yazacak. Bugün ChatGPT'ye, Claude'a ya da Gemini'ye "şu veri setini yükle, yaş gruplarına göre ortalama glukozu hesapla" dediğinizde çalışan bir kod alıyorsunuz. Peki o zaman hekimin işi ne kalıyor?
+Baştan bir itirafla başlayalım: Bu derste kodun büyük bölümünü yapay zeka yazacak. Bugün ChatGPT'ye, Claude'a ya da Gemini'ye "şu veri setini yükle, yaş gruplarına göre ortalama glukozu hesapla" dediğinizde çalışan bir kod alıyorsunuz. Peki o zaman hekimin işi ne kalıyor?
 
-Aslında dört iş kalıyor ve dördü de kod yazmaktan daha zor, daha değerli. Birincisi doğru istemek: klinik bağlamı, hangi veriyi, hangi çıktıyı istediğinizi net söylemek. Bu size tanıdık gelecek, çünkü iyi anamnez almaya çok benziyor. İkincisi kodu okumak: `def` gördüğünüzde bunun bir fonksiyon tanımı olduğunu, `import pandas` gördüğünüzde bir kütüphanenin çağrıldığını anlamak. Bir satırın kabaca ne yaptığını söyleyebilmek, o satırı yazabilmekten çok daha kolay ve pratikte çok daha işe yarar. Üçüncüsü hatayı tanımak: `NameError: name 'np' is not defined` gibi bir mesaj korkutucu görünür, ama aslında son derece bilgilendiricidir; "np diye bir şey tanımıyorum" diyor, çünkü onu tanıtan satır çalıştırılmamış. Bunu okuyabilen kişi yapay zekaya doğru düzeltmeyi isteyebilir. Dördüncüsü de çıktıyı doğrulamak: kod çalıştı diye sonuç doğru değildir. Ortalama glukoz 12 mg/dL çıkarsa bunu kod değil, siz fark edersiniz.
+Aslında dört iş kalıyor ve dördü de kod yazmaktan daha zor, daha değerli. Birincisi doğru istemek: klinik bağlamı, hangi veriyi, hangi çıktıyı istediğinizi net söylemek. Bu size tanıdık gelecek, çünkü iyi anamnez almaya çok benziyor. İkincisi kodu okumak: `def` gördüğünüzde bunun bir fonksiyon tanımı olduğunu, `import pandas` gördüğünüzde bir kütüphanenin çağrıldığını anlamak. Bir satırın kabaca ne yaptığını söyleyebilmek, o satırı yazabilmekten çok daha kolay ve pratikte çok daha işe yarar. Üçüncüsü hatayı tanımak: `NameError: name 'np' is not defined` gibi bir mesaj korkutucu görünür, ama aslında son derece bilgilendiricidir; "np diye bir şey tanımıyorum" diyor, çünkü onu tanıtan satır çalıştırılmamış. Bunu okuyabilen kişi yapay zekaya doğru düzeltmeyi isteyebilir. Dördüncüsü de çıktıyı doğrulamak: Kod çalıştı diye sonuç doğru değildir. Ortalama glukoz 12 mg/dL çıkarsa bunu kod değil, siz fark edersiniz.
 
 > [!tanim] Kodlayan hekim
 > Kodu satır satır ezberden yazan değil; yapay zekaya doğru yazdıran, yazılanı okuyan, hatasını tanıyan ve çıktısını klinik akılla doğrulayan hekim. Yazılım dünyasında "vibe coding" denen çalışma biçiminin hekimlik için sorumlu hâli.
@@ -89,11 +89,11 @@ Bugün defterdeki kodların tamamı hazır. Sizden beklediğim yazmak değil; ç
 > [!nerede] Üç dalga
 > **Görüntü analizi.** Radyoloji, patoloji, dermatoloji, oftalmoloji. Diyabetik retinopati taramasında hekim olmadan karar verebilen ilk yapay zeka sistemi 2018'de FDA onayı aldı; bugün mamografi ve göğüs röntgeni için onaylı ürün sayısı yüzleri geçiyor ve onaylı yapay zeka tıbbi cihazlarının büyük çoğunluğu hâlâ radyolojide.
 >
-> **Tahmin ve karar destek.** Hastane verisinden sepsis, yeniden yatış ya da böbrek hasarı riskini öngören skorlar. Kâğıt üzerinde etkileyici, gerçekte tartışmalı: yaygın kullanılan bazı sepsis uyarı sistemlerinin hastanelerde vaat ettiğinin çok altında çalıştığı bağımsız çalışmalarla gösterildi.
+> **Tahmin ve karar destek.** Hastane verisinden sepsis, yeniden yatış ya da böbrek hasarı riskini öngören skorlar. Kâğıt üzerinde etkileyici, gerçekte tartışmalı: Yaygın kullanılan bazı sepsis uyarı sistemlerinin hastanelerde vaat ettiğinin çok altında çalıştığı bağımsız çalışmalarla gösterildi.
 >
 > **Üretken yapay zeka.** ChatGPT, Claude, Gemini gibi büyük dil modelleri. Hasta görüşmesini dinleyip taslak not yazan sistemler, literatür özetleme, hasta bilgilendirme metinleri. En hızlı yayılan ve en az denetlenen alan da bu.
 
-Bu üç dalganın ortak bir noktası var: hepsi veriden öğreniyor. Kimse bunlara bir kural kitabı yazmıyor; sisteme binlerce örnek gösteriliyor ve örüntüyü kendisi buluyor. Gücü de zayıflığı da buradan geliyor, çünkü öğrendiği veride olmayan bir hasta tipi karşısına çıktığında ne yapacağı belirsiz.
+Bu üç dalganın ortak bir noktası var: Hepsi veriden öğreniyor. Kimse bunlara bir kural kitabı yazmıyor; sisteme binlerce örnek gösteriliyor ve örüntüyü kendisi buluyor. Gücü de zayıflığı da buradan geliyor, çünkü öğrendiği veride olmayan bir hasta tipi karşısına çıktığında ne yapacağı belirsiz.
 
 > [!ornek] Kısayol öğrenme
 > Göğüs röntgeninden pnömoni tanıyan bir model bazı hastanelerde çok başarılıyken başka hastanelerde çöktü. Sebep araştırıldığında modelin hastalığı değil, ağır hastaların çekildiği portatif cihazın görüntüdeki izini öğrendiği ortaya çıktı. Veriye bakmadan modele güvenmenin klasik dersi bu.
@@ -126,7 +126,7 @@ Aşağıdaki defteri birlikte, satır satır çalıştıracağız. Plan yaklaş�
 | 5 dk | Python'dan büyük dil modeline soru | Sohbet botu, kodun içinden de çağrılabiliyor |
 
 > [!tanim] "Her şey arkada çalışıyor" ne demek?
-> ChatGPT'yi bir web sayfası olarak tanıyorsunuz. Oysa aynı model bir programın içinden de çağrılabilir: yüzlerce hastanın bulgusunu otomatik özetlemek, bir veri setini yorumlatmak, çıktıyı tabloya dökmek mümkün. Tarayıcıdaki sohbet kutusu buzdağının görünen ucu; dersin ikinci yarısı buzdağının altını anlatıyor.
+> ChatGPT'yi bir web sayfası olarak tanıyorsunuz. Oysa aynı model bir programın içinden de çağrılabilir: Yüzlerce hastanın bulgusunu otomatik özetlemek, bir veri setini yorumlatmak, çıktıyı tabloya dökmek mümkün. Tarayıcıdaki sohbet kutusu buzdağının görünen ucu; dersin ikinci yarısı buzdağının altını anlatıyor.
 
 <NotebookEmbed file="notebooks/hafta-01.ipynb" title="Hafta 1 · İlk Kod" />
 

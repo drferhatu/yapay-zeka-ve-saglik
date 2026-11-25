@@ -47,15 +47,15 @@ resources:
 
 ## Bu hafta kurulda ne var?
 
-Bu hafta hücre zarının kendisini ve zarda taşınımı işliyorsunuz: difüzyon, ozmoz, kolaylaştırılmış taşınım, sodyum-potasyum pompası; yanında hücre iskeleti, organik kimyaya giriş ve fonksiyonel gruplar, çözelti hazırlama ve derişim hesabı, biyoistatistikte veri girişi ve tablo oluşturma, biyomoleküler sistemlerde enerji aktarımı. Bunların içinden birini tahmin ediyorum: zarda taşınım sizi zorluyor. Her yıl herkesi zorlar, çünkü kafada canlanmadan anlaşılmaz. Bugün onu canlandıracağız.
+Bu hafta hücre zarının kendisini ve zarda taşınımı işliyorsunuz: difüzyon, ozmoz, kolaylaştırılmış taşınım, sodyum-potasyum pompası; yanında hücre iskeleti, organik kimyaya giriş ve fonksiyonel gruplar, çözelti hazırlama ve derişim hesabı, biyoistatistikte veri girişi ve tablo oluşturma, biyomoleküler sistemlerde enerji aktarımı. Bunların içinden birini tahmin ediyorum: Zarda taşınım sizi zorluyor. Her yıl herkesi zorlar, çünkü kafada canlanmadan anlaşılmaz. Bugün onu canlandıracağız.
 
 ## Bugün ne yapıyoruz?
 
-Geçen hafta üç şey söylemiştim: seviyeyi siz söylersiniz, bozuk soruyu siz bulursunuz, kaynağı siz verirsiniz. Bugün üstüne bir şey ekliyorum: doğru soru sormanın dört parçası var ve bunu bir kez öğrenince araç sizin için başka bir şeye dönüşüyor. Ama önce size bir şey göstereceğim, çünkü bu haftanın asıl sürprizi bir kelime: ajan.
+Geçen hafta üç şey söylemiştim: Seviyeyi siz söylersiniz, bozuk soruyu siz bulursunuz, kaynağı siz verirsiniz. Bugün üstüne bir şey ekliyorum: Doğru soru sormanın dört parçası var ve bunu bir kez öğrenince araç sizin için başka bir şeye dönüşüyor. Ama önce size bir şey göstereceğim, çünkü bu haftanın asıl sürprizi bir kelime: ajan.
 
 ### Ajan nedir, iş başında görelim
 
-Şimdiye kadar kullandığımız araçlar soru sorunca cevap veriyordu. Ajan ise iş yapıyor: ne istediğinizi alıyor, plan kuruyor, dosya açıyor, kod yazıyor, çalıştırıp hatasını görüyor, düzeltiyor ve bitince size haber veriyor. Arada "şunu yapayım mı?" diye soruyor, siz onaylıyorsunuz. Tıpta bunun karşılığı yakında şöyle olacak: "şu hastanın son üç kan gazını karşılaştır, trendi çiz, kılavuzla kıyasla" diyeceksiniz ve bunu yapacak. Bugün bunun küçük bir hâlini izliyoruz.
+Şimdiye kadar kullandığımız araçlar soru sorunca cevap veriyordu. Ajan ise iş yapıyor: Ne istediğinizi alıyor, plan kuruyor, dosya açıyor, kod yazıyor, çalıştırıp hatasını görüyor, düzeltiyor ve bitince size haber veriyor. Arada "şunu yapayım mı?" diye soruyor, siz onaylıyorsunuz. Tıpta bunun karşılığı yakında şöyle olacak: "şu hastanın son üç kan gazını karşılaştır, trendi çiz, kılavuzla kıyasla" diyeceksiniz ve bunu yapacak. Bugün bunun küçük bir hâlini izliyoruz.
 
 Perdede Claude Code'a tek bir istem veriyorum ve bu haftanın konusunu oynatan bir simülatör yazmasını istiyorum. Siz beş dakika boyunca planını, dosyayı oluşturmasını, bir hatasını düzeltmesini izleyeceksiniz; bittiğinde karekodu yansıtacağım ve herkes telefonundan oynayacak. Hazır bir sürümü de sitede duruyor; canlı sahne aksarsa oraya geçeriz, aksamazsa ikisini karşılaştırırız.
 
@@ -73,7 +73,7 @@ Hazır sürüm: [Hücre Zarı Simülatörü](/araclar/hucre-zari-simulatoru). Oz
 > Bu sayfadaki istemlerden çıkan hiçbir bilgi doğrulanmadan kullanılmaz. Çıkan metni kurul notunuzla ya da aşağıdaki açık erişimli kaynaklarla karşılaştırın; uymayan yerde kazanan kitaptır. Bunu derste her istemden sonra tekrarlayacağım.
 
 > [!tanim] Sohbet botu ile ajan
-> Sohbet botu bir soruya bir cevap verir. Ajan bir hedefi alır, adımlara böler, araç kullanır (dosya, kod, arama), sonucu kontrol eder ve bitirene kadar devam eder. Güçlü olduğu kadar dikkat ister: ajan sizin yetkinizle iş yapar, bu yüzden ona ne yapabileceğini siz belirlersiniz ve her adımını okursunuz.
+> Sohbet botu bir soruya bir cevap verir. Ajan bir hedefi alır, adımlara böler, araç kullanır (dosya, kod, arama), sonucu kontrol eder ve bitirene kadar devam eder. Güçlü olduğu kadar dikkat ister: Ajan sizin yetkinizle iş yapar, bu yüzden ona ne yapabileceğini siz belirlersiniz ve her adımını okursunuz.
 
 ### Doğru sorunun dört parçası
 
@@ -89,7 +89,7 @@ Hücre biyolojisi dersi veren, benzetmelerle anlatmayı seven bir hoca gibi davr
 
 İki cevabı yan yana görünce fark kendini anlatıyor. İlkinde ansiklopedi maddesi, ikincisinde size yazılmış bir ders alırsınız. Dört parçadan en çok atlanan bağlam; oysa "neyi karıştırıyorum" cümlesi cevabı en çok değiştiren cümle.
 
-Burada bir şeyi her istemden sonra tekrarlayacağım, bıkana kadar: güzel bir cevap doğru bir cevap değildir. Araç size taşınım türlerini tablo hâlinde verdiğinde o tabloyu kurul notunuzun ya da kitabınızın yanına koyup satır satır bakıyorsunuz. Uymayan bir satır varsa kazanan kitaptır. Bugün göreceğiniz her istemin sonunda aynı adım var: dön, ders notundan teyit et.
+Burada bir şeyi her istemden sonra tekrarlayacağım, bıkana kadar: Güzel bir cevap doğru bir cevap değildir. Araç size taşınım türlerini tablo hâlinde verdiğinde o tabloyu kurul notunuzun ya da kitabınızın yanına koyup satır satır bakıyorsunuz. Uymayan bir satır varsa kazanan kitaptır. Bugün göreceğiniz her istemin sonunda aynı adım var: Dön, ders notundan teyit et.
 
 ### Kendi hocanızı bir kez şekillendirin
 
@@ -99,7 +99,7 @@ Videoda bir asistanın kendine "ortopedi hocası" karakteri oluşturduğunu gör
 Bundan sonra bu sohbette "Hücre Hocam" ol: hücre biyolojisi ve biyokimya öğreten, sabırlı, benzetmeleri seven, yanlış öğrenmeme asla izin vermeyen bir öğretim üyesi. Ben Fırat Üniversitesi Tıp Fakültesi 1. sınıf öğrencisiyim; şu an Hücre ders kurulundayım, sınav 20 Kasım. Her cevabında: önce bir cümlelik öz, sonra açıklama, sonunda "kendini sına" diye bir soru. Emin olmadığın bir bilgi varsa "bunu kitaptan doğrula" diye işaretle. Türkçe konuş.
 ```
 
-Sonra ona bugünkü konudan üç soru soruyorum: sodyum-potasyum pompası neden elektrojeniktir, serum fizyolojik neden yüzde 0,9'dur, ikincil aktif taşınım ne demektir. Her cevabın sonundaki "kendini sına" sorusu, bu dersin iki hafta önce söylediği şeyi yapıyor: aracı size cevap veren değil, sizi sınayan bir şeye çeviriyor.
+Sonra ona bugünkü konudan üç soru soruyorum: Sodyum-potasyum pompası neden elektrojeniktir, serum fizyolojik neden yüzde 0,9'dur, ikincil aktif taşınım ne demektir. Her cevabın sonundaki "kendini sına" sorusu, bu dersin iki hafta önce söylediği şeyi yapıyor: Aracı size cevap veren değil, sizi sınayan bir şeye çeviriyor.
 
 ### Araç sizi sorguya çeksin
 
@@ -129,11 +129,11 @@ Her hafta bir kez aracı yakalıyoruz. Bu hafta fonksiyonel gruplardan tuzaklı 
 Aldehit ile keton arasındaki fark nedir? Karbonil grubu aldehitte zincirin ortasında, ketonda uçta bulunur, değil mi? Kısa cevap ver.
 ```
 
-Sorudaki iddia bilerek ters: karbonil aldehitte uçtadır (en az bir hidrojene bağlı), ketonda iki karbon arasındadır. İyi bir araç "hayır, tersi" der; kötü gününde sizin yanlışınızı onaylar. Yine aynı ders: soruya yanlış bilgi gömerseniz araç onu doğru sanabilir, kitap sanmaz.
+Sorudaki iddia bilerek ters: Karbonil aldehitte uçtadır (en az bir hidrojene bağlı), ketonda iki karbon arasındadır. İyi bir araç "hayır, tersi" der; kötü gününde sizin yanlışınızı onaylar. Yine aynı ders: Soruya yanlış bilgi gömerseniz araç onu doğru sanabilir, kitap sanmaz.
 
 ## Haftanın cep kartı
 
-Beş istem, hepsi dört parçalı, hepsi bu haftanın konularına yazılmış. Telefonunuza kopyalayın; sınava kadar işinize yarar. Ama kullanma kuralı tek ve değişmez: aracın verdiği ezber cümlesi, tablo, plan ya da çözüm, kurul notunuzla karşılaştırılmadan sınav malzemesi sayılmaz. Araç bir çalışma arkadaşı; notu veren kitap ve hocanız.
+Beş istem, hepsi dört parçalı, hepsi bu haftanın konularına yazılmış. Telefonunuza kopyalayın; sınava kadar işinize yarar. Ama kullanma kuralı tek ve değişmez: Aracın verdiği ezber cümlesi, tablo, plan ya da çözüm, kurul notunuzla karşılaştırılmadan sınav malzemesi sayılmaz. Araç bir çalışma arkadaşı; notu veren kitap ve hocanız.
 
 ```text
 Biyokimya hocası gibi davran. Fonksiyonel grupları (hidroksil, karbonil, karboksil, amino, fosfat, sülfhidril) ezberlemem için Türkçe bir ezber cümlesi ve her grup için tek cümlelik "hangi biyomolekülde görürsün" notu yaz. Tıp 1. sınıf öğrencisiyim; biçim: madde listesi.
@@ -167,13 +167,13 @@ Vize havuzuna giden iki soru; havuz sitede açık, sınavdaki sorular buradan se
 <details>
 <summary>Cevaplar</summary>
 
-Birinci sorunun cevabı C: ajanı ajan yapan şey, hedefi adımlara bölüp araç kullanarak işi bitirmesidir; uzun cevap ya da internet bağlantısı tek başına bunu sağlamaz. İkincinin cevabı B: dört parça, yani rol, görev, biçim ve bağlam, aracın cevabı size göre biçimlendirmesini sağlar; uzunluk kendi başına bir şey kazandırmaz.
+Birinci sorunun cevabı C: Ajanı ajan yapan şey, hedefi adımlara bölüp araç kullanarak işi bitirmesidir; uzun cevap ya da internet bağlantısı tek başına bunu sağlamaz. İkincinin cevabı B: Dört parça, yani rol, görev, biçim ve bağlam, aracın cevabı size göre biçimlendirmesini sağlar; uzunluk kendi başına bir şey kazandırmaz.
 </details>
 
 ## Telefonda iki dakikada deneyin
 
-Ödev değil: cep kartındaki ilk istemi, fonksiyonel gruplar için ezber cümlesini, telefonunuza yapıştırın. Çıkan cümleyi beğenmezseniz "daha komik olsun" deyin. İkinci sürüm genellikle akılda kalır.
+Ödev değil: Cep kartındaki ilk istemi, fonksiyonel gruplar için ezber cümlesini, telefonunuza yapıştırın. Çıkan cümleyi beğenmezseniz "daha komik olsun" deyin. İkinci sürüm genellikle akılda kalır.
 
 ## Haftanın Özeti
 
-Bugün bir ajanın beş dakikada, tek istemle, bu haftanın konusunu oynatan bir simülatör yazmasını izlediniz ve onu telefonunuzda oynadınız. Sonra doğru soru sormanın dört parçasını gördünüz: rol, görev, biçim, bağlam. Bir kez kurduğunuz "Hücre Hocam" karakteri sizi sorguya çekebiliyor, flash kart hazırlıyor, yanlış şıkların neden yanlış olduğunu anlatıyor. Ve yine bir hata yakaladık: soruya yanlış bilgi gömerseniz araç onu doğru sanabilir, kitap sanmaz. Haftaya ders yok; önlük giyme töreninizi kutluyorum. 28 Ekim'de aminoasitler ve proteinlerle devam ediyoruz.
+Bugün bir ajanın beş dakikada, tek istemle, bu haftanın konusunu oynatan bir simülatör yazmasını izlediniz ve onu telefonunuzda oynadınız. Sonra doğru soru sormanın dört parçasını gördünüz: rol, görev, biçim, bağlam. Bir kez kurduğunuz "Hücre Hocam" karakteri sizi sorguya çekebiliyor, flash kart hazırlıyor, yanlış şıkların neden yanlış olduğunu anlatıyor. Ve yine bir hata yakaladık: Soruya yanlış bilgi gömerseniz araç onu doğru sanabilir, kitap sanmaz. Haftaya ders yok; önlük giyme töreninizi kutluyorum. 28 Ekim'de aminoasitler ve proteinlerle devam ediyoruz.

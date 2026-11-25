@@ -39,7 +39,7 @@
 
   <!-- ================= OZMOZ ================= -->
   <section class="panel" id="panel-ozmoz" data-active>
-    <h2>Ozmoz: bir eritrosit üç ortamda</h2>
+    <h2>Ozmoz: Bir eritrosit üç ortamda</h2>
     <p class="lede">Su, yarı geçirgen zardan çözünen maddenin az olduğu yerden çok olduğu yere geçer. Ortamı seçin, hücrenin ne yaptığını izleyin.</p>
     <div class="seg" id="ortam">
       <button aria-pressed="false" data-ortam="su">Saf su (%0)</button>
@@ -55,7 +55,7 @@
 
   <!-- ================= DİFÜZYON ================= -->
   <section class="panel" id="panel-difuzyon">
-    <h2>Difüzyon: derişim farkı hızı belirler</h2>
+    <h2>Difüzyon: Derişim farkı hızı belirler</h2>
     <p class="lede">Zarın iki yanındaki tanecik sayısını ayarlayın. Tanecikler rastgele hareket eder; net akış her zaman çoktan aza doğrudur ve fark kapandıkça yavaşlar.</p>
     <div class="controls">
       <label>Sol taraf (tanecik) <span id="v-sol">80</span><input id="r-sol" type="range" min="0" max="120" value="80"></label>
@@ -71,7 +71,7 @@
 
   <!-- ================= POMPA ================= -->
   <section class="panel" id="panel-pompa">
-    <h2>Sodyum-potasyum pompası: derişime karşı, ATP ile</h2>
+    <h2>Sodyum-potasyum pompası: Derişime karşı, ATP ile</h2>
     <p class="lede">Her döngüde 3 Na⁺ dışarı, 2 K⁺ içeri; bedeli bir ATP. Adım adım ilerleyin; ATP'yi kapatınca ne olduğuna bakın.</p>
     <div class="controls">
       <button class="primary" id="b-adim">Sonraki adım →</button>
@@ -101,7 +101,7 @@ document.querySelectorAll('nav.tabs button').forEach(b => b.addEventListener('cl
 const oz = { ctx: document.getElementById('c-ozmoz').getContext('2d'), ortam: 'izo', r: 70, hedef: 70, t: 0 };
 const ORTAM = {                       // hedef yarıçap ve açıklama; sayılar öğretici ölçekte
   su:    { r: 104, metin: 'Saf su: dışarıda çözünen yok, su durmadan içeri giriyor; hücre şişer ve patlar (hemoliz). Damar içine asla saf su verilmez.', seviye: 'bad', su: 'içeri' },
-  hipo:  { r: 90,  metin: 'Dışarısı seyreltik (%0,45): su içeri giriyor, hücre şişiyor. Bu derişimde genellikle patlamaz ama kırılganlaşır; daha seyreltikte hemoliz başlar.', seviye: 'warn', su: 'içeri' },
+  hipo:  { r: 90,  metin: 'Dışarısı seyreltik (%0,45): Su içeri giriyor, hücre şişiyor. Bu derişimde genellikle patlamaz ama kırılganlaşır; daha seyreltikte hemoliz başlar.', seviye: 'warn', su: 'içeri' },
   izo:   { r: 70,  metin: 'Giren ve çıkan su eşit: hücre hacmi sabit. Serum fizyolojik (%0,9) bu yüzden güvenli.', seviye: 'ok',   su: 'denge' },
   hiper: { r: 48,  metin: 'Dışarısı derişik: su dışarı çıkıyor, hücre büzüşüyor (krenasyon).', seviye: 'warn', su: 'dışarı' },
 };
@@ -182,7 +182,7 @@ function cizDif() {
   const fark = sol - sag, s = document.getElementById('s-dif');
   if (dif.calis) {
     const hiz = Math.abs(fark) > 40 ? 'hızlı' : Math.abs(fark) > 12 ? 'yavaşlıyor' : 'neredeyse durdu';
-    s.textContent = `Sol ${sol} · Sağ ${sag} · Fark ${fark} → net akış ${fark > 0 ? 'sağa' : fark < 0 ? 'sola' : 'yok'}, ${hiz}. ${Math.abs(fark) <= 12 ? 'Dinamik denge: tanecikler hareket ediyor, net akış yok.' : ''}`;
+    s.textContent = `Sol ${sol} · Sağ ${sag} · Fark ${fark} → net akış ${fark > 0 ? 'sağa' : fark < 0 ? 'sola' : 'yok'}, ${hiz}. ${Math.abs(fark) <= 12 ? 'Dinamik denge: Tanecikler hareket ediyor, net akış yok.' : ''}`;
     s.dataset.level = Math.abs(fark) <= 12 ? 'ok' : '';
   }
   c.fillStyle = '#34515b'; c.font = '13px system-ui'; c.fillText('zar (gri) · net akış her zaman çoktan aza', 12, H - 10);
@@ -228,7 +228,7 @@ function cizPompa() {
 }
 function sonrakiAdim() {
   const atp = document.getElementById('t-atp').checked;
-  if (pm.adim === 0 && !atp) { const s = document.getElementById('s-pompa'); s.dataset.level = 'bad'; s.innerHTML = '<b>ATP yok: pompa Na⁺ bağladı ama şekil değiştiremiyor.</b><br>Gradyan zamanla söner; hücre su çekip şişer, sinir ve kas uyarılabilirliği bozulur. Siyanür ya da iskemi tam bunu yapar.'; return; }
+  if (pm.adim === 0 && !atp) { const s = document.getElementById('s-pompa'); s.dataset.level = 'bad'; s.innerHTML = '<b>ATP yok: Pompa Na⁺ bağladı ama şekil değiştiremiyor.</b><br>Gradyan zamanla söner; hücre su çekip şişer, sinir ve kas uyarılabilirliği bozulur. Siyanür ya da iskemi tam bunu yapar.'; return; }
   pm.adim = (pm.adim + 1) % 6;
   if (pm.adim === 2) { pm.atp++; document.getElementById('n-atp').textContent = pm.atp; }
   if (pm.adim === 3) { pm.na += 3; document.getElementById('n-na').textContent = pm.na; }

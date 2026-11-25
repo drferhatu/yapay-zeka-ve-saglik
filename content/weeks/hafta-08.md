@@ -7,7 +7,7 @@ module: m3
 semester: 1
 exam: false
 status: hazir
-changeNote: "Program yenilendi: bu hafta yarım saatlik bir oyun; Python ve grafik yok. Kurul sınavına dokuz gün."
+changeNote: "Program yenilendi: Bu hafta yarım saatlik bir oyun; Python ve grafik yok. Kurul sınavına dokuz gün."
 tags:
   - "gerçek mi uydurma mı"
   - "FDA"
@@ -35,7 +35,7 @@ Bugün bir oyun oynadık: perdede on haber kartı, her birinde yapay zekanın sa
 
 **Nobel alan protein tahmini (2024).** Amino asit diziliminden proteinin üç boyutlu yapısını tahmin eden AlphaFold'un geliştiricileri Demis Hassabis ve John Jumper, 2024 Nobel Kimya Ödülü'nün yarısını aldı; diğer yarısı hesaplamalı protein tasarımı için David Baker'a gitti. İkinci haftada görüntüleyicisini konuştuğumuz program bu. Kaynak: [Nobel Vakfı basın bülteni, 9 Ekim 2024](https://www.nobelprize.org/prizes/chemistry/2024/press-release/).
 
-**Röntgenden ırkı tahmin eden model (2022).** Bir derin öğrenme modeli, göğüs röntgeni, BT ve mamografide hastanın kendi beyan ettiği ırkı yüksek doğrulukla tahmin etti; radyologlar aynı görüntüde bunu yapamıyor ve modelin neye baktığı tam olarak bilinmiyor. Görüntü bozulsa, çözünürlük düşse bile tahmin sürdü. Ürkütücü olan şu: model ırkı görebiliyorsa, tanı modelleri de fark etmeden ırka göre farklı davranabilir. Yanlılık tartışmasının çıkış noktası; 16. haftada döneceğiz. Kaynak: [Gichoya ve ark., Lancet Digital Health 2022](https://doi.org/10.1016/S2589-7500(22)00063-2).
+**Röntgenden ırkı tahmin eden model (2022).** Bir derin öğrenme modeli, göğüs röntgeni, BT ve mamografide hastanın kendi beyan ettiği ırkı yüksek doğrulukla tahmin etti; radyologlar aynı görüntüde bunu yapamıyor ve modelin neye baktığı tam olarak bilinmiyor. Görüntü bozulsa, çözünürlük düşse bile tahmin sürdü. Ürkütücü olan şu: Model ırkı görebiliyorsa, tanı modelleri de fark etmeden ırka göre farklı davranabilir. Yanlılık tartışmasının çıkış noktası; 16. haftada döneceğiz. Kaynak: [Gichoya ve ark., Lancet Digital Health 2022](https://doi.org/10.1016/S2589-7500(22)00063-2).
 
 **Bilgisayarın bulduğu antibiyotik (2020).** MIT'de bir model önce bilinen moleküllerden "bakteriyi öldürür mü" örüntüsünü öğrendi, sonra yüz milyondan fazla molekülü taradı ve halicin adını verdikleri yeni bir antibiyotik buldu; isim 2001 Uzay Yolu Macerası'ndaki HAL'den. Farelerde dirençli enfeksiyonları tedavi etti. Kaynak: [Stokes ve ark., Cell 2020](https://doi.org/10.1016/j.cell.2020.01.021).
 

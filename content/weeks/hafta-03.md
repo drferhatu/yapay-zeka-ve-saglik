@@ -47,9 +47,9 @@ Bu hafta kurulda su ve çözünürlükten başlayıp asit-bazlara, zayıf asitle
 
 ## Bugün ne yapıyoruz?
 
-Geçen hafta hızlı gittim, bunu biliyorum. Bugün yavaşlıyoruz. Kimse bir şey yazmayacak, kimse bir şey yüklemeyecek; perdede ben ve bir yapay zeka aracı olacağız, siz de yanlış bir şey gördüğünüzde "yanlış" diye bağıracaksınız. Dersin sonunda sadece üç şeyi aklınızda tutmanızı istiyorum: aracın seviyesini siz belirlersiniz, bozuk soruyu siz bulursunuz ve kaynağı siz verirsiniz. Gerisi ayrıntı.
+Geçen hafta hızlı gittim, bunu biliyorum. Bugün yavaşlıyoruz. Kimse bir şey yazmayacak, kimse bir şey yüklemeyecek; perdede ben ve bir yapay zeka aracı olacağız, siz de yanlış bir şey gördüğünüzde "yanlış" diye bağıracaksınız. Dersin sonunda sadece üç şeyi aklınızda tutmanızı istiyorum: Aracın seviyesini siz belirlersiniz, bozuk soruyu siz bulursunuz ve kaynağı siz verirsiniz. Gerisi ayrıntı.
 
-Önce şunu oylayalım: bu hafta hangisi en zor geldi? pH ve tamponlar mı, DNA ile RNA'nın yapısı mı, hücre yüzey farklılaşmaları mı, yoksa hiçbiri, gayet iyisiniz? Çoğunluk ne derse onunla başlıyoruz; aşağıdaki istemleri pH için yazdım, başka konu çıkarsa adını değiştirmek yeter.
+Önce şunu oylayalım: Bu hafta hangisi en zor geldi? pH ve tamponlar mı, DNA ile RNA'nın yapısı mı, hücre yüzey farklılaşmaları mı, yoksa hiçbiri, gayet iyisiniz? Çoğunluk ne derse onunla başlıyoruz; aşağıdaki istemleri pH için yazdım, başka konu çıkarsa adını değiştirmek yeter.
 
 ### Aynı konu, üç dil
 
@@ -67,7 +67,7 @@ Aynı şeyi 10 yaşındaki bir çocuğa anlatır gibi, günlük hayattan bir ben
 Şimdi bunu kurul sınavında çıkacak bir sorunun cevabı gibi, en fazla 4 maddeyle, tanım ve anahtar kelimelerle özetle.
 ```
 
-Buradan çıkaracağınız ders basit ama kıymetli: araç sizin seviyenize iner, fakat seviyeyi siz söylemek zorundasınız. "Anlat" demekle "birinci sınıf tıp öğrencisine, sekiz cümleyle anlat" demek arasındaki fark, aldığınız cevabın işe yarayıp yaramaması arasındaki fark.
+Buradan çıkaracağınız ders basit ama kıymetli: Araç sizin seviyenize iner, fakat seviyeyi siz söylemek zorundasınız. "Anlat" demekle "birinci sınıf tıp öğrencisine, sekiz cümleyle anlat" demek arasındaki fark, aldığınız cevabın işe yarayıp yaramaması arasındaki fark.
 
 Şimdi aynı araca bir tuzak kuruyorum. Bikarbonat tamponunun pKa değeri 6,1'dir ve normal kanda bikarbonat/karbonik asit oranı yaklaşık 20'ye 1'dir; bunu kitabınızdan biliyorsunuz. Araca soruyorum, büyük ihtimalle doğru söyleyecek. Sonra ona itiraz edeceğim:
 
@@ -79,7 +79,7 @@ Bikarbonat tampon sisteminde pKa değeri nedir ve normal arteriyel kanda HCO3-/H
 Emin misin? pKa'yı 6,1 yerine 7,4 yazan kaynaklar da var; hangisi doğru ve neden?
 ```
 
-İyi bir model burada direnir ve "6,1, çünkü 7,4 tamponun değil kanın pH'ıdır" der. Kötü gününde ise pes edip fikir değiştirir. İkisi de bize aynı dersi veriyor: siz itiraz edince cevabını değiştiren bir araca sınavda güvenmezsiniz, kitaba bakarsınız. Doğrulama dediğimiz şey bu kadar basit.
+İyi bir model burada direnir ve "6,1, çünkü 7,4 tamponun değil kanın pH'ıdır" der. Kötü gününde ise pes edip fikir değiştirir. İkisi de bize aynı dersi veriyor: Siz itiraz edince cevabını değiştiren bir araca sınavda güvenmezsiniz, kitaba bakarsınız. Doğrulama dediğimiz şey bu kadar basit.
 
 ### Beş soru, biri bozuk
 
@@ -93,7 +93,7 @@ Soruları tek tek perdeye alıyorum, siz el kaldırarak ya da telefonla cevaplı
 
 ### Kaynağı sen verirsin
 
-Geçen hafta bazılarınızdan şunu duydum: ders notunu bir araca yükleyip sorduğunuzda yanlış cevaplar almışsınız. Bu çok sık olur ve çoğu zaman suçlu araç değil, ona verdiğimiz şeydir. Bunu perdede göstermek için elimde aynı tampon konusunun iki sürümü var. Biri temiz, düzgün yazılmış bir metin; diğeri aynı metnin bulanık bir fotoğraftan okunmuş gibi bozulmuş hâli, harfleri kaymış, satırları kopmuş, 6,1'i "6.l" olmuş.
+Geçen hafta bazılarınızdan şunu duydum: Ders notunu bir araca yükleyip sorduğunuzda yanlış cevaplar almışsınız. Bu çok sık olur ve çoğu zaman suçlu araç değil, ona verdiğimiz şeydir. Bunu perdede göstermek için elimde aynı tampon konusunun iki sürümü var. Biri temiz, düzgün yazılmış bir metin; diğeri aynı metnin bulanık bir fotoğraftan okunmuş gibi bozulmuş hâli, harfleri kaymış, satırları kopmuş, 6,1'i "6.l" olmuş.
 
 - [Temiz kaynak](/materyal/hafta-03/tampon-temiz.txt)
 - [Bozuk kaynak](/materyal/hafta-03/tampon-bozuk.txt) (bilerek bozulmuştur)
@@ -104,7 +104,7 @@ Geçen hafta bazılarınızdan şunu duydum: ders notunu bir araca yükleyip sor
 Bu kaynağa göre bikarbonat tamponunun pKa değeri nedir, normal bikarbonat/karbonik asit oranı kaçtır ve pH nasıl hesaplanır? Her cümlenin kaynağını göster.
 ```
 
-Temiz defterde her cümlenin yanında kaynak numarası görürsünüz, tıklayınca metindeki yerini gösterir. Bozuk defterde ya "6.l" diye saçma bir değer gelir ya da araç okuyamadığı yeri hafızasından doldurur ve biz bunu kaynak numarasına tıklayınca anlarız. Ders şu: kaynağa bağlı araç, kaynağınız kadar iyidir. Ders kitabının PDF'ini, temiz bir sunumu ya da yazılı notu yükleyin; fotoğraf yüklemeyin. Ve ne yüklerseniz yükleyin, çıkan cümlenin kaynağına bir kez tıklayın.
+Temiz defterde her cümlenin yanında kaynak numarası görürsünüz, tıklayınca metindeki yerini gösterir. Bozuk defterde ya "6.l" diye saçma bir değer gelir ya da araç okuyamadığı yeri hafızasından doldurur ve biz bunu kaynak numarasına tıklayınca anlarız. Ders şu: Kaynağa bağlı araç, kaynağınız kadar iyidir. Ders kitabının PDF'ini, temiz bir sunumu ya da yazılı notu yükleyin; fotoğraf yüklemeyin. Ve ne yüklerseniz yükleyin, çıkan cümlenin kaynağına bir kez tıklayın.
 
 > [!tanim] Kaynağa bağlı araç
 > NotebookLM, yalnızca sizin yüklediğiniz belgelerden cevap verir ve her cümlesine hangi kaynaktan aldığını iliştirir. Genel sohbet botu ise hafızasından konuşur. Birincisi ders çalışmak için, ikincisi fikir almak için.
@@ -146,13 +146,13 @@ Her dersin sonunda iki soru soruyorum ve bu soruları olduğu gibi sitede bırak
 <details>
 <summary>Cevaplar</summary>
 
-Birinci sorunun cevabı C: modelin fikir değiştirmesi, cevabın güvenilirliğini bağımsız bir kaynakla kontrol etmeniz gerektiğinin işaretidir. İkincinin cevabı da C: kaynağa bağlı araç yalnızca yüklediğiniz belgelerden konuşur ve her cümleye kaynağını iliştirir; bu onu hatasız yapmaz, ama kontrol edilebilir yapar.
+Birinci sorunun cevabı C: Modelin fikir değiştirmesi, cevabın güvenilirliğini bağımsız bir kaynakla kontrol etmeniz gerektiğinin işaretidir. İkincinin cevabı da C: Kaynağa bağlı araç yalnızca yüklediğiniz belgelerden konuşur ve her cümleye kaynağını iliştirir; bu onu hatasız yapmaz, ama kontrol edilebilir yapar.
 </details>
 
 ## Telefonda iki dakikada deneyin
 
-Bu bir ödev değil, canınız isterse: herhangi bir sohbet aracına "Tıp fakültesi 1. sınıf öğrencisiyim, tampon çözeltiyi on yaşındaki bir çocuğa anlatır gibi beş cümleyle anlat" yazın; cevabı alınca "şimdi kurul sınavı cevabı gibi dört maddeyle" deyin. Aradaki farkı görmek bugünkü dersin özeti.
+Bu bir ödev değil, canınız isterse: Herhangi bir sohbet aracına "Tıp fakültesi 1. sınıf öğrencisiyim, tampon çözeltiyi on yaşındaki bir çocuğa anlatır gibi beş cümleyle anlat" yazın; cevabı alınca "şimdi kurul sınavı cevabı gibi dört maddeyle" deyin. Aradaki farkı görmek bugünkü dersin özeti.
 
 ## Haftanın Özeti
 
-Bugün üç şey gördünüz: aracın seviyesini siz belirlersiniz, bozuk soruyu siz bulursunuz, kaynağı siz verirsiniz. Üçü de sizin elinizde, aracın değil. Haftaya hücre zarı ve taşınımla devam ediyoruz; yine bilgisayar gerekmiyor, yine bir saat.
+Bugün üç şey gördünüz: Aracın seviyesini siz belirlersiniz, bozuk soruyu siz bulursunuz, kaynağı siz verirsiniz. Üçü de sizin elinizde, aracın değil. Haftaya hücre zarı ve taşınımla devam ediyoruz; yine bilgisayar gerekmiyor, yine bir saat.

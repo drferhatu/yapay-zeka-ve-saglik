@@ -39,7 +39,7 @@ Ders notları ilerleyen haftalarda buraya eklenecektir.
 
 ## Tıptan Örnekler
 
-- Taburcu özetini hasta diline çevirme: faydalı ama denetim gerektirir.
+- Taburcu özetini hasta diline çevirme: Faydalı ama denetim gerektirir.
 - Uydurma ilaç dozu veya var olmayan kılavuz önerisi örnekleri.
 
 ## Uygulama / Etkinlik

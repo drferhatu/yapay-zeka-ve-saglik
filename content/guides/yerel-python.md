@@ -72,7 +72,7 @@ Tarayıcınızda JupyterLab açılır. Colab'den indirdiğiniz `.ipynb` dosyalar
 
 ## Adım 4 · Yapay zeka ajanlarıyla çalışmak
 
-Claude Code, Cursor gibi araçlar bir **klasörde** çalışır: o klasördeki dosyaları okur, kod yazar, çalıştırır. Güvenli çalışma düzeni:
+Claude Code, Cursor gibi araçlar bir **klasörde** çalışır: O klasördeki dosyaları okur, kod yazar, çalıştırır. Güvenli çalışma düzeni:
 
 1. Ders için ayrı bir klasör açın, örneğin `Belgeler/yz-saglik`. Ajan yalnızca bu klasöre erişsin; tüm diskinize değil.
 2. Ajanı bu klasörde başlatın ve ilk mesajınızda ortamı söyleyin:
